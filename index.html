@@ -10,7 +10,7 @@
     body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:linear-gradient(180deg,#071026 0%, #081424 60%); color:var(--ink); margin:0; padding:24px}
     .wrap{max-width:980px;margin:0 auto}
     header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
-    .logo{width:56px;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center}
+    .logo{width:96px;height:96px;border-radius:16px;object-fit:contain;display:block}
     h1{margin:0;font-size:20px}
     p.lead{color:var(--muted);margin:6px 0 18px}
 
@@ -54,6 +54,12 @@
     body.hc .level-btn{border-color:#666}
     body.hc .badge{background:#1a1a1a;color:#eaeaea}
 
+    /* Intro grid with large logo */
+    #intro .intro-grid{display:grid;grid-template-columns:min(32%,280px) 1fr;gap:16px;align-items:center}
+    #intro .intro-logo{display:flex;align-items:center;justify-content:center}
+    #intro .intro-logo img{width:100%;max-width:320px;height:auto;display:block;border-radius:16px;background:rgba(255,255,255,0.06);padding:12px}
+    @media (max-width:760px){#intro .intro-grid{grid-template-columns:1fr} #intro .intro-logo img{max-width:240px;margin:0 auto}}
+
     
 
     @media (max-width:760px){.levels{grid-template-columns:repeat(2,1fr)}.proofs{grid-template-columns:1fr}body{padding:12px}}
@@ -91,11 +97,16 @@
 
       <section class="card game-area" id="game-area">
         <div id="intro">
-          <h3>Welcome!</h3>
-          <p style="color:var(--muted)">Start with Level 1: Spot the red flags in a suspicious email. As you answer, you'll earn points and unlock more practice levels. This demo stores progress in your browser (no accounts).</p>
-          <div style="margin-top:10px;display:flex;gap:8px">
-            <button id="startBtn">Start Level 1</button>
-            <button class="secondary" id="resetBtn">Reset Progress</button>
+          <div class="intro-grid">
+            <div class="intro-logo"><img src="assets/JustforPhishingLogo.png" alt="Just for Phishing logo large"/></div>
+            <div class="intro-copy">
+              <h3>Welcome!</h3>
+              <p style="color:var(--muted)">Start with Level 1: Spot the red flags in a suspicious email. As you answer, you'll earn points and unlock more practice levels. This demo stores progress in your browser (no accounts).</p>
+              <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+                <button id="startBtn">Start Level 1</button>
+                <button class="secondary" id="resetBtn">Reset Progress</button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -255,10 +266,12 @@
 
     function renderIntro(){
       const area=document.getElementById('game-area');
-      area.innerHTML=`<div><h3>Welcome!</h3><p style=\"color:var(--muted)\">Start with Level 1. Answer to earn points and unlock more levels.</p><div style=\"display:flex;gap:8px\"><button id=\"startBtn\">Start Level 1</button><button class=\"secondary\" id=\"resetBtn\">Reset Progress</button></div></div>`;
+      area.innerHTML=`<div id=\"intro\"><div class=\"intro-grid\"><div class=\"intro-logo\"><img src=\"assets/JustforPhishingLogo.png\" alt=\"Just for Phishing logo large\"/></div><div class=\"intro-copy\"><h3>Welcome!</h3><p style=\"color:var(--muted)\">Start with Level 1: Spot the red flags in a suspicious email. As you answer, you'll earn points and unlock more practice levels. This demo stores progress in your browser (no accounts).</p><div style=\"margin-top:10px;display:flex;gap:8px;flex-wrap:wrap\"><button id=\"startBtn\">Start Level 1<\/button><button class=\"secondary\" id=\"resetBtn\">Reset Progress<\/button><\/div><\/div><\/div><\/div>`;
       document.getElementById('startBtn').addEventListener('click',()=>startLevel(1));
       document.getElementById('resetBtn').addEventListener('click',()=>{
         if(confirm('Reset progress?')){ state={level:1,points:0,completed:[],currentQuestion:null,history:[],hc:state.hc}; saveState(); updateUI(); renderIntro(); }
+      });
+    }; saveState(); updateUI(); renderIntro(); }
       });
     }
 
