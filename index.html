@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Just for Phishing — Cyber Hygiene Quest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Space+Grotesk:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero" id="top">
+        <div class="hero__overlay"></div>
+        <div class="hero__inner container">
+          <img
+            class="hero__logo"
+            src="assets/JustforPhishingLogo.png"
+            alt="Just for Phishing logo"
+          />
+          <div class="hero__copy">
+            <h1>Just for Phishing</h1>
+            <p>
+              Welcome to your cyber safety quest! Move through friendly mini levels,
+              learn how scammers operate, and practice quick wins that protect you and
+              your team from phishing tricks.
+            </p>
+            <div class="hero__actions">
+              <button class="btn btn--primary" id="startAdventure">
+                Begin Level 1
+              </button>
+              <span class="hero__note">Low-pressure, high-fun training for everyone.</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="journey" id="journey">
+        <div class="container">
+          <div class="journey__grid">
+            <section class="level card" aria-live="polite">
+              <header class="level__header">
+                <p class="level__stage" id="levelBadge">Beginner</p>
+                <h2 class="level__title" id="levelTitle">
+                  Level 1: Spot the Phishy Email
+                </h2>
+              </header>
+              <p class="level__intro" id="levelDescription">
+                Read the message carefully and choose the safest response.
+              </p>
+              <p class="level__question" id="questionProgress">Challenge 1 of 5</p>
+              <article class="scenario" id="scenario">
+                <p><strong>Subject:</strong> Security Alert - Immediate Action Required</p>
+                <p>
+                  <strong>From:</strong> TrustPay Support
+                  <code>account-security@support-paypai.com</code>
+                </p>
+                <p>
+                  "We noticed suspicious activity on your account. Your access will be
+                  suspended within <strong>12 minutes</strong> unless you verify your
+                  identity."
+                </p>
+                <p>
+                  <strong>Link preview:</strong>
+                  <code>http://trustpay-verify-info.com/login</code>
+                </p>
+              </article>
+
+              <form class="choices" id="choices" aria-label="Possible responses"></form>
+
+              <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+
+              <div class="level__actions">
+                <button type="button" class="btn btn--ghost" id="hintButton">
+                  Show hint
+                </button>
+                <button type="button" class="btn btn--primary" id="submitButton" disabled>
+                  Lock in answer
+                </button>
+              </div>
+            </section>
+
+            <aside class="progress card" aria-label="Training progress">
+              <h3>Mission Control</h3>
+              <p class="progress__blurb">
+                Complete every mission to unlock your printable Cyber Hygiene Certificate.
+              </p>
+              <div class="progress__meter" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress__fill" id="progressFill"></div>
+              </div>
+              <ol class="progress__list" id="progressLevels" aria-label="Levels"></ol>
+              <div class="scoreboard" role="status" aria-live="polite">
+                <div>
+                  <span>Score</span>
+                  <strong id="score">0</strong>
+                </div>
+                <div>
+                  <span>Streak</span>
+                  <strong id="streak">0</strong>
+                </div>
+              </div>
+              <button type="button" class="btn btn--ghost progress__reset" id="resetProgress">
+                Reset progress
+              </button>
+              <div class="power-up" id="powerUp">
+                Complete every challenge in this level to unlock a new power-up.
+              </div>
+            </aside>
+          </div>
+
+          <section class="certificate card" id="certificate" hidden>
+            <header class="certificate__header">
+              <h2>Cyber Hygiene Certificate</h2>
+              <span class="certificate__status" id="certificateStatus">
+                Locked — finish every level to claim your reward.
+              </span>
+            </header>
+            <p class="certificate__intro">
+              Congratulations! You have mastered the phishing defense quest. Add your name and download a
+              certificate to share with your technology leader.
+            </p>
+            <div class="certificate__controls">
+              <label for="participantName">Your name</label>
+              <input
+                id="participantName"
+                type="text"
+                class="certificate__input"
+                placeholder="Ada Lovelace"
+                autocomplete="name"
+              />
+              <button class="btn btn--primary" id="downloadCertificate" disabled>
+                Download certificate
+              </button>
+            </div>
+            <div class="certificate__preview" id="certificatePreview"></div>
+          </section>
+        </div>
+      </main>
+
+      <footer class="footer">
+        <p>
+          Built for education. Practice regularly, stay curious, and keep your digital world safe from phishers.
+        </p>
+      </footer>
+    </div>
+
+    <template id="certificateTemplate">
+      <div class="certificate-sheet">
+        <h1>Cyber Hygiene Certificate</h1>
+        <p>This certifies that</p>
+        <h2 data-field="name">Ada Lovelace</h2>
+        <p>
+          has successfully completed the Just for Phishing training journey and demonstrated strong cyber safety habits.
+        </p>
+        <div class="certificate-sheet__footer">
+          <span>Technology Readiness Team</span>
+          <span data-field="date"></span>
+        </div>
+      </div>
+    </template>
+
+    <script src="script.js"></script>
+  </body>
+</html>
