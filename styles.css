@@ -147,6 +147,27 @@ button:disabled {
   flex-direction: column;
   gap: clamp(1.5rem, 3vw, 2.5rem);
 }
+  
+.container {
+  display: grid;
+  gap: 2rem;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  width: min(1200px, 92vw);
+  margin: 0 auto;
+  flex: 1;
+}
+
+.level-card {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 1.5rem;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  backdrop-filter: blur(10px);
+}
 
 .level-card__header {
   display: flex;
@@ -262,7 +283,6 @@ button:disabled {
   color: #fecaca;
 }
 
-
 .progress {
   display: flex;
   flex-direction: column;
@@ -281,6 +301,21 @@ button:disabled {
   height: 0.9rem;
   border-radius: 999px;
   background: rgba(148, 163, 184, 0.2);
+  
+.progress {
+  background: rgba(15, 23, 42, 0.55);
+  border-radius: 1.5rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  display: grid;
+  gap: 1.25rem;
+  height: max-content;
+}
+
+.progress__bar {
+  height: 0.75rem;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.15);
   overflow: hidden;
 }
 
@@ -324,6 +359,11 @@ button:disabled {
 
 .progress__levels li.completed {
   color: var(--success);
+}
+
+.progress__levels li::before {
+  content: '◎';
+  color: rgba(148, 163, 184, 0.4);
 }
 
 .progress__levels li.completed::before {
@@ -483,6 +523,7 @@ button:disabled {
     width: 100%;
   }
 }
+
 .choice--selected {
   border-color: rgba(56, 189, 248, 0.5);
   box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.15);
@@ -504,6 +545,8 @@ button:disabled {
     position: static;
     top: auto;
   }
+
+  color: #bae6fd;
 }
 
 .reveal-button {

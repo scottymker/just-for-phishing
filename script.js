@@ -191,6 +191,7 @@ const startButton = document.getElementById('startAdventure');
 const experienceSection = document.getElementById('experience');
 const certificateSection = document.getElementById('certificate');
 const certificateStatus = document.getElementById('certificateStatus');
+const certificateSection = document.getElementById('certificate');
 const participantName = document.getElementById('participantName');
 const downloadCertificateButton = document.getElementById('downloadCertificate');
 const certificatePreview = document.getElementById('certificatePreview');
@@ -229,6 +230,7 @@ function renderLevel(index) {
     `;
     scenarioEl.classList.add('scenario--empty');
   }
+
   feedbackEl.textContent = '';
   feedbackEl.className = 'feedback';
   selectedOptionId = null;
