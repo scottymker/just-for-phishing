@@ -191,6 +191,7 @@ const startButton = document.getElementById('startAdventure');
 const experienceSection = document.getElementById('experience');
 const certificateSection = document.getElementById('certificate');
 const certificateStatus = document.getElementById('certificateStatus');
+const certificateSection = document.getElementById('certificate');
 const participantName = document.getElementById('participantName');
 const downloadCertificateButton = document.getElementById('downloadCertificate');
 const certificatePreview = document.getElementById('certificatePreview');
@@ -325,6 +326,7 @@ function goToNextLevel() {
     hintButton.disabled = false;
     renderLevel(currentLevelIndex);
     experienceSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    window.scrollTo({ top: document.querySelector('.container').offsetTop - 40, behavior: 'smooth' });
   } else {
     showCertificate();
   }
@@ -458,6 +460,7 @@ hintButton.addEventListener('click', showHint);
 
 startButton.addEventListener('click', () => {
   experienceSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.querySelector('.container').scrollIntoView({ behavior: 'smooth' });
 });
 
 participantName.addEventListener('input', () => {
