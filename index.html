@@ -30,6 +30,56 @@
       </div>
     </header>
 
+    <main class="experience" id="experience">
+      <div class="experience__grid">
+        <section class="level-card glass-panel">
+          <div class="level-card__header">
+            <h2 id="levelTitle">Level 1: Spot the Phishy Email</h2>
+            <span class="badge" id="levelBadge">Beginner</span>
+          </div>
+          <p id="levelDescription">
+            Examine the message and choose the safest response.
+          </p>
+
+          <div class="scenario" id="scenario"></div>
+
+          <div class="choices" id="choices"></div>
+
+          <div class="feedback" id="feedback" role="alert" aria-live="polite"></div>
+
+          <div class="level-actions">
+            <button class="secondary" id="hintButton">Need a hint?</button>
+            <button class="primary" id="submitButton" disabled>
+              Lock in answer
+            </button>
+          </div>
+        </section>
+
+        <aside class="sidebar">
+          <section class="progress glass-panel">
+            <h3>Progress Tracker</h3>
+            <p class="progress__summary">
+              Complete each mission to unlock your Cyber Hygiene Certificate.
+            </p>
+            <div class="progress__bar">
+              <div class="progress__bar-fill" id="progressFill"></div>
+            </div>
+            <ul class="progress__levels" id="progressLevels"></ul>
+            <div class="scoreboard">
+              <p><strong>Score:</strong> <span id="score">0</span> pts</p>
+              <p><strong>Streak:</strong> <span id="streak">0</span></p>
+            </div>
+          </section>
+        </aside>
+      </div>
+
+      <section class="certificate glass-panel" id="certificate" hidden>
+        <div class="certificate__header">
+          <h2>Cyber Hygiene Certificate</h2>
+          <span class="certificate__status" id="certificateStatus">
+            Locked — finish all four levels to claim your reward.
+          </span>
+        </div>
     <main class="container">
       <section class="level-card">
         <div class="level-card__header">
@@ -71,6 +121,20 @@
           awareness skills. Fill out your name and generate a certificate to
           share with your technology leader.
         </p>
+        <div class="certificate__form">
+          <label class="certificate__label" for="participantName"
+            >Your name</label
+          >
+          <input
+            class="certificate__input"
+            type="text"
+            id="participantName"
+            placeholder="Ada Lovelace"
+          />
+          <button class="primary" id="downloadCertificate">
+            Download certificate
+          </button>
+        </div>
         <label class="certificate__label" for="participantName"
           >Your name</label
         >

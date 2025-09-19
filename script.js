@@ -188,6 +188,9 @@ const progressLevels = document.getElementById('progressLevels');
 const scoreEl = document.getElementById('score');
 const streakEl = document.getElementById('streak');
 const startButton = document.getElementById('startAdventure');
+const experienceSection = document.getElementById('experience');
+const certificateSection = document.getElementById('certificate');
+const certificateStatus = document.getElementById('certificateStatus');
 const certificateSection = document.getElementById('certificate');
 const participantName = document.getElementById('participantName');
 const downloadCertificateButton = document.getElementById('downloadCertificate');
@@ -249,6 +252,7 @@ function renderLevel(index) {
   });
 
   attachScenarioInteractions(level);
+  updateCurrentLevelIndicator();
 }
 
 function attachScenarioInteractions(level) {
@@ -269,6 +273,18 @@ function updateProgress() {
   const total = levels.length;
   const percent = Math.round((completed / total) * 100);
   progressFill.style.width = `${percent}%`;
+}
+
+function updateCurrentLevelIndicator() {
+  Array.from(progressLevels.children).forEach((item, index) => {
+    const isCurrent = index === currentLevelIndex;
+    item.classList.toggle('current', isCurrent);
+    if (isCurrent) {
+      item.setAttribute('aria-current', 'step');
+    } else {
+      item.removeAttribute('aria-current');
+    }
+  });
 }
 
 function handleAnswer() {
@@ -309,6 +325,7 @@ function goToNextLevel() {
     currentLevelIndex += 1;
     hintButton.disabled = false;
     renderLevel(currentLevelIndex);
+    experienceSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     window.scrollTo({ top: document.querySelector('.container').offsetTop - 40, behavior: 'smooth' });
   } else {
     showCertificate();
@@ -331,6 +348,13 @@ function showCertificate() {
   document.getElementById(`progress-${levels[currentLevelIndex].id}`)?.classList.add('completed');
   updateProgress();
   updateCertificatePreview(getCertificateName());
+  progressLevels.querySelectorAll('.current').forEach((item) =>
+    item.classList.remove('current')
+  );
+  certificateSection.classList.add('certificate--unlocked');
+  certificateStatus.textContent =
+    "Unlocked — you're officially a Cyber Hygiene Pro!";
+  certificateStatus.classList.add('certificate__status--unlocked');
   certificateSection.scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -435,6 +459,7 @@ submitButton.addEventListener('click', () => {
 hintButton.addEventListener('click', showHint);
 
 startButton.addEventListener('click', () => {
+  experienceSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   document.querySelector('.container').scrollIntoView({ behavior: 'smooth' });
 });
 
