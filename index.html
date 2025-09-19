@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>PhishPlay — Interactive Phishing Awareness Demo</title>
+  <title>Just for Phishing — Interactive Phishing Awareness</title>
   <style>
     :root{--bg:#0f1724;--card:#0b1220;--muted:#cbd5e1;--ink:#e6eef6;--accent:#06b6d4;--success:#10b981;--danger:#ef4444;--glass:rgba(255,255,255,0.06)}
     *{box-sizing:border-box}
     body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:linear-gradient(180deg,#071026 0%, #081424 60%); color:var(--ink); margin:0; padding:24px}
     .wrap{max-width:980px;margin:0 auto}
     header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
-    .logo{width:56px;height:56px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:700}
+    .logo{width:56px;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center}
     h1{margin:0;font-size:20px}
     p.lead{color:var(--muted);margin:6px 0 18px}
 
@@ -54,19 +54,21 @@
     body.hc .level-btn{border-color:#666}
     body.hc .badge{background:#1a1a1a;color:#eaeaea}
 
-    @media (max-width:760px){.levels{grid-template-columns:repeat(2,1fr)}body{padding:12px}}
+    
+
+    @media (max-width:760px){.levels{grid-template-columns:repeat(2,1fr)}.proofs{grid-template-columns:1fr}body{padding:12px}}
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <div class="logo">PP</div>
+      <img class="logo" src="assets/JustforPhishingLogo.png" alt="Just for Phishing logo" onerror="this.style.display='none'" />
       <div>
-        <h1>PhishPlay — Interactive Phishing Awareness</h1>
+        <h1>Just for Phishing — Interactive Phishing Awareness</h1>
         <p class="lead">Learn to spot phishing with short levels, instant feedback, and a printable certificate for your technology leader.</p>
       </div>
       <div class="spacer"></div>
-      <div class="card" style="min-width:240px;padding:10px;display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+      <div class="card" style="min-width:280px;padding:10px;display:flex;flex-direction:column;gap:8px;align-items:flex-end">
         <div class="row" style="width:100%">
           <div class="badge">Level <span id="current-level">1</span></div>
           <div style="flex:1"></div>
@@ -78,9 +80,7 @@
           <label style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px"><input id="hcToggle" type="checkbox"/> High contrast</label>
         </div>
       </div>
-    </header>
-
-    <main>
+    </header><main>
       <section class="card">
         <div style="display:flex;align-items:center;justify-content:space-between">
           <strong>Levels</strong>
@@ -120,7 +120,7 @@
           <h2 style="text-align:center">Phishing Awareness Certificate</h2>
           <p style="text-align:center;margin-top:8px;">This certifies that</p>
           <h3 id="certPreviewName" style="text-align:center;margin:6px 0">[Name]</h3>
-          <p style="text-align:center;margin-top:4px;color:#333">has successfully completed the PhishPlay training and demonstrated foundational phishing awareness skills.</p>
+          <p style="text-align:center;margin-top:4px;color:#333">has successfully completed the Just for Phishing training and demonstrated foundational phishing awareness skills.</p>
           <div style="display:flex;justify-content:space-between;margin-top:18px">
             <div>
               <div style="font-weight:700">Points</div>
@@ -142,7 +142,7 @@
     </footer>
   </div>
 
-  <script>
+  <script>// ================= Existing App =================
     const LEVELS = [
       {id:1,title:'Email Red Flags',desc:'Find what makes this email suspicious',score:100},
       {id:2,title:'Inspect the Link',desc:'Identify safe vs suspicious URLs',score:120},
@@ -349,7 +349,7 @@
       const name=document.getElementById('certName').value.trim()||'Name';
       document.getElementById('certPreviewName').textContent=name;
       const completed = `${state.completed.length}/${LEVELS.length}`;
-      const html = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Certificate</title><style>body{font-family:Inter,Arial;color:#07202a;padding:40px;background:#fff;margin:0} .cert{border:6px solid #06b6d4;padding:36px;border-radius:12px;max-width:900px;margin:0 auto} h1,h2{margin:0 0 8px 0}</style></head><body><div class='cert'><h1 style='text-align:center'>Phishing Awareness Certificate</h1><p style='text-align:center'>This certifies that</p><h2 style='text-align:center'>${escapeHtml(name)}</h2><p style='text-align:center'>has completed the PhishPlay interactive phishing awareness training.</p><div style='display:flex;justify-content:space-between;margin-top:24px'><div>Points: ${state.points}</div><div>Date: ${new Date().toLocaleDateString()}</div></div><p style='text-align:center;margin-top:12px;font-weight:700'>Completed Levels: ${completed}</p><script>window.onload=function(){setTimeout(function(){window.print()},300)}<\/script></div></body></html>`;
+      const html = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Certificate</title><style>body{font-family:Inter,Arial;color:#07202a;padding:40px;background:#fff;margin:0} .cert{border:6px solid #06b6d4;padding:36px;border-radius:12px;max-width:900px;margin:0 auto} h1,h2{margin:0 0 8px 0}</style></head><body><div class='cert'><h1 style='text-align:center'>Phishing Awareness Certificate</h1><p style='text-align:center'>This certifies that</p><h2 style='text-align:center'>${escapeHtml(name)}</h2><p style='text-align:center'>has completed the Just for Phishing interactive phishing awareness training.</p><div style='display:flex;justify-content:space-between;margin-top:24px'><div>Points: ${state.points}</div><div>Date: ${new Date().toLocaleDateString()}</div></div><p style='text-align:center;margin-top:12px;font-weight:700'>Completed Levels: ${completed}</p><script>window.onload=function(){setTimeout(function(){window.print()},300)}<\/script></div></body></html>`;
       const w=window.open('','_blank'); if(!w){alert('Pop-up blocked: allow pop-ups to print your certificate.');return;} w.document.open(); w.document.write(html); w.document.close();
     });
 
