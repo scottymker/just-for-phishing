@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>PhishPlay — Interactive Phishing Awareness Demo</title>
   <style>
-    :root{--bg:#0f1724;--card:#0b1220;--muted:#94a3b8;--accent:#06b6d4;--success:#10b981;--danger:#ef4444;--glass:rgba(255,255,255,0.04)}
+    :root{--bg:#0f1724;--card:#0b1220;--muted:#cbd5e1;--ink:#e6eef6;--accent:#06b6d4;--success:#10b981;--danger:#ef4444;--glass:rgba(255,255,255,0.06)}
     *{box-sizing:border-box}
-    body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:linear-gradient(180deg,#071026 0%, #081424 60%); color:#e6eef6; margin:0; padding:24px}
+    body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:linear-gradient(180deg,#071026 0%, #081424 60%); color:var(--ink); margin:0; padding:24px}
     .wrap{max-width:980px;margin:0 auto}
     header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
     .logo{width:56px;height:56px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:700}
@@ -22,29 +22,37 @@
     .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#7c3aed);width:0%}
 
     .levels{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
-    .level-btn{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:12px;border-radius:10px;text-align:center;cursor:pointer}
+    .level-btn{background:transparent;border:1px solid rgba(255,255,255,0.1);padding:12px;border-radius:10px;text-align:center;cursor:pointer}
     .level-btn.locked{opacity:.45}
 
     .game-area{min-height:260px}
-    .email{background:#071328;border:1px solid rgba(255,255,255,0.03);padding:14px;border-radius:10px}
+    .email{background:#071328;border:1px solid rgba(255,255,255,0.15);padding:16px;border-radius:10px;font-size:15px;line-height:1.55}
     .email .from{font-weight:600;color:#cfeefe}
     .email .subject{font-weight:700;margin-top:6px}
     .choices{display:flex;flex-direction:column;gap:8px;margin-top:12px}
-    .choice{padding:10px;border-radius:8px;background:rgba(255,255,255,0.02);cursor:pointer;border:1px solid rgba(0,0,0,0.2)}
+    .choice{padding:12px;border-radius:8px;background:rgba(255,255,255,0.06);cursor:pointer;border:1px solid rgba(0,0,0,0.2)}
     .choice:hover{transform:translateY(-2px)}
 
     footer{margin-top:16px;color:var(--muted);font-size:13px}
 
-    .row{display:flex;gap:12px}
-    input[type=text], input[type=name]{padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit}
+    .row{display:flex;gap:12px;align-items:center}
+    input[type=text]{padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:transparent;color:inherit}
     button{background:var(--accent);border:none;padding:10px 12px;border-radius:8px;color:#07202a;font-weight:700;cursor:pointer}
-    button.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+    button.secondary{background:transparent;border:1px solid rgba(255,255,255,0.2);color:var(--muted)}
 
-    .badge{display:inline-block;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.03);color:var(--muted);font-weight:600}
+    .badge{display:inline-block;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.08);color:var(--muted);font-weight:600}
 
     .certificate{padding:20px;background:linear-gradient(180deg,#fff,#f3f4f6);color:#07202a;border-radius:10px}
     .certificate h2{margin:0}
     .hidden{display:none}
+
+    /* High contrast mode */
+    body.hc{background:#000 !important;color:#fff}
+    body.hc .card{background:#0c0c0c}
+    body.hc .email{background:#0a0a0a;border-color:#444}
+    body.hc .choice{background:#111;border-color:#555}
+    body.hc .level-btn{border-color:#666}
+    body.hc .badge{background:#1a1a1a;color:#eaeaea}
 
     @media (max-width:760px){.levels{grid-template-columns:repeat(2,1fr)}body{padding:12px}}
   </style>
@@ -59,8 +67,16 @@
       </div>
       <div class="spacer"></div>
       <div class="card" style="min-width:240px;padding:10px;display:flex;flex-direction:column;gap:8px;align-items:flex-end">
-        <div class="row" style="width:100%"><div class="badge">Level <span id="current-level">1</span></div><div style="flex:1"></div><div class="badge">Points <b id="points">0</b></div></div>
+        <div class="row" style="width:100%">
+          <div class="badge">Level <span id="current-level">1</span></div>
+          <div style="flex:1"></div>
+          <button id="reviewBtn" class="secondary" title="Review your answers" style="padding:6px 8px;font-size:12px">Review</button>
+          <div class="badge">Points <b id="points">0</b></div>
+        </div>
         <div class="progress" aria-hidden="true"><i id="progress-bar"></i></div>
+        <div class="row" style="justify-content:flex-end">
+          <label style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px"><input id="hcToggle" type="checkbox"/> High contrast</label>
+        </div>
       </div>
     </header>
 
@@ -68,13 +84,12 @@
       <section class="card">
         <div style="display:flex;align-items:center;justify-content:space-between">
           <strong>Levels</strong>
-          <small class="muted" style="color:var(--muted)">Complete levels to unlock the certificate</small>
+          <small style="color:var(--muted)">Complete levels to unlock the certificate</small>
         </div>
         <div class="levels" id="levels"></div>
       </section>
 
       <section class="card game-area" id="game-area">
-        <!-- Game content will be injected here -->
         <div id="intro">
           <h3>Welcome!</h3>
           <p style="color:var(--muted)">Start with Level 1: Spot the red flags in a suspicious email. As you answer, you'll earn points and unlock more practice levels. This demo stores progress in your browser (no accounts).</p>
@@ -83,6 +98,14 @@
             <button class="secondary" id="resetBtn">Reset Progress</button>
           </div>
         </div>
+      </section>
+
+      <section class="card hidden" id="review-area">
+        <div class="row" style="align-items:center;justify-content:space-between">
+          <strong>Review Answers</strong>
+          <button class="secondary" id="clearReview">Clear</button>
+        </div>
+        <div id="reviewList" style="margin-top:10px"></div>
       </section>
 
       <section class="card hidden" id="certificate-area">
@@ -97,7 +120,7 @@
           <h2 style="text-align:center">Phishing Awareness Certificate</h2>
           <p style="text-align:center;margin-top:8px;">This certifies that</p>
           <h3 id="certPreviewName" style="text-align:center;margin:6px 0">[Name]</h3>
-          <p style="text-align:center;margin-top:4px;color:var(--muted)">has successfully completed the PhishPlay training and demonstrated foundational phishing awareness skills.</p>
+          <p style="text-align:center;margin-top:4px;color:#333">has successfully completed the PhishPlay training and demonstrated foundational phishing awareness skills.</p>
           <div style="display:flex;justify-content:space-between;margin-top:18px">
             <div>
               <div style="font-weight:700">Points</div>
@@ -108,18 +131,18 @@
               <div id="certDate"></div>
             </div>
           </div>
+          <p id="certSummary" style="text-align:center;margin-top:12px;font-weight:600"></p>
         </div>
       </section>
 
     </main>
 
     <footer>
-      <small>Built for education — show this to your technology leader or print the certificate. Want customization? Ask me to brand it and add your org's reporting flow.</small>
+      <small>Built for education — certificate unlocks only after all levels are finished.</small>
     </footer>
   </div>
 
   <script>
-    // Basic data model for levels
     const LEVELS = [
       {id:1,title:'Email Red Flags',desc:'Find what makes this email suspicious',score:100},
       {id:2,title:'Inspect the Link',desc:'Identify safe vs suspicious URLs',score:120},
@@ -128,7 +151,6 @@
       {id:5,title:'Report & Respond',desc:'Practice reporting and clean up',score:160}
     ];
 
-    // Simple question bank
     const BANK = {
       1: [
         {id:'1a',from:'IT Support <itsupport@yourbank.com>',subject:'URGENT: Verify your account',body:'We detected unusual activity. Click here to verify your credentials: http://yourbank.verify-account.com',choices:[
@@ -136,10 +158,9 @@
           {text:'Safe — it looks like my bank',correct:false,explain:'The domain is not your bank domain and contains extra words.'},
           {text:'Forward to friends',correct:false,explain:'Don\'t forward; this spreads risk.'}
         ]},
-        {id:'1b',from:'friend@email.com',subject:'Check out these photos!',body:'Photos attached. Let me know what you think.',choices:[
-          {text:'Open attachments — they\'re from a friend',correct:false,explain:'Even if from friend, confirm unexpected attachments before opening.'},
-          {text:'Message friend to confirm',correct:true,explain:'Good practice — confirm before opening.'},
-          {text:'Ignore',correct:false,explain:'Ignoring may be safe but confirmation is better.'}
+        {id:'1b',from:'HR <hr@company.example>',subject:'🎁 Congratulations, pick your reward',body:'Please sign in with your password to claim your gift card.',choices:[
+          {text:'Report — unexpected reward request',correct:true,explain:'Unsolicited rewards that ask you to sign in are a red flag.'},
+          {text:'Sign in — it\'s from HR',correct:false,explain:'Sender name can be spoofed; verify via another channel.'}
         ]}
       ],
       2: [
@@ -154,14 +175,14 @@
       ],
       3: [
         {id:'3a',att:'invoice.pdf.exe',question:'This download is named "invoice.pdf.exe". What should you do?',choices:[
-          {text:'Delete it immediately — suspicious double extension',correct:false,explain:'Good call but better: do not execute; report or scan it.'},
-          {text:'Do not open; report to security',correct:true,explain:'Correct — double extensions are a trick.'}
+          {text:'Do not open; report to security',correct:true,explain:'Correct — double extensions are a trick.'},
+          {text:'Open it — it\'s a PDF',correct:false,explain:'Actually it\'s an executable; the .exe at the end is dangerous.'}
         ]}
       ],
       4: [
         {id:'4a',scenario:'A manager asks you to buy gift cards ASAP and send photos of the codes.',question:'How do you respond?',choices:[
-          {text:'Purchase and send — it seems urgent',correct:false,explain:'This is a classic business email compromise pattern.'},
-          {text:'Verify in person or by phone before acting',correct:true,explain:'Always verify with the requester using a known channel.'}
+          {text:'Verify in person or by phone before acting',correct:true,explain:'Always verify with the requester using a known channel.'},
+          {text:'Purchase and send — it seems urgent',correct:false,explain:'This is a classic business email compromise pattern.'}
         ]}
       ],
       5: [
@@ -172,143 +193,167 @@
       ]
     };
 
-    // App state
-    let state = {level:1,points:0,completed:[],currentQuestion:null};
+    let state = {level:1,points:0,completed:[],currentQuestion:null,history:[],hc:false};
 
-    // Load from localStorage
+    // Load/save
     function loadState(){
-      try{
-        const s = JSON.parse(localStorage.getItem('phishplay')); if(s) state = s;
-      }catch(e){}
+      try{ const s=JSON.parse(localStorage.getItem('phishplay')); if(s) state=Object.assign(state,s); }catch(e){}
+      document.body.classList.toggle('hc',!!state.hc);
+      document.getElementById('hcToggle').checked=!!state.hc;
       updateUI();
     }
     function saveState(){ localStorage.setItem('phishplay',JSON.stringify(state)); }
 
-    // UI build
-    const levelsEl = document.getElementById('levels');
+    // Build levels UI
+    const levelsEl=document.getElementById('levels');
     LEVELS.forEach(l=>{
-      const btn = document.createElement('button');
-      btn.className='level-btn'; btn.id='lvl-'+l.id; btn.innerHTML=`<strong>Level ${l.id}</strong><div style="font-size:13px;color:var(--muted)">${l.title}</div>`;
-      btn.onclick = ()=>startLevel(l.id);
+      const btn=document.createElement('button');
+      btn.className='level-btn'; btn.id='lvl-'+l.id;
+      btn.innerHTML=`<strong>Level ${l.id}</strong><div style="font-size:13px;color:var(--muted)">${l.title}</div>`;
+      btn.onclick=()=>startLevel(l.id);
       levelsEl.appendChild(btn);
     });
 
     function updateUI(){
-      document.getElementById('current-level').textContent = state.level;
-      document.getElementById('points').textContent = state.points;
-      const prog = Math.min(100, Math.round((state.completed.length/LEVELS.length)*100));
-      document.getElementById('progress-bar').style.width = prog+'%';
+      document.getElementById('current-level').textContent=state.level;
+      document.getElementById('points').textContent=state.points;
+      const prog=Math.min(100,Math.round((state.completed.length/LEVELS.length)*100));
+      document.getElementById('progress-bar').style.width=prog+'%';
 
-      // lock/unlock
       LEVELS.forEach(l=>{
-        const el = document.getElementById('lvl-'+l.id);
-        if(state.completed.includes(l.id)) el.style.opacity = .6;
-        if(l.id <= state.completed.length+1) el.classList.remove('locked'); else el.classList.add('locked');
+        const el=document.getElementById('lvl-'+l.id);
+        if(state.completed.includes(l.id)) el.style.opacity=.6;
+        if(l.id<=state.completed.length+1) el.classList.remove('locked'); else el.classList.add('locked');
       });
 
-      // show certificate area when all complete
-      document.getElementById('certificate-area').classList.toggle('hidden', !(state.completed.length >= LEVELS.length));
+      document.getElementById('certificate-area').classList.toggle('hidden',!(state.completed.length>=LEVELS.length));
+      document.getElementById('review-area').classList.toggle('hidden', state.history.length===0);
     }
 
-    // Start functions
+    // High contrast toggle
+    document.getElementById('hcToggle').addEventListener('change',(e)=>{
+      state.hc=!!e.target.checked; document.body.classList.toggle('hc',state.hc); saveState();
+    });
+
+    // Review button
+    document.getElementById('reviewBtn').addEventListener('click',()=>{
+      renderReview();
+      document.getElementById('review-area').classList.remove('hidden');
+      window.scrollTo({top:document.getElementById('review-area').offsetTop-12,behavior:'smooth'});
+    });
+    document.getElementById('clearReview').addEventListener('click',()=>{
+      if(confirm('Clear saved answers?')){ state.history=[]; saveState(); renderReview(); updateUI(); }
+    });
+
     document.getElementById('startBtn').addEventListener('click',()=>startLevel(1));
-    document.getElementById('resetBtn').addEventListener('click',()=>{ if(confirm('Reset progress?')){ state={level:1,points:0,completed:[],currentQuestion:null}; saveState(); updateUI(); renderIntro(); }});
+    document.getElementById('resetBtn').addEventListener('click',()=>{
+      if(confirm('Reset progress?')){
+        state={level:1,points:0,completed:[],currentQuestion:null,history:[],hc:state.hc};
+        saveState(); updateUI(); renderIntro();
+      }
+    });
 
     function renderIntro(){
-      const area = document.getElementById('game-area'); area.innerHTML = document.getElementById('intro').outerHTML; // restore
+      const area=document.getElementById('game-area');
+      area.innerHTML=`<div><h3>Welcome!</h3><p style=\"color:var(--muted)\">Start with Level 1. Answer to earn points and unlock more levels.</p><div style=\"display:flex;gap:8px\"><button id=\"startBtn\">Start Level 1</button><button class=\"secondary\" id=\"resetBtn\">Reset Progress</button></div></div>`;
       document.getElementById('startBtn').addEventListener('click',()=>startLevel(1));
-      document.getElementById('resetBtn').addEventListener('click',()=>{ if(confirm('Reset progress?')){ state={level:1,points:0,completed:[],currentQuestion:null}; saveState(); updateUI(); renderIntro(); }});
+      document.getElementById('resetBtn').addEventListener('click',()=>{
+        if(confirm('Reset progress?')){ state={level:1,points:0,completed:[],currentQuestion:null,history:[],hc:state.hc}; saveState(); updateUI(); renderIntro(); }
+      });
     }
 
     function startLevel(id){
-      // only allow next unlocked
-      if(id > state.completed.length+1){ alert('Finish earlier levels first.'); return; }
-      state.level = id; saveState(); updateUI(); renderLevel(id);
+      if(id>state.completed.length+1){alert('Finish earlier levels first.');return;}
+      state.level=id; saveState(); updateUI(); renderLevel(id);
     }
 
     function renderLevel(id){
-      const area = document.getElementById('game-area'); area.innerHTML = '';
-      const level = LEVELS.find(l=>l.id===id);
-      const title = document.createElement('div'); title.innerHTML = `<h3>Level ${level.id}: ${level.title}</h3><p style="color:var(--muted)">${level.desc}</p>`;
+      const area=document.getElementById('game-area'); area.innerHTML='';
+      const level=LEVELS.find(l=>l.id===id);
+      const title=document.createElement('div');
+      title.innerHTML=`<h3>Level ${level.id}: ${level.title}</h3><p style=\"color:var(--muted)\">${level.desc}</p>`;
       area.appendChild(title);
+      const items=BANK[id]; if(!items){area.innerHTML+='<p>No questions yet.</p>';return;}
+      const q=items[Math.floor(Math.random()*items.length)]; state.currentQuestion=q; saveState();
 
-      // pick a random question
-      const items = BANK[id]; const q = items[Math.floor(Math.random()*items.length)]; state.currentQuestion = q; saveState();
-
-      // render depending on type
-      if(id===1){
-        const email = document.createElement('div'); email.className='email';
-        email.innerHTML = `<div class="from">${q.from}</div><div class="subject">${q.subject}</div><div style="margin-top:8px;color:var(--muted)">${q.body}</div>`;
+      if(q.from){
+        const email=document.createElement('div'); email.className='email';
+        email.innerHTML=`<div class=\"from\">${q.from}</div><div class=\"subject\">${q.subject}</div><div style=\"margin-top:8px;color:var(--muted)\">${q.body}</div>`;
         area.appendChild(email);
-        const choices = document.createElement('div'); choices.className='choices';
-        q.choices.forEach(c=>{
-          const ch = document.createElement('div'); ch.className='choice'; ch.textContent=c.text; ch.onclick=()=>answerChoice(c); choices.appendChild(ch);
-        }); area.appendChild(choices);
-      } else if(id===2){
-        const el = document.createElement('div'); el.innerHTML=`<p style="color:var(--muted)">${q.question}</p><div class='choices' id='linkChoices'></div>`; area.appendChild(el);
-        q.choices.forEach(c=>{const ch=document.createElement('div');ch.className='choice';ch.textContent=c.text;ch.onclick=()=>answerChoice(c);document.getElementById('linkChoices').appendChild(ch)});
-      } else if(id===3||id===4||id===5){
-        const el = document.createElement('div'); el.innerHTML = `<p style="color:var(--muted)">${q.question||q.scenario}</p><div class='choices' id='otherChoices'></div>`; area.appendChild(el);
-        q.choices.forEach(c=>{const ch=document.createElement('div');ch.className='choice';ch.textContent=c.text;ch.onclick=()=>answerChoice(c);document.getElementById('otherChoices').appendChild(ch)});
+      } else if(q.url){
+        area.innerHTML+=`<div style=\"margin-top:8px;color:var(--muted)\"><strong>URL:</strong> ${q.url}</div>`;
+      } else if(q.scenario){
+        area.innerHTML+=`<div style=\"margin-top:8px;color:var(--muted)\">${q.scenario}</div>`;
       }
+
+      const choices=document.createElement('div'); choices.className='choices';
+      q.choices.forEach(c=>{
+        const ch=document.createElement('div'); ch.className='choice'; ch.textContent=c.text; ch.onclick=()=>answerChoice(q,c);
+        choices.appendChild(ch);
+      }); area.appendChild(choices);
     }
 
-    function answerChoice(choice){
-      // immediate feedback
-      const feedback = document.createElement('div'); feedback.style.marginTop='12px'; feedback.style.padding='10px'; feedback.style.borderRadius='8px';
-      if(choice.correct){ feedback.style.background='rgba(16,185,129,0.08)'; feedback.innerHTML=`✅ Correct — ${choice.explain}`; state.points += 20; }
-      else{ feedback.style.background='rgba(239,68,68,0.06)'; feedback.innerHTML=`❌ Not quite — ${choice.explain}`; state.points += 0; }
+    function answerChoice(q,choice){
+      const feedback=document.createElement('div'); feedback.style.marginTop='12px';
+      if(choice.correct){
+        feedback.style.color='var(--success)'; feedback.textContent='✅ '+choice.explain; state.points+=20;
+      } else {
+        feedback.style.color='var(--danger)'; feedback.textContent='❌ '+choice.explain;
+      }
       document.querySelector('.game-area').appendChild(feedback);
+
+      // store in review history
+      state.history.push({
+        level: state.level,
+        id: q.id||'q',
+        prompt: q.subject? q.subject : (q.question||q.scenario||q.url||'Question'),
+        choice: choice.text,
+        correct: !!choice.correct,
+        explain: choice.explain
+      });
+
       saveState(); updateUI();
-      // mark level complete after short delay
       setTimeout(()=>{
         if(!state.completed.includes(state.level)) state.completed.push(state.level);
         saveState(); updateUI();
-        if(state.completed.length >= LEVELS.length){ showCertificateReady(); } else {
-          if(state.level < LEVELS.length){ if(confirm('Level complete! Move to next level?')) startLevel(state.level+1); else renderIntro(); }
+        if(state.completed.length>=LEVELS.length){ showCertificateReady(); }
+        else if(state.level < LEVELS.length){
+          if(confirm('Level complete! Move to next level?')) startLevel(state.level+1); else renderIntro();
         }
       },900);
     }
 
+    function renderReview(){
+      const list=document.getElementById('reviewList');
+      if(state.history.length===0){ list.innerHTML='<p style="color:var(--muted)">No answers yet.</p>'; return; }
+      list.innerHTML = state.history.map((h,i)=>{
+        const tag = h.correct ? '✅' : '❌';
+        return `<div style="border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:10px;margin:8px 0;background:rgba(255,255,255,0.04)">
+          <div style="font-weight:700">L${h.level} · ${escapeHtml(h.prompt)}</div>
+          <div style="margin-top:6px">${tag} <em>${escapeHtml(h.choice)}</em></div>
+          <div style="color:var(--muted);margin-top:6px">${escapeHtml(h.explain)}</div>
+        </div>`;
+      }).join('');
+    }
+
     function showCertificateReady(){
-      document.getElementById('game-area').innerHTML = `<div style="padding:12px"><h3>All levels complete 🎉</h3><p style='color:var(--muted)'>You're ready to generate your certificate. Enter your name and print or save the certificate to share with your tech leader.</p></div>`;
+      document.getElementById('certPoints').textContent=state.points;
+      document.getElementById('certDate').textContent=new Date().toLocaleDateString();
+      document.getElementById('certSummary').textContent = `Completed Levels: ${state.completed.length}/${LEVELS.length}`;
       document.getElementById('certificate-area').classList.remove('hidden');
-      document.getElementById('certPoints').textContent = state.points;
-      document.getElementById('certDate').textContent = new Date().toLocaleDateString();
+      renderReview();
     }
 
-    // --- Certificate HTML builder (fix for </script> parsing) ---
-    function buildCertificateHTML(name, points, dateStr){
-      const safeName = escapeHtml(name);
-      return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Certificate</title><style>body{font-family:Inter,Arial;color:#07202a;padding:40px;background:#fff;margin:0} .cert{border:6px solid #06b6d4;padding:36px;border-radius:12px;max-width:900px;margin:0 auto} h1,h2{margin:0 0 8px 0}</style></head><body><div class='cert'><h1 style='text-align:center'>Phishing Awareness Certificate</h1><p style='text-align:center'>This certifies that</p><h2 style='text-align:center'>${safeName}</h2><p style='text-align:center'>has completed the PhishPlay interactive phishing awareness training.</p><div style='display:flex;justify-content:space-between;margin-top:40px'><div>Points: ${points}</div><div>Date: ${escapeHtml(dateStr)}</div></div></div><script>window.onload=function(){setTimeout(function(){window.print()},300)}<\/script></body></html>`;
-    }
-
-    // Certificate print
+    // Certificate print (with small summary)
     document.getElementById('printCert').addEventListener('click',()=>{
-      const name = document.getElementById('certName').value.trim() || 'Name';
-      document.getElementById('certPreviewName').textContent = name;
-      document.getElementById('certPoints').textContent = state.points;
-      document.getElementById('certDate').textContent = new Date().toLocaleDateString();
-
-      const html = buildCertificateHTML(name, state.points, new Date().toLocaleDateString());
-      const w = window.open('', '_blank');
-      if(!w){ alert('Pop-up blocked: allow pop-ups to print your certificate.'); return; }
-      w.document.open();
-      w.document.write(html);
-      w.document.close();
+      const name=document.getElementById('certName').value.trim()||'Name';
+      document.getElementById('certPreviewName').textContent=name;
+      const completed = `${state.completed.length}/${LEVELS.length}`;
+      const html = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Certificate</title><style>body{font-family:Inter,Arial;color:#07202a;padding:40px;background:#fff;margin:0} .cert{border:6px solid #06b6d4;padding:36px;border-radius:12px;max-width:900px;margin:0 auto} h1,h2{margin:0 0 8px 0}</style></head><body><div class='cert'><h1 style='text-align:center'>Phishing Awareness Certificate</h1><p style='text-align:center'>This certifies that</p><h2 style='text-align:center'>${escapeHtml(name)}</h2><p style='text-align:center'>has completed the PhishPlay interactive phishing awareness training.</p><div style='display:flex;justify-content:space-between;margin-top:24px'><div>Points: ${state.points}</div><div>Date: ${new Date().toLocaleDateString()}</div></div><p style='text-align:center;margin-top:12px;font-weight:700'>Completed Levels: ${completed}</p><script>window.onload=function(){setTimeout(function(){window.print()},300)}<\/script></div></body></html>`;
+      const w=window.open('','_blank'); if(!w){alert('Pop-up blocked: allow pop-ups to print your certificate.');return;} w.document.open(); w.document.write(html); w.document.close();
     });
 
     function escapeHtml(s){ return String(s).replace(/[&<>\"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
-
-    // --- Minimal runtime tests (dev console) ---
-    (function(){
-      try{
-        const t = buildCertificateHTML('Tester', 123, '2025-09-19').trim();
-        console.assert(t.includes('<\\/script>'), 'Certificate HTML must escape </script>');
-        console.assert(/^<!doctype html>/i.test(t), 'Certificate HTML should start with a doctype');
-        console.assert(/<\/html>$/.test(t), 'Certificate HTML should end with </html>');
-      }catch(e){ console.warn('Self-test failed:', e); }
-    })();
 
     // Init
     loadState();
