@@ -218,7 +218,19 @@ function renderLevel(index) {
   levelTitle.textContent = level.title;
   levelBadge.textContent = level.badge;
   levelDescription.textContent = level.description;
-  scenarioEl.innerHTML = level.scenario;
+  if (level.scenario) {
+    scenarioEl.innerHTML = level.scenario.trim();
+    scenarioEl.classList.remove('scenario--empty');
+  } else {
+    scenarioEl.innerHTML = `
+      <p class="scenario__empty-message">
+        No example content is available for this level yet. Check back soon for a
+        fresh phishing scenario.
+      </p>
+    `;
+    scenarioEl.classList.add('scenario--empty');
+  }
+
   feedbackEl.textContent = '';
   feedbackEl.className = 'feedback';
   selectedOptionId = null;
@@ -326,7 +338,6 @@ function goToNextLevel() {
     hintButton.disabled = false;
     renderLevel(currentLevelIndex);
     experienceSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    window.scrollTo({ top: document.querySelector('.container').offsetTop - 40, behavior: 'smooth' });
   } else {
     showCertificate();
   }
@@ -460,7 +471,6 @@ hintButton.addEventListener('click', showHint);
 
 startButton.addEventListener('click', () => {
   experienceSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  document.querySelector('.container').scrollIntoView({ behavior: 'smooth' });
 });
 
 participantName.addEventListener('input', () => {
