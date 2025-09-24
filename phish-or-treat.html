@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Phish or Treat — 3 Minute Halloween Challenge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/JustForPhishingLogo.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="halloween-body">
+  <div class="page phish-treat-page">
+    <header class="spooky-hero">
+      <div class="spooky-hero__glow"></div>
+      <div class="spooky-hero__inner container">
+        <a class="back-link" href="index.html">&#8592; Back to Cyber Hygiene Quest</a>
+        <div class="spooky-badge">Phish or Treat</div>
+        <h1>Race the clock in this Halloween phishing hunt</h1>
+        <p>In exactly three minutes, investigate each eerie message and decide if it&rsquo;s a malicious phish or a legit treat. Trust the clues, move quickly, and don&rsquo;t let the monsters snatch your data!</p>
+        <div class="challenge-controls">
+          <div id="challenge-countdown" class="countdown countdown--pumpkin">03:00</div>
+          <button id="start-challenge" class="btn btn--pumpkin" type="button">Start 3 Minute Challenge</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container challenge-main">
+      <section class="card card--moonlight">
+        <h2>How the 180-second sprint works</h2>
+        <ul class="spooky-list">
+          <li><strong>Investigate quickly:</strong> Flip through each message card and mark it as a phish or treat.</li>
+          <li><strong>Spot the clues:</strong> Hover over links, domains, attachments, and tone changes for telltale red flags.</li>
+          <li><strong>Beat the buzzer:</strong> Submit before the three-minute timer hits zero or the game will lock in your answers.</li>
+        </ul>
+        <p class="helper-text">Need a hint? Safe messages include verifiable senders and no sudden requests for credentials. When in doubt, report the phish!</p>
+      </section>
+
+      <section class="card challenge-panel">
+        <form id="challenge-form" novalidate>
+          <div id="scenario-list" class="scenario-grid">
+            <div class="scenario-placeholder">
+              <p>Press <strong>Start 3 Minute Challenge</strong> to reveal six suspicious (and not-so-suspicious) Halloween messages.</p>
+            </div>
+          </div>
+          <div class="challenge-actions">
+            <div id="progress-pill" class="progress-pill">0/6 marked</div>
+            <button id="submit-challenge" class="btn btn--secondary" type="submit" disabled>Submit responses</button>
+          </div>
+        </form>
+        <div id="challenge-feedback" class="feedback" aria-live="polite">Your mission awaits...</div>
+        <div id="challenge-summary" class="summary-banner hidden" aria-live="polite"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="phish-or-treat.js"></script>
+</body>
+</html>
