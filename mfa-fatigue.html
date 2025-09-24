@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MFA-Fatigue Drill — Rapid Push Response Training</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/JustForPhishingLogo.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="drill-header container">
+      <a href="index.html" class="back-link">&#8592; Back to Cyber Hygiene Quest</a>
+      <h1>MFA-Fatigue Drill</h1>
+      <p>Simulate rapid-fire MFA push prompts and practice the safest response when attackers try to wear you down. Deny, report, and reset when needed &mdash; and do it before the clock runs out.</p>
+      <div class="drill-controls">
+        <div id="countdown" class="countdown">00:45</div>
+        <button id="start-drill" class="btn" type="button">Start Drill</button>
+      </div>
+    </header>
+
+    <main class="container drill-main">
+      <section>
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="phone-status">
+              <span id="status-time">10:41 PM</span>
+              <span>LTE &bull; &#9679;&#9679;&#9679;&#9679;</span>
+            </div>
+            <div id="notification-stack" class="notification-stack">
+              <div class="notification-placeholder">Press <strong>Start Drill</strong> to simulate rapid MFA push prompts.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card response-panel">
+        <div class="score-pill"><span id="score">0</span>/<span id="total">0</span></div>
+        <h2>Choose your response strategy</h2>
+        <p class="helper-text">Every push requires a decision. Stay calm, read the context, and pick the safest option before the attacker floods you with the next prompt.</p>
+        <div id="action-buttons" class="actions-grid"></div>
+        <div id="feedback" class="feedback" aria-live="polite">Awaiting your move...</div>
+        <div id="summary" class="summary-banner hidden" aria-live="polite"></div>
+        <div id="event-log" class="event-log">
+          <div class="event-log-entry">Responses will appear here once the drill begins.</div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="mfa-fatigue.js"></script>
+</body>
+</html>
