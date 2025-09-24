@@ -93,17 +93,6 @@ const PROMPTS = [
 totalEl.textContent = PROMPTS.length;
 
 const actionLookup = new Map();
-let countdownTimerId = null;
-let promptTimeoutId = null;
-let promptTickerId = null;
-let timeLeft = DRILL_DURATION;
-let drillActive = false;
-let activePrompt = null;
-let awaitingResponse = false;
-let score = 0;
-
-startBtn?.addEventListener('click', startDrill);
-
 ACTIONS.forEach((action) => {
   const btn = document.createElement('button');
   btn.className = 'action-button';
