@@ -110,17 +110,6 @@ defaultState();
 updateStatusClock();
 setInterval(updateStatusClock, 60000);
 
-let countdownTimerId = null;
-let promptTimeoutId = null;
-let promptTickerId = null;
-let timeLeft = DRILL_DURATION;
-let drillActive = false;
-let activePrompt = null;
-let awaitingResponse = false;
-let score = 0;
-
-startBtn?.addEventListener('click', startDrill);
-
 function startDrill() {
   if (drillActive) {
     return;
