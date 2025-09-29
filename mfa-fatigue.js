@@ -1,23 +1,25 @@
-// /assets/js/mfa-fatigue.js
+// mfa-fatigue.js
 (() => {
   'use strict';
 
-  // --- State (no globals) ---
   const state = {
     active: false,
     round: 0,
     totalRounds: 3,
-    timerId: null,
     remaining: 45,
+    timerId: null,
   };
 
-  // --- Elements (IDs referenced below must exist in the HTML) ---
-  const el = {
-    startBtn: null,
-    timer: null,
-    choices: null,
-    log: null,
-  };
+  const el = {};
+
+  const ACTIONS = [
+    { key: 'approve', label: 'Approve Request' },
+    { key: 'deny', label: 'Deny Only' },
+    { key: 'deny-reset', label: 'Deny + Reset Password' },
+    { key: 'deny-report', label: 'Deny + Report to Security' },
+  ];
+
+  function $(id) { return document.getElementById(id); }
 
   function setActive(on) {
     state.active = on;
@@ -25,9 +27,8 @@
   }
 
   function updateTimer() {
-    if (!el.timer) return;
     const s = Math.max(0, state.remaining);
-    el.timer.textContent = `00:${String(s).padStart(2, '0')}`;
+    el.countdown.textContent = `00:${String(s).padStart(2, '0')}`;
   }
 
   function stopTimer() {
@@ -48,11 +49,32 @@
     }, 1000);
   }
 
-  function log(msg) {
-    if (!el.log) return;
-    const p = document.createElement('p');
-    p.textContent = msg;
-    el.log.appendChild(p);
+  function logEvent(msg) {
+    const d = document.createElement('div');
+    d.className = 'event-log-entry';
+    d.textContent = msg;
+    el.eventLog.appendChild(d);
+    el.eventLog.scrollTop = el.eventLog.scrollHeight;
+  }
+
+  function setFeedback(msg) {
+    el.feedback.textContent = msg;
+  }
+
+  function setScore(current, total) {
+    el.score.textContent = current;
+    el.total.textContent = total;
+  }
+
+  function clearNotifications() {
+    el.notificationStack.innerHTML = '';
+  }
+
+  function pushNotification(text) {
+    const n = document.createElement('div');
+    n.className = 'notification';
+    n.textContent = text;
+    el.notificationStack.prepend(n);
   }
 
   function nextPrompt() {
@@ -61,54 +83,83 @@
       endDrill('✅ Drill complete.');
       return;
     }
-    // You can update the UI here to show the next fake push, etc.
-    log(`Prompt ${state.round} incoming…`);
+    pushNotification(`Login request #${state.round} • Unknown device near Dallas, TX`);
+    setFeedback('Pick the safest response.');
   }
 
   function startDrill() {
     if (state.active) return;
     setActive(true);
     state.round = 0;
-    el.log && (el.log.innerHTML = '');
-    log('▶️ Drill started. Make the safest choices quickly.');
+    el.eventLog.innerHTML = '';
+    el.summary.classList.add('hidden');
+    clearNotifications();
+    setScore(0, 0);
+    logEvent('▶️ Drill started.');
+    setFeedback('You have 45 seconds. Make safe choices quickly.');
     startCountdown(45);
     nextPrompt();
   }
 
-  function endDrill(reason = '⏹ Drill ended.') {
+  function endDrill(reason) {
     stopTimer();
     setActive(false);
-    log(reason);
+    setFeedback(reason);
+    el.summary.textContent = reason;
+    el.summary.classList.remove('hidden');
   }
 
-  function handleChoiceClick(e) {
+  function handleActionClick(e) {
     const btn = e.target.closest('[data-action]');
     if (!btn) return;
 
     if (!state.active) {
-      // Don’t throw — guide the user instead
-      log('ℹ️ Press “Start Drill” first.');
+      logEvent('ℹ️ Press “Start Drill” first.');
+      setFeedback('Press “Start Drill” to begin.');
       return;
     }
 
-    const action = btn.dataset.action; // e.g., approve / deny / deny-reset / deny-report
-    log(`You chose: ${btn.textContent.trim()}`);
+    const action = btn.dataset.action;
+    // naive scoring: safe choices are any "deny*"
+    const safe = action === 'deny' || action === 'deny-reset' || action === 'deny-report';
+    const cur = Number(el.score.textContent);
+    const tot = Number(el.total.textContent);
 
-    // TODO: score or branch by action here if desired
+    setScore(cur + (safe ? 1 : 0), Math.max(tot + 1, state.round)); // keep it simple
+    logEvent(`You chose: ${btn.textContent.trim()}`);
+    if (action === 'approve') {
+      pushNotification('⚠️ Account at risk! Approving unexpected prompts is unsafe.');
+    }
     nextPrompt();
   }
 
-  // Wire up after DOM is ready
+  function renderActions() {
+    el.actions.innerHTML = '';
+    ACTIONS.forEach(a => {
+      const b = document.createElement('button');
+      b.className = 'action-btn';
+      b.type = 'button';
+      b.dataset.action = a.key;
+      b.textContent = a.label;
+      el.actions.appendChild(b);
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
-    el.startBtn = document.getElementById('startDrillBtn');
-    el.timer    = document.getElementById('countdown');
-    el.choices  = document.getElementById('choices');
-    el.log      = document.getElementById('responseLog');
+    el.start     = $('start-drill');
+    el.countdown = $('countdown');
+    el.actions   = $('action-buttons');
+    el.feedback  = $('feedback');
+    el.eventLog  = $('event-log');
+    el.summary   = $('summary');
+    el.notificationStack = $('notification-stack');
+    el.score     = $('score');
+    el.total     = $('total');
 
-    el.startBtn && el.startBtn.addEventListener('click', startDrill);
-    el.choices  && el.choices.addEventListener('click', handleChoiceClick);
-
-    // Initial timer text
+    renderActions();
     updateTimer();
+
+    el.start.addEventListener('click', startDrill);
+    el.actions.addEventListener('click', handleActionClick);
   });
 })();
