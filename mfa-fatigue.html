@@ -4,11 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MFA-Fatigue Drill — Rapid Push Response Training</title>
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+
   <link rel="icon" href="assets/JustForPhishingLogo.png" />
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- IMPORTANT: load JS after DOM with defer -->
+  <script src="mfa-fatigue.js" defer></script>
 </head>
 <body>
   <div class="page">
@@ -32,26 +38,36 @@
               <span>LTE &bull; &#9679;&#9679;&#9679;&#9679;</span>
             </div>
             <div id="notification-stack" class="notification-stack">
-              <div class="notification-placeholder">Press <strong>Start Drill</strong> to simulate rapid MFA push prompts.</div>
+              <div class="notification-placeholder">
+                Press <strong>Start Drill</strong> to simulate rapid MFA push prompts.
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       <section class="card response-panel">
-        <div class="score-pill"><span id="score">0</span>/<span id="total">0</span></div>
+        <div class="score-pill">
+          <span id="score">0</span>/<span id="total">0</span>
+        </div>
         <h2>Choose your response strategy</h2>
-        <p class="helper-text">Every push requires a decision. Stay calm, read the context, and pick the safest option before the attacker floods you with the next prompt.</p>
+        <p class="helper-text">
+          Every push requires a decision. Stay calm, read the context, and pick the safest option before the attacker floods you with the next prompt.
+        </p>
+
+        <!-- JS will render the four action buttons into this container -->
         <div id="action-buttons" class="actions-grid"></div>
+
+        <!-- Live feedback + summary -->
         <div id="feedback" class="feedback" aria-live="polite">Awaiting your move...</div>
         <div id="summary" class="summary-banner hidden" aria-live="polite"></div>
-        <div id="event-log" class="event-log">
+
+        <!-- Event log -->
+        <div id="event-log" class="event-log" aria-live="polite">
           <div class="event-log-entry">Responses will appear here once the drill begins.</div>
         </div>
       </section>
     </main>
   </div>
-
-  <script src="mfa-fatigue.js"></script>
 </body>
 </html>
