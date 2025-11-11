@@ -278,3 +278,27 @@ p{color:var(--muted);margin:0 0 18px}
 .nav-btn--primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#04101e;border:none}
 .nav-btn--primary:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(34,211,238,.3)}
 @media(max-width:640px){.choice-buttons{flex-direction:column}.choice-btn{min-width:auto;width:100%}.scenario-nav{flex-direction:column}.nav-btn{width:100%}}
+
+/* Email Lab Specific Styles */
+.email-single .scenario-email-box{display:none}
+.email-full-view{background:rgba(4,11,26,.6);border-radius:12px;padding:24px;margin-bottom:24px}
+.email-header-section{background:rgba(16,23,43,.5);border-radius:8px;padding:20px;margin-bottom:20px;border:1px solid rgba(53,79,128,.25)}
+.email-subject{color:#fbbf24;font-weight:600}
+.email-links code{background:rgba(34,211,238,.15);padding:4px 10px;border-radius:6px;font-family:'Roboto Mono',monospace;font-size:.9rem;color:#7dd3fc;display:inline-block;margin:4px 0}
+.email-attachment{color:#f87171;font-weight:600;font-family:'Roboto Mono',monospace}
+.email-body-section{background:rgba(10,16,31,.4);border-radius:8px;padding:20px}
+.email-body-label{font-size:.85rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+.email-body-content{font-size:1.05rem;line-height:1.8;color:#e6eefb;white-space:pre-wrap}
+
+/* SMS Smishing Specific Styles */
+.sms-single .scenario-content{display:none}
+.sms-phone-view{background:rgba(4,11,26,.6);border-radius:12px;padding:0;margin-bottom:24px;overflow:hidden}
+.phone-header{background:rgba(16,23,43,.8);padding:12px 20px;border-bottom:1px solid rgba(53,79,128,.25)}
+.phone-status-bar{display:flex;justify-content:space-between;color:var(--muted);font-size:.8rem;letter-spacing:.05em}
+.sms-conversation{background:rgba(10,16,31,.4);padding:24px;min-height:200px}
+.sms-bubble-container{display:flex;flex-direction:column;gap:8px}
+.sms-sender-info{display:flex;flex-direction:column;gap:2px;margin-bottom:8px}
+.sender-name{font-weight:700;color:#f3e8ff;font-size:.95rem}
+.sender-number{color:var(--muted);font-size:.85rem}
+.sms-bubble{background:rgba(147,51,234,.15);border:1px solid rgba(147,51,234,.3);border-radius:18px;border-bottom-left-radius:4px;padding:14px 16px;color:#e9d5ff;line-height:1.6;font-size:1rem;max-width:85%}
+.sms-timestamp{color:var(--muted);font-size:.8rem;margin-top:4px;padding-left:4px}

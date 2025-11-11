@@ -56,30 +56,23 @@
 
         <!-- Analysis Panel -->
         <div class="card card--analysis">
-          <h2>📊 Message Analysis</h2>
-          <div class="helper-text" style="margin-bottom: 20px;">
-            <strong>Smishing Red Flags:</strong><br>
-            • Unknown sender numbers • Urgent threats • Shortened URLs • Grammar errors • Requests for personal info • Prize/package notifications from services you don't use
+          <div id="sms-container" class="scenario-container">
+            <div class="scenario-placeholder">
+              Click "Start Simulation" to begin...
+            </div>
           </div>
 
-          <form id="sms-form">
-            <div id="sms-verdict-area"></div>
+          <div class="challenge-actions">
+            <div id="sms-progress" class="progress-pill">0/6 reviewed</div>
+          </div>
 
-            <div class="challenge-actions">
-              <button id="submit-sms" type="submit" class="btn btn--sms" disabled>
-                Submit Analysis
-              </button>
-            </div>
-
-            <div id="sms-feedback" class="helper-text" aria-live="polite"></div>
-          </form>
-
+          <div id="sms-feedback" class="helper-text" aria-live="polite"></div>
           <div id="sms-summary" class="summary-banner hidden" aria-live="polite"></div>
         </div>
       </div>
     </main>
   </div>
 
-  <script src="sms-smishing.js"></script>
+  <script src="sms-smishing-new.js"></script>
 </body>
 </html>
