@@ -233,3 +233,48 @@ p{color:var(--muted);margin:0 0 18px}
 .help-section a:hover{text-decoration:underline}
 .help-section ol{padding-left:24px}
 .help-section li{margin:8px 0}
+
+/* One-at-a-time Scenario Layout */
+.scenario-container{min-height:500px}
+.scenario-single{background:rgba(16,23,43,.95);border:1px solid var(--border);border-radius:20px;padding:32px;position:relative}
+.scenario-progress-bar{height:4px;background:rgba(34,211,238,.1);border-radius:999px;margin-bottom:24px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width 0.5s ease;border-radius:999px}
+.scenario-number{font-size:.9rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}
+.scenario-title{font-size:2rem;font-weight:700;color:#f8fbff;margin-bottom:24px;line-height:1.2}
+.scenario-email-box{background:rgba(4,11,26,.8);border:1px solid rgba(53,79,128,.3);border-radius:12px;padding:20px;margin-bottom:24px}
+.email-row{display:flex;gap:12px;margin-bottom:12px;font-size:.95rem}
+.email-row:last-child{margin-bottom:0}
+.email-label{color:var(--muted);font-weight:600;min-width:80px}
+.email-value{color:#e6eefb;flex:1;word-break:break-word}
+.scenario-content{background:rgba(34,211,238,.05);border-left:3px solid var(--accent-2);padding:20px;border-radius:8px;margin-bottom:32px}
+.scenario-content p{font-size:1.05rem;line-height:1.7;color:#d3ddf7;margin:0}
+.scenario-question{text-align:center;margin-bottom:32px}
+.question-text{font-size:1.2rem;font-weight:600;color:#f8fbff;margin-bottom:24px}
+.choice-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.choice-btn{padding:16px 32px;font-size:1.1rem;font-weight:600;border-radius:12px;border:2px solid;cursor:pointer;transition:all .3s ease;background:transparent;min-width:200px}
+.choice-btn--danger{border-color:rgba(248,113,113,.5);color:#f87171}
+.choice-btn--danger:hover{background:rgba(248,113,113,.15);border-color:#f87171;transform:translateY(-2px)}
+.choice-btn--safe{border-color:rgba(52,211,153,.5);color:#34d399}
+.choice-btn--safe:hover{background:rgba(52,211,153,.15);border-color:#34d399;transform:translateY(-2px)}
+.scenario-result{background:rgba(34,211,238,.08);border-radius:12px;padding:24px;margin-bottom:32px}
+.result-correct{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.3)}
+.result-incorrect{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3)}
+.result-header{font-size:1.5rem;font-weight:700;margin-bottom:16px}
+.result-correct .result-header{color:#34d399}
+.result-incorrect .result-header{color:#f87171}
+.result-verdict{font-size:1.1rem;margin-bottom:20px;color:#f8fbff}
+.result-action{background:rgba(34,211,238,.1);padding:16px;border-radius:8px;margin-bottom:20px;font-size:1rem;line-height:1.6}
+.result-action strong{color:var(--accent-2)}
+.result-insights{margin-top:20px}
+.result-insights strong{display:block;margin-bottom:12px;font-size:1.05rem;color:#f8fbff}
+.result-insights ul{list-style:none;padding:0;margin:0}
+.result-insights li{padding:10px 0;border-bottom:1px solid rgba(148,119,255,.15);font-size:.95rem;line-height:1.6;color:#d3ddf7}
+.result-insights li:last-child{border-bottom:none}
+.result-insights li::before{content:"•";color:var(--accent-2);font-weight:bold;display:inline-block;width:1em;margin-left:-1em;margin-right:8px}
+.scenario-nav{display:flex;justify-content:space-between;gap:16px;margin-top:32px}
+.nav-btn{padding:14px 28px;font-size:1rem;font-weight:600;border-radius:10px;border:none;cursor:pointer;transition:all .3s ease;background:rgba(34,211,238,.15);color:var(--accent-2);border:1px solid rgba(34,211,238,.3)}
+.nav-btn:hover:not(:disabled){background:rgba(34,211,238,.25);transform:translateY(-2px)}
+.nav-btn:disabled{opacity:.4;cursor:not-allowed}
+.nav-btn--primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#04101e;border:none}
+.nav-btn--primary:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(34,211,238,.3)}
+@media(max-width:640px){.choice-buttons{flex-direction:column}.choice-btn{min-width:auto;width:100%}.scenario-nav{flex-direction:column}.nav-btn{width:100%}}
