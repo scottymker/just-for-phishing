@@ -1,100 +1,74 @@
-<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Gradient Definitions -->
+<svg width="240" height="280" viewBox="0 0 240 280" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="hookGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#22d3ee;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#9477ff;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2563eb;stop-opacity:1" />
     </linearGradient>
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-      <feMerge>
-        <feMergeNode in="coloredBlur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
   </defs>
 
-  <!-- Shield Background -->
-  <path d="M100 20 L160 45 L160 90 Q160 140 100 170 Q40 140 40 90 L40 45 Z"
-        fill="url(#shieldGradient)"
-        opacity="0.2"
-        stroke="url(#shieldGradient)"
-        stroke-width="2"/>
+  <!-- Shield Outline - Blue Section (Right) -->
+  <path d="M120 20 C150 20, 180 30, 200 50 L200 110 C200 150, 180 180, 120 210 L120 20 Z"
+        fill="url(#blueGradient)"/>
 
-  <!-- Fish Hook - Main Design Element -->
-  <g filter="url(#glow)">
+  <!-- Shield Outline - Black Section (Left) -->
+  <path d="M120 20 C90 20, 60 30, 40 50 L40 110 C40 150, 60 180, 120 210 L120 20 Z"
+        fill="#1a1a1a"/>
+
+  <!-- White Shield Background -->
+  <path d="M120 35 C95 35, 70 42, 55 60 L55 105 C55 140, 72 165, 120 190 C168 165, 185 140, 185 105 L185 60 C170 42, 145 35, 120 35 Z"
+        fill="white"/>
+
+  <!-- Fish Hook Icon (replacing keyhole) -->
+  <g transform="translate(120, 90)">
     <!-- Hook curve -->
-    <path d="M100 50 L100 110 Q100 135 115 135 Q125 135 125 125 Q125 120 120 120"
-          stroke="url(#hookGradient)"
-          stroke-width="6"
+    <path d="M0 -25 L0 15 Q0 30 10 30 Q17 30 17 23 Q17 19 13 19"
+          stroke="#1a1a1a"
+          stroke-width="8"
           stroke-linecap="round"
           fill="none"/>
 
     <!-- Hook point -->
-    <path d="M120 120 L130 130"
-          stroke="url(#hookGradient)"
-          stroke-width="6"
+    <path d="M13 19 L20 26"
+          stroke="#1a1a1a"
+          stroke-width="7"
           stroke-linecap="round"/>
 
     <!-- Hook barb -->
-    <path d="M128 128 L125 135"
-          stroke="url(#hookGradient)"
-          stroke-width="4"
+    <path d="M19 25 L17 30"
+          stroke="#1a1a1a"
+          stroke-width="5"
           stroke-linecap="round"/>
 
     <!-- Eye of hook -->
-    <circle cx="100" cy="50" r="8"
-            stroke="url(#hookGradient)"
-            stroke-width="4"
+    <circle cx="0" cy="-25" r="6"
+            stroke="#1a1a1a"
+            stroke-width="5"
             fill="none"/>
   </g>
 
-  <!-- Email envelope icon (subtle background) -->
-  <g opacity="0.15">
-    <rect x="55" y="75" width="50" height="35"
-          rx="4"
-          stroke="#22d3ee"
-          stroke-width="2"
-          fill="none"/>
-    <path d="M55 80 L80 95 L105 80"
-          stroke="#22d3ee"
-          stroke-width="2"
-          fill="none"
-          stroke-linejoin="round"/>
-  </g>
+  <!-- Alert Badge -->
+  <circle cx="170" cy="60" r="18" fill="#ef4444"/>
+  <text x="170" y="68"
+        font-family="Arial, sans-serif"
+        font-size="24"
+        font-weight="bold"
+        fill="white"
+        text-anchor="middle">!</text>
 
-  <!-- Alert/Warning indicator -->
-  <g transform="translate(130, 60)">
-    <circle cx="0" cy="0" r="16" fill="#ef4444" opacity="0.9"/>
-    <text x="0" y="6"
-          font-family="Arial, sans-serif"
-          font-size="20"
-          font-weight="bold"
-          fill="white"
-          text-anchor="middle">!</text>
-  </g>
-
-  <!-- Security checkmark -->
-  <g transform="translate(65, 135)" opacity="0.3">
-    <circle cx="0" cy="0" r="12" fill="#10b981"/>
-    <path d="M-4 0 L-1 4 L5 -4"
-          stroke="white"
-          stroke-width="2.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          fill="none"/>
-  </g>
-
-  <!-- Text -->
-  <text x="100" y="190"
-        font-family="Inter, sans-serif"
-        font-size="14"
-        font-weight="700"
-        fill="url(#hookGradient)"
+  <!-- Text - JUST FOR PHISHING -->
+  <text x="120" y="245"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="32"
+        font-weight="900"
+        fill="#1a1a1a"
         text-anchor="middle"
-        letter-spacing="1">JUST FOR PHISHING</text>
+        letter-spacing="2">JUST FOR</text>
+
+  <text x="120" y="270"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="28"
+        font-weight="700"
+        fill="#3b82f6"
+        text-anchor="middle"
+        letter-spacing="1.5">PHISHING</text>
 </svg>
