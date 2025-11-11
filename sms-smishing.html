@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SMS Smishing Simulator — Just for Phishing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/JustForPhishingLogo.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="smishing-body">
+  <div class="page">
+    <header class="smishing-hero">
+      <div class="smishing-hero__glow"></div>
+      <div class="smishing-hero__inner container">
+        <a href="index.html" class="back-link">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 8H1m0 0l7-7M1 8l7 7"/></svg>
+          Back to Hub
+        </a>
+        <div class="smishing-badge">📱 SMS Security</div>
+        <h1>SMS Smishing Simulator</h1>
+        <p>Practice identifying text message phishing attacks. "Smishing" (SMS + Phishing) uses text messages to trick victims into revealing info or clicking malicious links.</p>
+        <div class="challenge-controls">
+          <div id="sms-countdown" class="countdown countdown--sms">05:00</div>
+          <button id="start-sms" class="btn btn--sms">Start Simulation</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="challenge-main">
+        <!-- Phone Simulation -->
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="phone-status">
+              <span>📶 Verizon LTE</span>
+              <span id="phone-time">10:42 AM</span>
+              <span>🔋 78%</span>
+            </div>
+
+            <div class="messages-header">
+              <h2>Messages</h2>
+              <div id="sms-progress" class="progress-pill">0/6 reviewed</div>
+            </div>
+
+            <div id="sms-list" class="sms-conversation-list">
+              <div class="scenario-placeholder">
+                Click "Start Simulation" to begin...
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Analysis Panel -->
+        <div class="card card--analysis">
+          <h2>📊 Message Analysis</h2>
+          <div class="helper-text" style="margin-bottom: 20px;">
+            <strong>Smishing Red Flags:</strong><br>
+            • Unknown sender numbers • Urgent threats • Shortened URLs • Grammar errors • Requests for personal info • Prize/package notifications from services you don't use
+          </div>
+
+          <form id="sms-form">
+            <div id="sms-verdict-area"></div>
+
+            <div class="challenge-actions">
+              <button id="submit-sms" type="submit" class="btn btn--sms" disabled>
+                Submit Analysis
+              </button>
+            </div>
+
+            <div id="sms-feedback" class="helper-text" aria-live="polite"></div>
+          </form>
+
+          <div id="sms-summary" class="summary-banner hidden" aria-live="polite"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="sms-smishing.js"></script>
+</body>
+</html>

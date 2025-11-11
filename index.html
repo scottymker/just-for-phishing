@@ -16,17 +16,81 @@
       <div class="hero__overlay"></div>
       <div class="hero__inner container">
         <img class="hero__logo" src="assets/JustForPhishingLogo.png" alt="Just for Phishing logo" />
-        <h1>Cyber Hygiene Quest</h1>
-        <p>Phishing training journey and demo.</p>
-        <div class="hero__actions">
-          <button id="start-level-1" class="btn">Start Level 1</button>
-          <a class="btn btn--pumpkin" href="phish-or-treat.html">Phish or Treat Challenge</a>
-          <a class="btn btn--secondary" href="mfa-fatigue.html">MFA-Fatigue Drill</a>
-        </div>
+        <h1>Just For Phishing</h1>
+        <p>Interactive phishing awareness training — Built with 💙 for our veterans on Veterans Day 2025</p>
       </div>
     </header>
 
     <main class="container">
+      <div class="training-modules">
+        <div class="card">
+          <h2>🎯 Training Modules</h2>
+          <p class="helper-text">Choose a training module to begin. Progress is automatically saved in your browser.</p>
+        </div>
+
+        <div class="modules-grid">
+          <!-- Quick Check -->
+          <div class="module-card">
+            <div class="module-badge">Beginner</div>
+            <h3>🧪 Quick Check</h3>
+            <p>5-minute fundamentals quiz covering phishing basics, MFA, and safe practices.</p>
+            <div class="module-meta">5 min • 5 questions</div>
+            <button id="start-level-1" class="btn" style="width: 100%; margin-top: 12px;">Start Quiz</button>
+          </div>
+
+          <!-- Veteran Scenarios -->
+          <div class="module-card module-card--featured">
+            <div class="module-badge module-badge--new">🎖️ New</div>
+            <h3>Veteran-Targeted Scenarios</h3>
+            <p>Learn to recognize phishing attacks targeting service members, veterans, and their families.</p>
+            <div class="module-meta">10 min • 8 scenarios</div>
+            <a href="veteran-scenarios.html" class="btn btn--veteran" style="width: 100%; margin-top: 12px;">Start Training</a>
+          </div>
+
+          <!-- Email Lab -->
+          <div class="module-card">
+            <div class="module-badge">Advanced</div>
+            <h3>📧 Email Phishing Lab</h3>
+            <p>Analyze full emails including headers, links, and attachments to identify phishing indicators.</p>
+            <div class="module-meta">15 min • 6 emails</div>
+            <a href="email-lab.html" class="btn" style="width: 100%; margin-top: 12px;">Start Lab</a>
+          </div>
+
+          <!-- SMS Smishing -->
+          <div class="module-card">
+            <div class="module-badge">Intermediate</div>
+            <h3>📱 SMS Smishing Simulator</h3>
+            <p>Practice identifying text message phishing attacks with realistic SMS scenarios.</p>
+            <div class="module-meta">5 min • 6 messages</div>
+            <a href="sms-smishing.html" class="btn btn--sms" style="width: 100%; margin-top: 12px;">Start Simulator</a>
+          </div>
+
+          <!-- Phish or Treat -->
+          <div class="module-card">
+            <div class="module-badge">Timed Challenge</div>
+            <h3>🎃 Phish or Treat</h3>
+            <p>Halloween-themed 3-minute challenge. Identify phishing attempts among spooky scenarios.</p>
+            <div class="module-meta">3 min • 6 scenarios</div>
+            <a href="phish-or-treat.html" class="btn btn--pumpkin" style="width: 100%; margin-top: 12px;">Start Challenge</a>
+          </div>
+
+          <!-- MFA Fatigue -->
+          <div class="module-card">
+            <div class="module-badge">Rapid Response</div>
+            <h3>🔐 MFA Fatigue Drill</h3>
+            <p>Experience "push bombing" attacks. Practice responding to rapid-fire MFA requests under pressure.</p>
+            <div class="module-meta">45 sec • Real-time</div>
+            <a href="mfa-fatigue.html" class="btn btn--secondary" style="width: 100%; margin-top: 12px;">Start Drill</a>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 32px;">
+          <h2>📚 Resources</h2>
+          <p>Learn more about phishing, report suspicious messages, and access security tools.</p>
+          <a href="resources.html" class="btn" style="margin-top: 12px;">View Resources</a>
+        </div>
+      </div>
+
       <section id="quiz-area" class="card hidden"></section>
     </main>
   </div>
