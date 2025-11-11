@@ -135,7 +135,7 @@
       label: 'Support Our Troops Foundation',
       sender: '"Col. (Ret.) James Mitchell" <director@supportourtroopsfoundation.org>',
       subject: 'Help deploy care packages to troops overseas',
-      preview: 'As a fellow veteran, I'm reaching out personally. Our foundation sends care packages to deployed soldiers. We need $50 donors to sponsor a package for the holidays. 100% goes directly to our troops. Donate via PayPal: paypal.me/supporttroopsUSA or send gift cards to our PO Box.',
+      preview: 'As a fellow veteran, I\'m reaching out personally. Our foundation sends care packages to deployed soldiers. We need $50 donors to sponsor a package for the holidays. 100% goes directly to our troops. Donate via PayPal: paypal.me/supporttroopsUSA or send gift cards to our PO Box.',
       detail: 'Includes photos of "care packages" and testimonials from "grateful soldiers"',
       isPhish: true,
       action: 'Verify charity registration with state attorney general and IRS. Report fake military charities to FTC.',
@@ -304,16 +304,16 @@
 
     if (percentage === 100) {
       grade = '🏆 Perfect!';
-      message = 'Outstanding! You identified all veteran-targeted phishing attempts. Your awareness will help protect yourself and fellow veterans.';
+      message = 'Outstanding! You identified all targeted phishing attempts. Your awareness will help protect yourself and others in similar situations.';
     } else if (percentage >= 75) {
-      grade = '🎖️ Excellent';
-      message = `Strong performance! You correctly identified ${correct}/${total} scenarios. Review the explanations to strengthen your defenses further.';
+      grade = '🎯 Excellent';
+      message = `Strong performance! You correctly identified ${correct}/${total} scenarios. Review the explanations to strengthen your defenses further.`;
     } else if (percentage >= 50) {
       grade = '✅ Good';
       message = `Good effort! You identified ${correct}/${total} correctly. Study the insights for each scenario to improve your phishing detection skills.`;
     } else {
       grade = '📚 Needs Improvement';
-      message = `You identified ${correct}/${total} correctly. Phishing targeting veterans is sophisticated - review each scenario carefully to learn the warning signs.`;
+      message = `You identified ${correct}/${total} correctly. Targeted phishing is sophisticated - review each scenario carefully to learn the warning signs.`;
     }
 
     summaryEl.innerHTML = `
