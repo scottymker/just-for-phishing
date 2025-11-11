@@ -3,98 +3,423 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Just for Phishing — Cyber Hygiene Quest</title>
+  <title>Just For Phishing — Interactive Security Training</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/JustForPhishingLogo.png" />
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --apple-blue: #0071e3;
+      --apple-blue-hover: #0077ed;
+      --text-primary: #1d1d1f;
+      --text-secondary: #6e6e73;
+      --bg-light: #fbfbfd;
+      --bg-card: #ffffff;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-light);
+      color: var(--text-primary);
+      overflow-x: hidden;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 50% 50%, rgba(0, 113, 227, 0.1) 0%, transparent 50%);
+      animation: rotate 20s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 980px;
+    }
+
+    .logo-3d {
+      width: 160px;
+      height: 160px;
+      margin: 0 auto 40px;
+      position: relative;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotateY(0deg); }
+      50% { transform: translateY(-20px) rotateY(10deg); }
+    }
+
+    .logo-3d img {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 20px 40px rgba(0, 113, 227, 0.3));
+    }
+
+    h1 {
+      font-size: clamp(48px, 8vw, 76px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      background: linear-gradient(135deg, #1d1d1f 0%, #0071e3 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .tagline {
+      font-size: clamp(21px, 3vw, 28px);
+      color: var(--text-secondary);
+      margin-bottom: 48px;
+      font-weight: 400;
+      line-height: 1.4;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 80px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 32px;
+      font-size: 17px;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: 980px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: var(--apple-blue);
+      color: white;
+      box-shadow: 0 4px 20px rgba(0, 113, 227, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: var(--apple-blue-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 113, 227, 0.4);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--apple-blue);
+      border: 2px solid var(--apple-blue);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(0, 113, 227, 0.05);
+      transform: translateY(-2px);
+    }
+
+    /* Feature Cards */
+    .features {
+      padding: 100px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 24px;
+      margin-top: 60px;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--apple-blue), #00c7be);
+      transform: scaleX(0);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    .feature-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .feature-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(0, 113, 227, 0.1), rgba(0, 199, 190, 0.1));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin-bottom: 24px;
+    }
+
+    .feature-card h3 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    .feature-card p {
+      font-size: 17px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .feature-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--apple-blue);
+      font-weight: 500;
+      text-decoration: none;
+      font-size: 17px;
+      transition: gap 0.3s ease;
+    }
+
+    .feature-link:hover {
+      gap: 12px;
+    }
+
+    .arrow {
+      transition: transform 0.3s ease;
+    }
+
+    .feature-link:hover .arrow {
+      transform: translateX(4px);
+    }
+
+    /* Stats Section */
+    .stats {
+      background: linear-gradient(135deg, #0071e3 0%, #00c7be 100%);
+      padding: 80px 20px;
+      margin: 60px 0;
+    }
+
+    .stats-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      text-align: center;
+    }
+
+    .stat {
+      color: white;
+    }
+
+    .stat-number {
+      font-size: 56px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 19px;
+      opacity: 0.9;
+    }
+
+    /* Footer */
+    footer {
+      padding: 60px 20px;
+      text-align: center;
+      background: var(--bg-card);
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    footer p {
+      color: var(--text-secondary);
+      font-size: 15px;
+    }
+
+    footer a {
+      color: var(--apple-blue);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="page">
-    <header class="hero" id="top">
-      <div class="hero__overlay"></div>
-      <div class="hero__inner container">
-        <img class="hero__logo" src="assets/JustForPhishingLogo.png" alt="Just for Phishing logo" />
-        <h1>Just For Phishing</h1>
-        <p>Interactive phishing awareness training — Stay safe online with hands-on practice</p>
-      </div>
-    </header>
-
-    <main class="container">
-      <div class="training-modules">
-        <div class="card">
-          <h2>🎯 Training Modules</h2>
-          <p class="helper-text">Choose a training module to begin. Progress is automatically saved in your browser.</p>
-        </div>
-
-        <div class="modules-grid">
-          <!-- Quick Check -->
-          <div class="module-card">
-            <div class="module-badge">Beginner</div>
-            <h3>🧪 Quick Check</h3>
-            <p>5-minute fundamentals quiz covering phishing basics, MFA, and safe practices.</p>
-            <div class="module-meta">5 min • 5 questions</div>
-            <button id="start-level-1" class="btn" style="width: 100%; margin-top: 12px;">Start Quiz</button>
-          </div>
-
-          <!-- Targeted Phishing -->
-          <div class="module-card module-card--featured">
-            <div class="module-badge module-badge--new">🎯 New</div>
-            <h3>Targeted Phishing Scenarios</h3>
-            <p>Learn to recognize sophisticated spear phishing attacks targeting specific industries and groups.</p>
-            <div class="module-meta">10 min • 8 scenarios</div>
-            <a href="veteran-scenarios.html" class="btn btn--veteran" style="width: 100%; margin-top: 12px;">Start Training</a>
-          </div>
-
-          <!-- Email Lab -->
-          <div class="module-card">
-            <div class="module-badge">Advanced</div>
-            <h3>📧 Email Phishing Lab</h3>
-            <p>Analyze full emails including headers, links, and attachments to identify phishing indicators.</p>
-            <div class="module-meta">15 min • 6 emails</div>
-            <a href="email-lab.html" class="btn" style="width: 100%; margin-top: 12px;">Start Lab</a>
-          </div>
-
-          <!-- SMS Smishing -->
-          <div class="module-card">
-            <div class="module-badge">Intermediate</div>
-            <h3>📱 SMS Smishing Simulator</h3>
-            <p>Practice identifying text message phishing attacks with realistic SMS scenarios.</p>
-            <div class="module-meta">5 min • 6 messages</div>
-            <a href="sms-smishing.html" class="btn btn--sms" style="width: 100%; margin-top: 12px;">Start Simulator</a>
-          </div>
-
-          <!-- Phish or Treat -->
-          <div class="module-card">
-            <div class="module-badge">Timed Challenge</div>
-            <h3>🎃 Phish or Treat</h3>
-            <p>Halloween-themed 3-minute challenge. Identify phishing attempts among spooky scenarios.</p>
-            <div class="module-meta">3 min • 6 scenarios</div>
-            <a href="phish-or-treat.html" class="btn btn--pumpkin" style="width: 100%; margin-top: 12px;">Start Challenge</a>
-          </div>
-
-          <!-- MFA Fatigue -->
-          <div class="module-card">
-            <div class="module-badge">Rapid Response</div>
-            <h3>🔐 MFA Fatigue Drill</h3>
-            <p>Experience "push bombing" attacks. Practice responding to rapid-fire MFA requests under pressure.</p>
-            <div class="module-meta">45 sec • Real-time</div>
-            <a href="mfa-fatigue.html" class="btn btn--secondary" style="width: 100%; margin-top: 12px;">Start Drill</a>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top: 32px;">
-          <h2>📚 Resources</h2>
-          <p>Learn more about phishing, report suspicious messages, and access security tools.</p>
-          <a href="resources.html" class="btn" style="margin-top: 12px;">View Resources</a>
-        </div>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="logo-3d">
+        <img src="assets/JustForPhishingLogo.png" alt="Just for Phishing" />
       </div>
 
-      <section id="quiz-area" class="card hidden"></section>
-    </main>
-  </div>
+      <h1>Stay Sharp.<br>Stay Secure.</h1>
 
-  <script src="script.js"></script>
+      <p class="tagline">
+        Interactive phishing awareness training that actually works.<br>
+        Learn to recognize threats before they recognize you.
+      </p>
+
+      <div class="cta-buttons">
+        <a href="lab.html" class="btn btn-primary">Enter the Lab</a>
+        <a href="simulators.html" class="btn btn-secondary">Try Simulators</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🔬</div>
+        <h3>The Lab</h3>
+        <p>Deep-dive training modules with detailed analysis. Learn to dissect emails, text messages, and sophisticated attacks.</p>
+        <a href="lab.html" class="feature-link">
+          Explore the Lab
+          <span class="arrow">→</span>
+        </a>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Simulators</h3>
+        <p>Fast-paced, realistic scenarios that test your skills under pressure. Experience real-world phishing attacks safely.</p>
+        <a href="simulators.html" class="feature-link">
+          Launch Simulators
+          <span class="arrow">→</span>
+        </a>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📚</div>
+        <h3>Resources</h3>
+        <p>Comprehensive guides, reporting tools, and security best practices to protect yourself and others.</p>
+        <a href="resources.html" class="feature-link">
+          View Resources
+          <span class="arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats">
+    <div class="stats-grid">
+      <div class="stat">
+        <div class="stat-number">20+</div>
+        <div class="stat-label">Training Scenarios</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">6</div>
+        <div class="stat-label">Interactive Modules</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Free & Private</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">0</div>
+        <div class="stat-label">Data Tracking</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Built with care for security education.<br>
+      <a href="https://github.com/scottymker/just-for-phishing">View on GitHub</a> •
+      <a href="resources.html">Report Phishing</a>
+    </p>
+  </footer>
+
+  <script>
+    // Add smooth scroll behavior
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Parallax effect on hero
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      const hero = document.querySelector('.hero-content');
+      if (hero && scrolled < window.innerHeight) {
+        hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+        hero.style.opacity = 1 - (scrolled / window.innerHeight);
+      }
+    });
+  </script>
 </body>
 </html>

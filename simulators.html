@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Simulators — Just For Phishing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/JustForPhishingLogo.png" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --apple-blue: #0071e3;
+      --text-primary: #1d1d1f;
+      --text-secondary: #6e6e73;
+      --bg-light: #fbfbfd;
+      --bg-card: #ffffff;
+      --accent-red: #ff375f;
+      --accent-orange: #ff9f0a;
+      --accent-purple: #bf5af2;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-light);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+
+    /* Navigation */
+    nav {
+      position: sticky;
+      top: 0;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      padding: 16px 20px;
+      z-index: 1000;
+    }
+
+    .nav-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--apple-blue);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 17px;
+      transition: gap 0.3s ease;
+    }
+
+    .back-btn:hover {
+      gap: 4px;
+    }
+
+    .nav-title {
+      font-size: 21px;
+      font-weight: 600;
+    }
+
+    .nav-spacer {
+      width: 100px;
+    }
+
+    /* Header */
+    .header {
+      padding: 80px 20px 60px;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(255, 55, 95, 0.05) 0%, rgba(255, 159, 10, 0.05) 100%);
+    }
+
+    .header h1 {
+      font-size: clamp(40px, 6vw, 64px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .header p {
+      font-size: 21px;
+      color: var(--text-secondary);
+      max-width: 680px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    /* Simulators Grid */
+    .simulators-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 20px;
+    }
+
+    .section-title {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 32px;
+    }
+
+    .simulators-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 24px;
+    }
+
+    .sim-card {
+      background: var(--bg-card);
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sim-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent-color), var(--accent-color-light));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .sim-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    .sim-card:hover::before {
+      opacity: 1;
+    }
+
+    .sim-card.red {
+      --accent-color: #ff375f;
+      --accent-color-light: #ff9f0a;
+    }
+
+    .sim-card.orange {
+      --accent-color: #ff9f0a;
+      --accent-color-light: #ffd60a;
+    }
+
+    .sim-card.purple {
+      --accent-color: #bf5af2;
+      --accent-color-light: #ff375f;
+    }
+
+    .sim-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .sim-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--accent-color), var(--accent-color-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .sim-info {
+      flex: 1;
+    }
+
+    .sim-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .badge-timed {
+      background: rgba(255, 55, 95, 0.1);
+      color: #ff375f;
+    }
+
+    .badge-rapid {
+      background: rgba(255, 159, 10, 0.1);
+      color: #ff9f0a;
+    }
+
+    .badge-challenge {
+      background: rgba(191, 90, 242, 0.1);
+      color: #bf5af2;
+    }
+
+    .sim-card h3 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    .sim-description {
+      font-size: 17px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+
+    .sim-meta {
+      display: flex;
+      gap: 16px;
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sim-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 28px;
+      background: var(--accent-color);
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 12px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 17px;
+    }
+
+    .sim-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Info Box */
+    .info-box {
+      background: linear-gradient(135deg, rgba(0, 113, 227, 0.05), rgba(0, 199, 190, 0.05));
+      border-radius: 20px;
+      padding: 32px;
+      margin-top: 60px;
+      border: 1px solid rgba(0, 113, 227, 0.1);
+    }
+
+    .info-box h3 {
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+
+    .info-box p {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .simulators-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-title {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-content">
+      <a href="index.html" class="back-btn">
+        ← Back
+      </a>
+      <div class="nav-title">Simulators</div>
+      <div class="nav-spacer"></div>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <section class="header">
+    <h1>⚡ Simulators</h1>
+    <p>Fast-paced, real-time scenarios that test your skills under pressure. Experience the intensity of actual phishing attacks in a safe, controlled environment.</p>
+  </section>
+
+  <!-- Simulators -->
+  <section class="simulators-container">
+    <h2 class="section-title">Active Simulations</h2>
+
+    <div class="simulators-grid">
+      <!-- MFA Fatigue -->
+      <div class="sim-card red">
+        <div class="sim-header">
+          <div class="sim-icon">🔐</div>
+          <div class="sim-info">
+            <span class="sim-badge badge-rapid">Rapid Fire</span>
+            <h3>MFA Fatigue Drill</h3>
+          </div>
+        </div>
+        <p class="sim-description">
+          Experience "push bombing" attacks where attackers flood you with MFA requests. Learn to respond correctly under intense pressure.
+        </p>
+        <div class="sim-meta">
+          <div class="meta-item">⏱️ 45 sec</div>
+          <div class="meta-item">⚡ Real-time</div>
+        </div>
+        <a href="mfa-fatigue.html" class="sim-btn">Launch Drill</a>
+      </div>
+
+      <!-- Phish or Treat -->
+      <div class="sim-card orange">
+        <div class="sim-header">
+          <div class="sim-icon">🎃</div>
+          <div class="sim-info">
+            <span class="sim-badge badge-timed">Timed Challenge</span>
+            <h3>Phish or Treat</h3>
+          </div>
+        </div>
+        <p class="sim-description">
+          Halloween-themed 3-minute challenge. Quickly identify phishing attempts among spooky scenarios before time runs out.
+        </p>
+        <div class="sim-meta">
+          <div class="meta-item">⏱️ 3 min</div>
+          <div class="meta-item">📊 6 scenarios</div>
+        </div>
+        <a href="phish-or-treat.html" class="sim-btn">Start Challenge</a>
+      </div>
+
+      <!-- Coming Soon -->
+      <div class="sim-card purple">
+        <div class="sim-header">
+          <div class="sim-icon">🎮</div>
+          <div class="sim-info">
+            <span class="sim-badge badge-challenge">Coming Soon</span>
+            <h3>Speed Phishing</h3>
+          </div>
+        </div>
+        <p class="sim-description">
+          Lightning-fast phishing identification game. Score points for correct answers and compete against your previous best times.
+        </p>
+        <div class="sim-meta">
+          <div class="meta-item">⏱️ 2 min</div>
+          <div class="meta-item">🏆 Leaderboard</div>
+        </div>
+        <button class="sim-btn" disabled style="opacity: 0.5; cursor: not-allowed;">Coming Soon</button>
+      </div>
+    </div>
+
+    <!-- Info Box -->
+    <div class="info-box">
+      <h3>💡 About Simulators</h3>
+      <p>
+        Simulators are designed to create realistic pressure and time constraints similar to actual phishing attacks. They help build muscle memory and quick decision-making skills. While the Lab focuses on detailed analysis, Simulators train you to respond rapidly and correctly when under stress.
+      </p>
+    </div>
+  </section>
+</body>
+</html>
