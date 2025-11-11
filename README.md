@@ -2,7 +2,7 @@
 
 **Interactive Phishing Awareness Training Platform**
 
-> *In honor of our veterans who served to protect us, we build tools to protect them in the digital battlefield.*
+> *Hands-on cybersecurity training to recognize and respond to real-world phishing attacks.*
 
 [![Live Demo](https://img.shields.io/badge/Demo-Live-brightgreen)](https://scottymker.github.io/just-for-phishing/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -10,9 +10,9 @@
 
 ---
 
-## 🎖️ Mission Statement
+## 🎯 Mission Statement
 
-Veterans face unique cybersecurity threats—from VA benefits scams to military reunion phishing and fake charity schemes. This platform provides **hands-on, realistic training** to recognize and respond to phishing attacks targeting service members, veterans, and their families.
+Phishing attacks target everyone—from individuals to corporations, veterans to students, healthcare workers to executives. This platform provides **hands-on, realistic training** to recognize and respond to the most common (and sophisticated) phishing attacks.
 
 **100% free. No tracking. No signup required.**
 
@@ -27,7 +27,7 @@ Veterans face unique cybersecurity threats—from VA benefits scams to military 
 | **Quick Check** | 5 min | Fundamentals | 5 questions |
 | **Phish or Treat** | 3 min | Halloween-themed | 6 scenarios |
 | **MFA Fatigue Drill** | 45 sec | Push bombing | Real-time sim |
-| **Veteran Scenarios** 🆕 | 10 min | Military/VA specific | 8 scenarios |
+| **Targeted Phishing** 🆕 | 10 min | Industry-specific attacks | 8 scenarios |
 | **Email Phishing Lab** 🆕 | 15 min | Email analysis | 10 scenarios |
 | **SMS Smishing** 🆕 | 5 min | Text message threats | 6 scenarios |
 
@@ -47,19 +47,22 @@ Veterans face unique cybersecurity threats—from VA benefits scams to military 
 
 ### Primary Audiences
 
-- **Veterans & Active Military** - Defend against targeted scams
-- **VA Employees** - Recognize threats to patient/veteran data
-- **Military Families** - Protect dependents from spouse deployment scams
-- **VSOs & Veteran Organizations** - Train staff and volunteers
-- **Security Awareness Teams** - Deploy in your organization
+- **Corporate Employees** - Defend against business email compromise
+- **Students & Educators** - Learn cybersecurity fundamentals
+- **Healthcare Workers** - Protect patient data (HIPAA compliance)
+- **Government Employees** - Recognize sophisticated attacks
+- **Small Business Owners** - Protect your organization
+- **Security Awareness Teams** - Deploy training programs
+- **Individuals** - Protect personal accounts and finances
 
 ### Use Cases
 
 - 🏢 **Corporate Training** - Fulfill security awareness requirements
 - 🎓 **Educational Institutions** - Teach cybersecurity concepts
 - 🏥 **Healthcare** - HIPAA compliance training
-- 🪖 **Military Units** - Pre-deployment readiness
 - 🏛️ **Government Agencies** - Mandate compliance
+- 💼 **Onboarding Programs** - Train new employees
+- 🏠 **Personal Use** - Protect yourself and family
 
 ---
 
@@ -83,16 +86,16 @@ Veterans face unique cybersecurity threats—from VA benefits scams to military 
 - Practice denying, reporting, and resetting credentials
 - Builds muscle memory for high-pressure situations
 
-### 4️⃣ 🆕 Veteran-Specific Scenarios (NEW!)
-**10 minute targeted training**
-- VA benefits phishing emails
-- Fake military reunion invites
-- TRICARE/medical scams
-- GI Bill fraud attempts
-- Compromised .mil email spoofs
-- Fake military charity schemes
-- Transition assistance scams
-- Service member romance scams
+### 4️⃣ 🆕 Targeted Phishing Scenarios (NEW!)
+**10 minute industry-specific training**
+- Government benefits fraud (VA, Social Security, Medicare)
+- Professional networking scams (fake recruiters, job offers)
+- Industry-specific attacks (healthcare, finance, military)
+- Charity and donation fraud
+- Reunion and event phishing
+- Credential harvesting attacks
+- Spear phishing tactics
+- Trust-based manipulation
 
 ### 5️⃣ 🆕 Email Phishing Lab (NEW!)
 **15 minute interactive analysis**
@@ -298,16 +301,11 @@ MIT License - See [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-**In honor of:**
-- All veterans who served
-- Active duty military members
-- Military families
-- VA healthcare workers
-
 **Built with support from:**
 - The cybersecurity community
 - Open source contributors
 - Security awareness educators
+- Real-world attack data and threat intelligence
 
 ---
 
@@ -354,9 +352,9 @@ If this project helps you or your organization:
 
 <div align="center">
 
-**Built with 💙 for our veterans on Veterans Day 2025**
+**Stay safe online. Train smart. Recognize threats.**
 
-*"Protecting those who protected us"*
+*"Security awareness through hands-on practice"*
 
 [Get Started](https://scottymker.github.io/just-for-phishing/) • [Report Issue](https://github.com/scottymker/just-for-phishing/issues) • [Contribute](CONTRIBUTING.md)
 
