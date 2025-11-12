@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Targeted Phishing Lab — Just for Phishing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/logo.svg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="drill-header">
+      <div class="container">
+        <a href="lab.html" class="back-link">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 8H1m0 0l7-7M1 8l7 7"/></svg>
+          Back to Lab Hub
+        </a>
+        <h1>🎯 Targeted Phishing Lab</h1>
+        <p>Analyze scenarios of spear phishing, where attackers use specific details to build trust and manipulate you. Learn to spot attacks tailored to your industry and role.</p>
+        <div class="drill-controls">
+          <div id="lab-countdown" class="countdown">10:00</div>
+          <button id="start-lab" class="btn">Start Lab</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container container-wide">
+      <div id="app-container">
+        <!-- Content will be dynamically rendered here -->
+      </div>
+    </main>
+  </div>
+
+  <script src="targeted-phishing.js"></script>
+</body>
+</html>
