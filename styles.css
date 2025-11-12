@@ -265,8 +265,8 @@ p{color:var(--muted);margin:0 0 18px}
 
 /* Email Lab Specific Styles - REDESIGNED FOR READABILITY */
 .email-single .scenario-email-box{display:none}
-.email-full-view{background:#ffffff;border-radius:16px;padding:32px;margin-bottom:32px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
-.email-header-section{background:#f5f5f7;border-radius:12px;padding:24px;margin-bottom:24px;border:1px solid rgba(0,0,0,.08)}
+.email-full-view{background:#ffffff;border-radius:16px;padding:24px;margin-bottom:24px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.email-header-section{background:#f5f5f7;border-radius:12px;padding:20px;margin-bottom:20px;border:1px solid rgba(0,0,0,.08)}
 .email-row{display:flex;gap:16px;margin-bottom:12px;align-items:flex-start}
 .email-row:last-child{margin-bottom:0}
 .email-label{color:#6e6e73;font-weight:600;min-width:100px;font-size:15px}
@@ -274,9 +274,9 @@ p{color:var(--muted);margin:0 0 18px}
 .email-subject{color:#1d1d1f;font-weight:600}
 .email-links code{background:#ffffff;padding:6px 12px;border-radius:8px;font-family:'SF Mono','Menlo','Monaco','Courier New',monospace;font-size:14px;color:#0071e3;display:inline-block;margin:4px 0;border:1px solid rgba(0,0,0,.1)}
 .email-attachment{color:#ff3b30;font-weight:600;font-family:'SF Mono','Menlo',monospace}
-.email-body-section{background:#ffffff;border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:28px;margin-top:24px}
+.email-body-section{background:#ffffff;border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:20px;margin-top:20px}
 .email-body-label{font-size:13px;font-weight:600;color:#6e6e73;text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px}
-.email-body-content{font-size:17px;line-height:1.8;color:#1d1d1f;white-space:pre-wrap}
+.email-body-content{font-size:16px;line-height:1.6;color:#1d1d1f;white-space:pre-wrap}
 
 /* SMS Smishing Specific Styles */
 .sms-single .scenario-content{display:none}
@@ -322,7 +322,7 @@ p{color:var(--muted);margin:0 0 18px}
 .btn-large{padding:16px 40px;font-size:19px}
 
 /* Scenario Screen */
-.scenario-screen{max-width:1000px;margin:0 auto;padding:20px}
+.scenario-screen{max-width:1400px;margin:0 auto;padding:20px}
 .scenario-header-bar{margin-bottom:24px}
 .scenario-progress-info{margin-bottom:12px}
 .scenario-number{font-size:15px;font-weight:600;color:#6e6e73;text-transform:uppercase;letter-spacing:.05em}
