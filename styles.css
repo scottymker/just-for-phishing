@@ -5,6 +5,7 @@
 *{box-sizing:border-box} html,body{margin:0;padding:0}
 body{font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,Segoe UI,Arial,sans-serif;color:#1d1d1f;background:#fbfbfd}
 .container{max-width:1100px;margin:0 auto;padding:24px}
+.container-wide{max-width:1500px}
 .hero{position:relative;padding:56px 0;border-bottom:1px solid var(--border)}
 .hero__inner{text-align:center}
 .hero__actions{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;align-items:center;margin-top:8px}
