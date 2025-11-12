@@ -30,45 +30,8 @@
     </header>
 
     <main class="container">
-      <div class="challenge-main">
-        <!-- Phone Simulation -->
-        <div class="phone-frame">
-          <div class="phone-notch"></div>
-          <div class="phone-screen">
-            <div class="phone-status">
-              <span>📶 Verizon LTE</span>
-              <span id="phone-time">10:42 AM</span>
-              <span>🔋 78%</span>
-            </div>
-
-            <div class="messages-header">
-              <h2>Messages</h2>
-              <div id="sms-progress" class="progress-pill">0/6 reviewed</div>
-            </div>
-
-            <div id="sms-list" class="sms-conversation-list">
-              <div class="scenario-placeholder">
-                Click "Start Simulation" to begin...
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Analysis Panel -->
-        <div class="card card--analysis">
-          <div id="sms-container" class="scenario-container">
-            <div class="scenario-placeholder">
-              Click "Start Simulation" to begin...
-            </div>
-          </div>
-
-          <div class="challenge-actions">
-            <div id="sms-progress" class="progress-pill">0/6 reviewed</div>
-          </div>
-
-          <div id="sms-feedback" class="helper-text" aria-live="polite"></div>
-          <div id="sms-summary" class="summary-banner hidden" aria-live="polite"></div>
-        </div>
+      <div id="sms-app-container">
+        <!-- Content will be dynamically rendered here -->
       </div>
     </main>
   </div>

@@ -1,4 +1,4 @@
-// sms-smishing.js - Refactored for one-at-a-time display
+// sms-smishing-new.js - Realistic texting experience with typing animations
 (() => {
   'use strict';
 
@@ -8,14 +8,13 @@
   let started = false;
   let currentIndex = 0;
   let userAnswers = {};
+  let currentScreen = 'waiting'; // 'waiting', 'messaging', 'summary'
+  let messageState = 'typing'; // 'typing', 'message_shown', 'answered', 'result_shown'
 
   const $ = (id) => document.getElementById(id);
   const countdownEl = $('sms-countdown');
   const startBtn = $('start-sms');
-  const smsContainer = $('sms-container');
-  const progressEl = $('sms-progress');
-  const feedbackEl = $('sms-feedback');
-  const summaryEl = $('sms-summary');
+  const appContainer = $('sms-app-container');
 
   const MESSAGES = [
     {
@@ -130,7 +129,6 @@
       }
     } else {
       stopTimer();
-      feedbackEl.textContent = '⏰ Time expired! Continue at your own pace.';
     }
   }
 
@@ -142,130 +140,195 @@
     if (timerInterval) clearInterval(timerInterval);
   }
 
-  function updateProgress() {
-    const answeredCount = Object.keys(userAnswers).length;
-    progressEl.textContent = `${answeredCount}/${MESSAGES.length} reviewed`;
+  function showTypingAnimation() {
+    const typingIndicator = document.querySelector('.typing-indicator');
+    if (typingIndicator) {
+      typingIndicator.style.display = 'flex';
+    }
   }
 
-  function renderMessage(index) {
-    const message = MESSAGES[index];
-    const hasAnswer = userAnswers[message.id] !== undefined;
-    const isReviewing = hasAnswer && userAnswers[message.id].reviewed;
+  function hideTypingAnimation() {
+    const typingIndicator = document.querySelector('.typing-indicator');
+    if (typingIndicator) {
+      typingIndicator.style.display = 'none';
+    }
+  }
+
+  function renderPhone() {
+    const message = MESSAGES[currentIndex];
+    const answeredCount = Object.keys(userAnswers).length;
 
     let content = `
-      <div class="scenario-single sms-single" data-message-id="${message.id}">
-        <div class="scenario-progress-bar">
-          <div class="progress-fill" style="width: ${((index + 1) / MESSAGES.length) * 100}%"></div>
+      <div class="sms-simulator">
+        <div class="sms-progress-bar">
+          <div class="sms-progress-fill" style="width: ${(answeredCount / MESSAGES.length) * 100}%"></div>
         </div>
+        <div class="sms-progress-text">Message ${currentIndex + 1} of ${MESSAGES.length}</div>
 
-        <div class="scenario-number">Message ${index + 1} of ${MESSAGES.length}</div>
+        <div class="phone-container">
+          <div class="phone-frame-large">
+            <div class="phone-notch"></div>
 
-        <h2 class="scenario-title">📱 SMS Analysis</h2>
+            <div class="phone-screen-large">
+              <div class="phone-status-bar">
+                <span>📶 Verizon LTE</span>
+                <span>${message.time}</span>
+                <span>🔋 78%</span>
+              </div>
 
-        <div class="sms-phone-view">
-          <div class="phone-header">
-            <div class="phone-status-bar">
-              <span>📶 Verizon LTE</span>
-              <span>${message.time}</span>
-              <span>🔋 78%</span>
+              <div class="messages-header-bar">
+                <div class="contact-info">
+                  <div class="contact-name">${message.fromLabel}</div>
+                  <div class="contact-number">${message.from}</div>
+                </div>
+              </div>
+
+              <div class="conversation-area" id="conversation-area">
+                <div class="message-bubble-container">
+                  <div class="message-bubble received hidden" id="message-bubble">
+                    ${message.text}
+                  </div>
+                  <div class="message-time hidden" id="message-time">${message.time}</div>
+                </div>
+
+                <div class="typing-indicator" id="typing-indicator">
+                  <div class="typing-dot"></div>
+                  <div class="typing-dot"></div>
+                  <div class="typing-dot"></div>
+                </div>
+              </div>
             </div>
           </div>
-
-          <div class="sms-conversation">
-            <div class="sms-bubble-container">
-              <div class="sms-sender-info">
-                <div class="sender-name">${message.fromLabel}</div>
-                <div class="sender-number">${message.from}</div>
-              </div>
-              <div class="sms-bubble">
-                ${message.text}
-              </div>
-              <div class="sms-timestamp">${message.time}</div>
-            </div>
-          </div>
         </div>
-    `;
 
-    if (!isReviewing) {
-      content += `
-        <div class="scenario-question">
-          <p class="question-text">Is this message legitimate or smishing?</p>
-          <div class="choice-buttons">
-            <button class="choice-btn choice-btn--danger" data-choice="smishing">
+        <div class="answer-section hidden" id="answer-section">
+          <h3>Is this message legitimate or smishing?</h3>
+          <div class="answer-buttons">
+            <button class="answer-btn answer-btn-danger" id="btn-smishing">
               🚨 Smishing Attack
             </button>
-            <button class="choice-btn choice-btn--safe" data-choice="legit">
+            <button class="answer-btn answer-btn-safe" id="btn-legit">
               ✅ Legitimate
             </button>
           </div>
         </div>
-      `;
-    } else {
-      const userChoice = userAnswers[message.id].answer;
-      const correct = (userChoice === 'smishing' && message.isSmishing) || (userChoice === 'legit' && !message.isSmishing);
 
-      content += `
-        <div class="scenario-result ${correct ? 'result-correct' : 'result-incorrect'}">
-          <div class="result-header">
-            ${correct ? '✅ Correct!' : '❌ Incorrect'}
-          </div>
-          <div class="result-verdict">
-            <strong>${message.explanation}</strong>
-          </div>
-
-          <div class="result-insights">
-            <strong>${message.isSmishing ? '🚩 Red Flags:' : '✅ Legitimate Signals:'}</strong>
-            <ul>
-              ${(message.isSmishing ? message.redFlags : message.legitimateSignals).map(insight => `<li>${insight}</li>`).join('')}
-            </ul>
-          </div>
-        </div>
-      `;
-    }
-
-    content += `
-        <div class="scenario-nav">
-          <button class="nav-btn" id="prev-btn" ${index === 0 ? 'disabled' : ''}>
-            ← Previous
-          </button>
-          <button class="nav-btn nav-btn--primary" id="next-btn">
-            ${index === MESSAGES.length - 1 ? 'Finish' : 'Next'} →
-          </button>
+        <div class="result-section hidden" id="result-section">
+          <!-- Result will be inserted here -->
         </div>
       </div>
     `;
 
-    smsContainer.innerHTML = content;
+    appContainer.innerHTML = content;
 
-    // Add event listeners for choice buttons
-    if (!isReviewing) {
-      document.querySelectorAll('.choice-btn').forEach(btn => {
-        btn.addEventListener('click', () => handleChoice(message.id, btn.dataset.choice));
-      });
-    }
+    // Start the message flow
+    setTimeout(() => {
+      showMessage();
+    }, 2000);
+  }
 
-    // Navigation buttons
-    document.getElementById('prev-btn')?.addEventListener('click', () => {
-      if (index > 0) {
-        currentIndex--;
-        renderMessage(currentIndex);
-      }
-    });
+  function showMessage() {
+    const messageBubble = document.getElementById('message-bubble');
+    const messageTime = document.getElementById('message-time');
+    const typingIndicator = document.getElementById('typing-indicator');
+    const answerSection = document.getElementById('answer-section');
 
-    document.getElementById('next-btn')?.addEventListener('click', () => {
-      if (index < MESSAGES.length - 1) {
+    // Hide typing, show message
+    typingIndicator.style.display = 'none';
+    messageBubble.classList.remove('hidden');
+    messageTime.classList.remove('hidden');
+
+    // Show answer buttons
+    setTimeout(() => {
+      answerSection.classList.remove('hidden');
+
+      // Add event listeners
+      document.getElementById('btn-smishing').addEventListener('click', () => handleAnswer('smishing'));
+      document.getElementById('btn-legit').addEventListener('click', () => handleAnswer('legit'));
+    }, 500);
+
+    messageState = 'message_shown';
+  }
+
+  function handleAnswer(choice) {
+    const message = MESSAGES[currentIndex];
+    userAnswers[message.id] = { answer: choice, reviewed: true };
+
+    // Hide answer buttons
+    document.getElementById('answer-section').classList.add('hidden');
+
+    // Show typing animation
+    const typingIndicator = document.getElementById('typing-indicator');
+    typingIndicator.style.display = 'flex';
+
+    // After delay, show result
+    setTimeout(() => {
+      showResult(choice);
+    }, 2000);
+
+    messageState = 'answered';
+  }
+
+  function showResult(choice) {
+    const message = MESSAGES[currentIndex];
+    const correct = (choice === 'smishing' && message.isSmishing) || (choice === 'legit' && !message.isSmishing);
+
+    // Hide typing
+    document.getElementById('typing-indicator').style.display = 'none';
+
+    // Show result in phone as a response bubble
+    const conversationArea = document.getElementById('conversation-area');
+    const resultBubble = document.createElement('div');
+    resultBubble.className = 'message-bubble-container';
+    resultBubble.innerHTML = `
+      <div class="message-bubble sent">
+        ${choice === 'smishing' ? '🚨 Report as Smishing' : '✅ Looks Legitimate'}
+      </div>
+      <div class="message-time">${message.time}</div>
+    `;
+    conversationArea.appendChild(resultBubble);
+
+    // Show detailed result below phone
+    const resultSection = document.getElementById('result-section');
+    resultSection.innerHTML = `
+      <div class="result-card ${correct ? 'result-correct' : 'result-incorrect'}">
+        <div class="result-icon">
+          ${correct ? '✅' : '❌'}
+        </div>
+        <div class="result-title">
+          ${correct ? 'Correct!' : 'Incorrect'}
+        </div>
+        <div class="result-explanation">
+          ${message.explanation}
+        </div>
+        <div class="result-details">
+          <strong>${message.isSmishing ? '🚩 Red Flags:' : '✅ Legitimate Signals:'}</strong>
+          <ul>
+            ${(message.isSmishing ? message.redFlags : message.legitimateSignals).map(item => `<li>${item}</li>`).join('')}
+          </ul>
+        </div>
+        <button class="continue-btn" id="continue-btn">
+          ${currentIndex < MESSAGES.length - 1 ? 'Continue →' : 'View Results'}
+        </button>
+      </div>
+    `;
+    resultSection.classList.remove('hidden');
+
+    // Scroll result into view
+    resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    // Add continue button listener
+    document.getElementById('continue-btn').addEventListener('click', () => {
+      if (currentIndex < MESSAGES.length - 1) {
         currentIndex++;
-        renderMessage(currentIndex);
+        messageState = 'typing';
+        renderPhone();
       } else {
         showSummary();
       }
     });
-  }
 
-  function handleChoice(messageId, choice) {
-    userAnswers[messageId] = { answer: choice, reviewed: true };
-    updateProgress();
-    renderMessage(currentIndex);
+    messageState = 'result_shown';
   }
 
   function showSummary() {
@@ -283,40 +346,54 @@
 
     const total = MESSAGES.length;
     const percentage = Math.round((correct / total) * 100);
-    let grade, message;
+    let grade, gradeColor;
 
     if (percentage === 100) {
       grade = '🏆 SMS Security Expert';
-      message = 'Perfect! You correctly identified all smishing and legitimate messages.';
+      gradeColor = 'excellent';
     } else if (percentage >= 83) {
       grade = '🛡️ Advanced';
-      message = `Great work! ${correct}/${total} correct. You have strong smishing detection skills.`;
+      gradeColor = 'good';
     } else if (percentage >= 67) {
       grade = '✅ Proficient';
-      message = `Good job! ${correct}/${total} correct. Review the red flags to strengthen your awareness.`;
+      gradeColor = 'good';
     } else {
-      grade = '📚 Learning';
-      message = `${correct}/${total} correct. Smishing is increasingly sophisticated - study the examples carefully.`;
+      grade = '📚 Developing';
+      gradeColor = 'developing';
     }
 
-    summaryEl.innerHTML = `
-      <div style="font-size: 1.2rem; margin-bottom: 8px;">${grade}</div>
-      <div>Score: ${correct}/${total} (${percentage}%)</div>
-      <div style="margin-top: 8px;">${message}</div>
-      <div style="margin-top: 24px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-        <a href="lab.html" class="btn btn--secondary">← Back to Lab</a>
-        <button onclick="location.reload()" class="btn btn--sms">Retry Simulation</button>
-        <button id="review-btn" class="btn">Review Answers</button>
+    appContainer.innerHTML = `
+      <div class="summary-screen">
+        <div class="summary-card">
+          <div class="summary-icon">📱</div>
+          <h2>Simulation Complete!</h2>
+
+          <div class="summary-score ${gradeColor}">${percentage}%</div>
+          <div class="summary-grade">${grade}</div>
+          <div class="summary-breakdown">${correct} out of ${total} correct</div>
+
+          <div class="summary-stats">
+            <div class="stat-item">
+              <div class="stat-value">${correct}</div>
+              <div class="stat-label">Correct</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">${total - correct}</div>
+              <div class="stat-label">Incorrect</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">${percentage}%</div>
+              <div class="stat-label">Accuracy</div>
+            </div>
+          </div>
+
+          <div class="summary-actions">
+            <button onclick="location.reload()" class="btn btn--sms">Retry Simulation</button>
+            <a href="index.html" class="btn btn--secondary">Back to Hub</a>
+          </div>
+        </div>
       </div>
     `;
-    summaryEl.classList.remove('hidden');
-    smsContainer.innerHTML = '';
-
-    document.getElementById('review-btn')?.addEventListener('click', () => {
-      summaryEl.classList.add('hidden');
-      currentIndex = 0;
-      renderMessage(currentIndex);
-    });
 
     // Save progress
     try {
@@ -342,12 +419,10 @@
 
     currentIndex = 0;
     userAnswers = {};
+    currentScreen = 'messaging';
 
-    renderMessage(currentIndex);
+    renderPhone();
     startTimer();
-    updateProgress();
-
-    feedbackEl.textContent = 'Examine each text message for red flags.';
   }
 
   startBtn?.addEventListener('click', startSimulation);
