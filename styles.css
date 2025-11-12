@@ -290,3 +290,83 @@ p{color:var(--muted);margin:0 0 18px}
 .sender-number{color:var(--muted);font-size:.85rem}
 .sms-bubble{background:rgba(147,51,234,.15);border:1px solid rgba(147,51,234,.3);border-radius:18px;border-bottom-left-radius:4px;padding:14px 16px;color:#e9d5ff;line-height:1.6;font-size:1rem;max-width:85%}
 .sms-timestamp{color:var(--muted);font-size:.8rem;margin-top:4px;padding-left:4px}
+
+/* NEW FLOW SCREENS - Instructions, Scenario, Summary */
+
+/* Placeholder Screen */
+.placeholder-screen{display:flex;align-items:center;justify-content:center;min-height:400px}
+.placeholder-content{text-align:center;padding:60px 20px}
+.placeholder-icon{font-size:64px;margin-bottom:20px}
+.placeholder-content h2{font-size:28px;font-weight:600;margin-bottom:12px;color:#1d1d1f}
+.placeholder-content p{font-size:17px;color:#6e6e73}
+
+/* Instructions Screen */
+.instructions-screen{max-width:900px;margin:0 auto;padding:40px 20px}
+.instructions-card{background:#ffffff;border-radius:24px;padding:48px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.instructions-icon{font-size:64px;text-align:center;margin-bottom:24px}
+.instructions-card h2{font-size:36px;font-weight:700;text-align:center;margin-bottom:16px;color:#1d1d1f}
+.instructions-intro{font-size:19px;text-align:center;color:#6e6e73;margin-bottom:40px;line-height:1.6}
+.instructions-section{margin-bottom:40px}
+.instructions-section h3{font-size:24px;font-weight:600;margin-bottom:20px;color:#1d1d1f}
+.instructions-list{list-style:none;padding:0;margin:0}
+.instructions-list li{padding:12px 0 12px 32px;position:relative;font-size:17px;line-height:1.6;color:#1d1d1f}
+.instructions-list li::before{content:'✓';position:absolute;left:0;color:#0071e3;font-weight:700;font-size:20px}
+.instructions-list strong{font-weight:600;color:#1d1d1f}
+.indicators-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;margin-top:20px}
+.indicator-item{text-align:center;padding:20px;background:#f5f5f7;border-radius:12px}
+.indicator-icon{font-size:32px;display:block;margin-bottom:12px}
+.indicator-item strong{display:block;font-size:17px;margin-bottom:8px;color:#1d1d1f}
+.indicator-item p{font-size:15px;color:#6e6e73;margin:0;line-height:1.5}
+.instructions-footer{margin-top:48px;padding-top:32px;border-top:1px solid rgba(0,0,0,.08);text-align:center}
+.time-note{font-size:17px;color:#6e6e73;margin-bottom:24px}
+.btn-large{padding:16px 40px;font-size:19px}
+
+/* Scenario Screen */
+.scenario-screen{max-width:1000px;margin:0 auto;padding:20px}
+.scenario-header-bar{margin-bottom:24px}
+.scenario-progress-info{margin-bottom:12px}
+.scenario-number{font-size:15px;font-weight:600;color:#6e6e73;text-transform:uppercase;letter-spacing:.05em}
+.scenario-progress-bar{height:6px;background:rgba(0,113,227,.1);border-radius:999px;overflow:hidden}
+.scenario-progress-fill{height:100%;background:linear-gradient(90deg,#0071e3,#30d158);transition:width .5s ease;border-radius:999px}
+.scenario-card{background:#ffffff;border-radius:24px;padding:40px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.scenario-title{font-size:32px;font-weight:700;margin-bottom:32px;color:#1d1d1f}
+.email-display{margin-bottom:32px}
+.email-headers{background:#f5f5f7;border-radius:12px;padding:24px;margin-bottom:24px}
+.email-field{display:flex;gap:16px;margin-bottom:12px;align-items:flex-start}
+.email-field:last-child{margin-bottom:0}
+.email-field-label{color:#6e6e73;font-weight:600;min-width:100px;font-size:15px}
+.email-field-value{color:#1d1d1f;flex:1;word-break:break-word;font-size:16px}
+
+/* Summary Screen */
+.summary-screen{max-width:800px;margin:0 auto;padding:40px 20px}
+.summary-card{background:#ffffff;border-radius:24px;padding:48px;box-shadow:0 4px 20px rgba(0,0,0,.08);text-align:center}
+.summary-icon{font-size:64px;margin-bottom:24px}
+.summary-title{font-size:36px;font-weight:700;margin-bottom:32px;color:#1d1d1f}
+.summary-score-display{margin-bottom:32px}
+.summary-score{font-size:72px;font-weight:700;line-height:1;margin-bottom:16px}
+.summary-score.excellent{color:#30d158}
+.summary-score.good{color:#0071e3}
+.summary-score.fair{color:#ff9500}
+.summary-score.poor{color:#ff3b30}
+.summary-grade{font-size:28px;font-weight:600;margin-bottom:12px;color:#1d1d1f}
+.summary-breakdown{font-size:19px;color:#6e6e73}
+.summary-message{font-size:17px;line-height:1.6;color:#1d1d1f;margin-bottom:32px;padding:24px;background:#f5f5f7;border-radius:12px}
+.summary-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:32px;padding:32px 0;border-top:1px solid rgba(0,0,0,.08);border-bottom:1px solid rgba(0,0,0,.08)}
+.stat-item{text-align:center}
+.stat-icon{font-size:32px;margin-bottom:8px}
+.stat-label{font-size:15px;color:#6e6e73;margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em}
+.stat-value{font-size:32px;font-weight:700;color:#1d1d1f}
+.summary-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* Responsive adjustments */
+@media(max-width:768px){
+  .instructions-card{padding:32px 24px}
+  .scenario-card{padding:24px}
+  .summary-card{padding:32px 24px}
+  .summary-score{font-size:56px}
+  .summary-grade{font-size:24px}
+  .indicators-grid{grid-template-columns:1fr}
+  .summary-stats{grid-template-columns:1fr;gap:16px}
+  .summary-actions{flex-direction:column}
+  .summary-actions .btn{width:100%}
+}

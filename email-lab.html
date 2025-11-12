@@ -28,36 +28,8 @@
     </header>
 
     <main class="container">
-      <div class="drill-main">
-        <div class="card">
-          <h2>🔬 Lab Instructions</h2>
-          <ul class="training-list">
-            <li><strong>Objective:</strong> Analyze 6 emails and determine if they're phishing</li>
-            <li><strong>Method:</strong> Click each email to expand full details</li>
-            <li><strong>Examine:</strong> Sender, subject, links, attachments, grammar</li>
-            <li><strong>Decide:</strong> Mark as "Phish" or "Legitimate"</li>
-            <li><strong>Time:</strong> 15 minutes (recommended, not enforced)</li>
-          </ul>
-          <div class="helper-text" style="margin-top: 16px;">
-            <strong>What to look for:</strong><br>
-            • Sender domain mismatches • Urgent/threatening language •  Suspicious links • Unexpected attachments • Grammar/spelling errors • Requests for sensitive info
-          </div>
-        </div>
-
-        <div class="card">
-          <div id="email-container" class="scenario-container">
-            <div class="scenario-placeholder">
-              Click "Start Lab" to begin analysis...
-            </div>
-          </div>
-
-          <div class="challenge-actions">
-            <div id="lab-progress" class="progress-pill">0/6 analyzed</div>
-          </div>
-
-          <div id="lab-feedback" class="helper-text" aria-live="polite"></div>
-          <div id="lab-summary" class="summary-banner hidden" aria-live="polite"></div>
-        </div>
+      <div id="app-container">
+        <!-- Content will be dynamically rendered here -->
       </div>
     </main>
   </div>

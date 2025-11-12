@@ -1,21 +1,18 @@
-// email-lab.js - Refactored for one-at-a-time display
+// email-lab-new.js - Redesigned with step-by-step flow
 (() => {
   'use strict';
 
   const START_TIME = 900; // 15 minutes
   let timeRemaining = START_TIME;
   let timerInterval = null;
-  let started = false;
+  let currentScreen = 'instructions'; // 'instructions', 'scenario', 'summary'
   let currentIndex = 0;
   let userAnswers = {};
 
   const $ = (id) => document.getElementById(id);
   const countdownEl = $('lab-countdown');
   const startBtn = $('start-lab');
-  const emailContainer = $('email-container');
-  const progressEl = $('lab-progress');
-  const feedbackEl = $('lab-feedback');
-  const summaryEl = $('lab-summary');
+  const appContainer = $('app-container');
 
   const EMAILS = [
     {
@@ -142,6 +139,7 @@
     }
   ];
 
+  // Timer functions
   function formatTime(sec) {
     const m = Math.floor(sec / 60);
     const s = sec % 60;
@@ -160,7 +158,6 @@
       }
     } else {
       stopTimer();
-      feedbackEl.textContent = '⏰ Time expired! Complete the lab at your own pace.';
     }
   }
 
@@ -172,152 +169,219 @@
     if (timerInterval) clearInterval(timerInterval);
   }
 
-  function updateProgress() {
-    const answeredCount = Object.keys(userAnswers).length;
-    progressEl.textContent = `${answeredCount}/${EMAILS.length} analyzed`;
-  }
+  // Screen rendering functions
+  function renderInstructions() {
+    appContainer.innerHTML = `
+      <div class="instructions-screen">
+        <div class="instructions-card">
+          <div class="instructions-icon">🔬</div>
+          <h2>Welcome to the Email Phishing Lab</h2>
+          <p class="instructions-intro">
+            You'll analyze 6 real-world email scenarios to identify phishing attempts.
+            Take your time to examine each email carefully.
+          </p>
 
-  function renderEmail(index) {
-    const email = EMAILS[index];
-    const hasAnswer = userAnswers[email.id] !== undefined;
-    const isReviewing = hasAnswer && userAnswers[email.id].reviewed;
-
-    let content = `
-      <div class="scenario-single email-single" data-email-id="${email.id}">
-        <div class="scenario-progress-bar">
-          <div class="progress-fill" style="width: ${((index + 1) / EMAILS.length) * 100}%"></div>
-        </div>
-
-        <div class="scenario-number">Email ${index + 1} of ${EMAILS.length}</div>
-
-        <h2 class="scenario-title">📧 Email Analysis</h2>
-
-        <div class="email-full-view">
-          <div class="email-header-section">
-            <div class="email-row">
-              <span class="email-label">From:</span>
-              <span class="email-value">${email.from}</span>
-            </div>
-            <div class="email-row">
-              <span class="email-label">Reply-To:</span>
-              <span class="email-value">${email.replyTo}</span>
-            </div>
-            <div class="email-row">
-              <span class="email-label">To:</span>
-              <span class="email-value">${email.to}</span>
-            </div>
-            <div class="email-row">
-              <span class="email-label">Subject:</span>
-              <span class="email-value email-subject">${email.subject}</span>
-            </div>
-            <div class="email-row">
-              <span class="email-label">Date:</span>
-              <span class="email-value">${email.date}</span>
-            </div>
-            ${email.links.length > 0 ? `
-            <div class="email-row">
-              <span class="email-label">Links:</span>
-              <span class="email-value email-links">${email.links.map(l => `<code>${l}</code>`).join('<br>')}</span>
-            </div>
-            ` : ''}
-            ${email.attachments.length > 0 ? `
-            <div class="email-row">
-              <span class="email-label">Attachments:</span>
-              <span class="email-value email-attachment">${email.attachments.join(', ')}</span>
-            </div>
-            ` : ''}
+          <div class="instructions-section">
+            <h3>📋 What You'll Do</h3>
+            <ul class="instructions-list">
+              <li><strong>Review each email</strong> — Examine the complete headers, links, and content</li>
+              <li><strong>Look for red flags</strong> — Suspicious domains, urgency tactics, poor grammar</li>
+              <li><strong>Make your decision</strong> — Is it legitimate or phishing?</li>
+              <li><strong>Learn from feedback</strong> — See detailed explanations after each answer</li>
+            </ul>
           </div>
 
-          <div class="email-body-section">
-            <div class="email-body-label">Message Body:</div>
-            <div class="email-body-content">${email.body.replace(/\n/g, '<br>')}</div>
+          <div class="instructions-section">
+            <h3>🔍 Key Indicators to Check</h3>
+            <div class="indicators-grid">
+              <div class="indicator-item">
+                <span class="indicator-icon">📧</span>
+                <strong>Sender Domain</strong>
+                <p>Verify the email address matches the company</p>
+              </div>
+              <div class="indicator-item">
+                <span class="indicator-icon">🔗</span>
+                <strong>Links & URLs</strong>
+                <p>Hover over links to see real destinations</p>
+              </div>
+              <div class="indicator-item">
+                <span class="indicator-icon">📎</span>
+                <strong>Attachments</strong>
+                <p>Be wary of unexpected files, especially .exe</p>
+              </div>
+              <div class="indicator-item">
+                <span class="indicator-icon">⚠️</span>
+                <strong>Urgency Tactics</strong>
+                <p>Threats and pressure are phishing red flags</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="instructions-footer">
+            <div class="time-note">
+              <strong>⏱️ Recommended Time:</strong> 15 minutes (not enforced)
+            </div>
+            <button id="begin-lab-btn" class="btn btn-primary btn-large">
+              Begin Lab →
+            </button>
           </div>
         </div>
+      </div>
     `;
 
-    if (!isReviewing) {
-      content += `
-        <div class="scenario-question">
-          <p class="question-text">Is this email legitimate or phishing?</p>
-          <div class="choice-buttons">
-            <button class="choice-btn choice-btn--danger" data-choice="phish">
-              🚨 Phishing
-            </button>
-            <button class="choice-btn choice-btn--safe" data-choice="legit">
-              ✅ Legitimate
-            </button>
+    document.getElementById('begin-lab-btn')?.addEventListener('click', () => {
+      currentScreen = 'scenario';
+      currentIndex = 0;
+      userAnswers = {};
+      startTimer();
+      startBtn.style.display = 'none';
+      renderScenario();
+    });
+  }
+
+  function renderScenario() {
+    const email = EMAILS[currentIndex];
+    const hasAnswer = userAnswers[email.id] !== undefined;
+
+    let content = `
+      <div class="scenario-screen">
+        <div class="scenario-header-bar">
+          <div class="scenario-progress-info">
+            <span class="scenario-number">Email ${currentIndex + 1} of ${EMAILS.length}</span>
+          </div>
+          <div class="scenario-progress-bar">
+            <div class="scenario-progress-fill" style="width: ${((currentIndex + 1) / EMAILS.length) * 100}%"></div>
           </div>
         </div>
+
+        <div class="scenario-card">
+          <h2 class="scenario-title">📧 Analyze This Email</h2>
+
+          <div class="email-display">
+            <div class="email-headers">
+              <div class="email-field">
+                <span class="email-field-label">From:</span>
+                <span class="email-field-value">${email.from}</span>
+              </div>
+              <div class="email-field">
+                <span class="email-field-label">Reply-To:</span>
+                <span class="email-field-value">${email.replyTo}</span>
+              </div>
+              <div class="email-field">
+                <span class="email-field-label">To:</span>
+                <span class="email-field-value">${email.to}</span>
+              </div>
+              <div class="email-field">
+                <span class="email-field-label">Subject:</span>
+                <span class="email-field-value email-subject">${email.subject}</span>
+              </div>
+              <div class="email-field">
+                <span class="email-field-label">Date:</span>
+                <span class="email-field-value">${email.date}</span>
+              </div>
+              ${email.links.length > 0 ? `
+              <div class="email-field">
+                <span class="email-field-label">Links:</span>
+                <span class="email-field-value email-links">${email.links.map(l => `<code>${l}</code>`).join('<br>')}</span>
+              </div>
+              ` : ''}
+              ${email.attachments.length > 0 ? `
+              <div class="email-field">
+                <span class="email-field-label">Attachments:</span>
+                <span class="email-field-value email-attachment">${email.attachments.join(', ')}</span>
+              </div>
+              ` : ''}
+            </div>
+
+            <div class="email-body-section">
+              <div class="email-body-label">Message Body:</div>
+              <div class="email-body-content">${email.body.replace(/\n/g, '<br>')}</div>
+            </div>
+          </div>
+    `;
+
+    if (!hasAnswer) {
+      content += `
+          <div class="scenario-question">
+            <p class="question-text">Is this email legitimate or phishing?</p>
+            <div class="choice-buttons">
+              <button class="choice-btn choice-btn--danger" data-choice="phish">
+                🚨 Phishing
+              </button>
+              <button class="choice-btn choice-btn--safe" data-choice="legit">
+                ✅ Legitimate
+              </button>
+            </div>
+          </div>
       `;
     } else {
       const userChoice = userAnswers[email.id].answer;
       const correct = (userChoice === 'phish' && email.isPhish) || (userChoice === 'legit' && !email.isPhish);
 
       content += `
-        <div class="scenario-result ${correct ? 'result-correct' : 'result-incorrect'}">
-          <div class="result-header">
-            ${correct ? '✅ Correct!' : '❌ Incorrect'}
-          </div>
-          <div class="result-verdict">
-            <strong>This email was ${email.isPhish ? 'phishing' : 'legitimate'}.</strong>
-          </div>
+          <div class="scenario-result ${correct ? 'result-correct' : 'result-incorrect'}">
+            <div class="result-header">
+              ${correct ? '✅ Correct!' : '❌ Incorrect'}
+            </div>
+            <div class="result-verdict">
+              This email was <strong>${email.isPhish ? 'phishing' : 'legitimate'}</strong>.
+            </div>
 
-          <div class="result-insights">
-            <strong>${email.isPhish ? '🚩 Red Flags:' : '✅ Legitimate Signals:'}</strong>
-            <ul>
-              ${(email.isPhish ? email.redFlags : email.legitimateSignals).map(insight => `<li>${insight}</li>`).join('')}
-            </ul>
+            <div class="result-insights">
+              <strong>${email.isPhish ? '🚩 Red Flags:' : '✅ Legitimate Signals:'}</strong>
+              <ul>
+                ${(email.isPhish ? email.redFlags : email.legitimateSignals).map(insight => `<li>${insight}</li>`).join('')}
+              </ul>
+            </div>
           </div>
-        </div>
       `;
     }
 
     content += `
-        <div class="scenario-nav">
-          <button class="nav-btn" id="prev-btn" ${index === 0 ? 'disabled' : ''}>
-            ← Previous
-          </button>
-          <button class="nav-btn nav-btn--primary" id="next-btn">
-            ${index === EMAILS.length - 1 ? 'Finish' : 'Next'} →
-          </button>
+          <div class="scenario-nav">
+            <button class="nav-btn" id="prev-btn" ${currentIndex === 0 ? 'disabled' : ''}>
+              ← Previous
+            </button>
+            <button class="nav-btn nav-btn-primary" id="next-btn" ${!hasAnswer ? 'disabled' : ''}>
+              ${currentIndex === EMAILS.length - 1 ? 'View Results' : 'Next'} →
+            </button>
+          </div>
         </div>
       </div>
     `;
 
-    emailContainer.innerHTML = content;
+    appContainer.innerHTML = content;
 
-    // Add event listeners for choice buttons
-    if (!isReviewing) {
+    // Add event listeners
+    if (!hasAnswer) {
       document.querySelectorAll('.choice-btn').forEach(btn => {
         btn.addEventListener('click', () => handleChoice(email.id, btn.dataset.choice));
       });
     }
 
-    // Navigation buttons
     document.getElementById('prev-btn')?.addEventListener('click', () => {
-      if (index > 0) {
+      if (currentIndex > 0) {
         currentIndex--;
-        renderEmail(currentIndex);
+        renderScenario();
       }
     });
 
     document.getElementById('next-btn')?.addEventListener('click', () => {
-      if (index < EMAILS.length - 1) {
+      if (currentIndex < EMAILS.length - 1) {
         currentIndex++;
-        renderEmail(currentIndex);
+        renderScenario();
       } else {
-        showSummary();
+        renderSummary();
       }
     });
   }
 
   function handleChoice(emailId, choice) {
-    userAnswers[emailId] = { answer: choice, reviewed: true };
-    updateProgress();
-    renderEmail(currentIndex);
+    userAnswers[emailId] = { answer: choice };
+    renderScenario();
   }
 
-  function showSummary() {
+  function renderSummary() {
     stopTimer();
 
     let correct = 0;
@@ -332,39 +396,72 @@
 
     const total = EMAILS.length;
     const percentage = Math.round((correct / total) * 100);
-    let grade, message;
+    let grade, gradeClass, message;
 
     if (percentage === 100) {
       grade = '🏆 Expert Analyst';
-      message = 'Perfect! You identified all phishing emails and legitimate messages correctly.';
+      gradeClass = 'excellent';
+      message = 'Perfect score! You identified all phishing emails and legitimate messages correctly. Your threat detection skills are outstanding.';
     } else if (percentage >= 83) {
       grade = '🎯 Advanced';
-      message = `Excellent work! ${correct}/${total} correct. Review the explanations to master the subtle indicators.`;
+      gradeClass = 'good';
+      message = `Excellent work! You got ${correct} out of ${total} correct. Review the explanations to master those subtle indicators.`;
     } else if (percentage >= 67) {
       grade = '✅ Proficient';
-      message = `Good job! ${correct}/${total} correct. Study the red flags and legitimate signals to improve further.`;
+      gradeClass = 'fair';
+      message = `Good job! You scored ${correct} out of ${total}. Study the red flags and legitimate signals to improve further.`;
     } else {
       grade = '📚 Developing';
-      message = `${correct}/${total} correct. Phishing emails can be sophisticated - review each example carefully.`;
+      gradeClass = 'poor';
+      message = `You got ${correct} out of ${total} correct. Phishing emails can be sophisticated—review each example carefully to sharpen your skills.`;
     }
 
-    summaryEl.innerHTML = `
-      <div style="font-size: 1.2rem; margin-bottom: 8px;">${grade}</div>
-      <div>Score: ${correct}/${total} (${percentage}%)</div>
-      <div style="margin-top: 8px;">${message}</div>
-      <div style="margin-top: 24px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-        <a href="lab.html" class="btn btn--secondary">← Back to Lab</a>
-        <button onclick="location.reload()" class="btn">Retry Lab</button>
-        <button id="review-btn" class="btn">Review Answers</button>
+    appContainer.innerHTML = `
+      <div class="summary-screen">
+        <div class="summary-card">
+          <div class="summary-icon">🎓</div>
+          <h2 class="summary-title">Lab Complete!</h2>
+
+          <div class="summary-score-display">
+            <div class="summary-score ${gradeClass}">${percentage}%</div>
+            <div class="summary-grade">${grade}</div>
+            <div class="summary-breakdown">${correct} out of ${total} correct</div>
+          </div>
+
+          <div class="summary-message">
+            ${message}
+          </div>
+
+          <div class="summary-stats">
+            <div class="stat-item">
+              <div class="stat-icon">✅</div>
+              <div class="stat-label">Correct</div>
+              <div class="stat-value">${correct}</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-icon">❌</div>
+              <div class="stat-label">Incorrect</div>
+              <div class="stat-value">${total - correct}</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-icon">📊</div>
+              <div class="stat-label">Accuracy</div>
+              <div class="stat-value">${percentage}%</div>
+            </div>
+          </div>
+
+          <div class="summary-actions">
+            <button id="review-btn" class="btn btn-secondary">Review Answers</button>
+            <button onclick="location.reload()" class="btn btn-secondary">Retry Lab</button>
+            <a href="lab.html" class="btn btn-primary">Back to Lab Hub</a>
+          </div>
+        </div>
       </div>
     `;
-    summaryEl.classList.remove('hidden');
-    emailContainer.innerHTML = '';
 
     document.getElementById('review-btn')?.addEventListener('click', () => {
-      summaryEl.classList.add('hidden');
       currentIndex = 0;
-      renderEmail(currentIndex);
+      renderScenario();
     });
 
     // Save progress
@@ -383,21 +480,26 @@
     }
   }
 
-  function startLab() {
-    if (started) return;
-    started = true;
-    startBtn.disabled = true;
-    startBtn.textContent = 'Lab in Progress...';
+  // Initialize
+  function init() {
+    if (startBtn) {
+      startBtn.addEventListener('click', () => {
+        startBtn.style.display = 'none';
+        renderInstructions();
+      });
+    }
 
-    currentIndex = 0;
-    userAnswers = {};
-
-    renderEmail(currentIndex);
-    startTimer();
-    updateProgress();
-
-    feedbackEl.textContent = 'Examine each email carefully before making your decision.';
+    // Show placeholder
+    appContainer.innerHTML = `
+      <div class="placeholder-screen">
+        <div class="placeholder-content">
+          <div class="placeholder-icon">📧</div>
+          <h2>Email Phishing Lab</h2>
+          <p>Click "Start Lab" above to begin your training</p>
+        </div>
+      </div>
+    `;
   }
 
-  startBtn?.addEventListener('click', startLab);
+  init();
 })();
