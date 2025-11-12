@@ -97,8 +97,8 @@ p{color:var(--muted);margin:0 0 18px}
 .scenario-tag{font-weight:700;color:#fcd34d}
 .scenario-meta{display:grid;gap:4px;font-size:.9rem;color:#d8ceff}
 .scenario-meta strong{color:#fef9ff}
-.scenario-preview{margin:16px 0 10px;line-height:1.5;color:#f4efff}
-.scenario-detail{margin:0 0 18px;font-size:.9rem;color:#cbb7ff}
+.scenario-preview{margin:16px 0 10px;line-height:1.7;color:#f8fbff;font-size:1rem}
+.scenario-detail{margin:0 0 18px;font-size:.95rem;color:#e5d5ff;line-height:1.6}
 .scenario-choice-row{display:flex;flex-wrap:wrap;gap:12px}
 .choice-chip{position:relative;display:inline-flex}
 .choice-chip input{position:absolute;opacity:0;pointer-events:none}
@@ -120,19 +120,6 @@ p{color:var(--muted);margin:0 0 18px}
 
 .phish-treat-page .summary-banner{background:rgba(29,20,58,.85);border-color:rgba(124,58,237,.38);color:#f9fafb}
 
-/* Veteran Scenarios Styling */
-.veteran-body{background:radial-gradient(circle at top,#0f1923,#0a0f1a 58%,#04080f);color:#f4efff;min-height:100vh}
-.veteran-hero{position:relative;padding:72px 0 64px;overflow:hidden;background:linear-gradient(160deg,rgba(15,9,32,.95),rgba(18,28,45,.9))}
-.veteran-hero__glow{position:absolute;inset:-30% -20% auto -20%;height:120%;background:radial-gradient(circle at 50% 35%,rgba(34,211,238,.35),rgba(45,212,191,.12) 48%,rgba(10,8,26,0) 68%);filter:blur(4px);opacity:.8}
-.veteran-hero__inner{position:relative;text-align:center;z-index:1;display:flex;flex-direction:column;align-items:center;gap:18px}
-.veteran-hero h1{font-size:2.4rem;max-width:780px;margin:0}
-.veteran-hero p{max-width:760px;margin:0;color:#d3e4fd;font-size:1.04rem}
-.veteran-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:999px;background:rgba(45,212,191,.15);border:1px solid rgba(34,211,238,.4);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#7dd3fc;font-size:.85rem}
-.countdown--veteran{background:rgba(34,211,238,.12);border-color:rgba(34,211,238,.45);color:#22d3ee;box-shadow:0 0 0 1px rgba(34,211,238,.25)}
-.btn--veteran{background:linear-gradient(90deg,rgba(34,211,238,.9),rgba(45,212,191,.9));color:#04101e;font-weight:700}
-.btn--veteran:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(34,211,238,.4)}
-.card--patriotic{position:relative;overflow:hidden;background:linear-gradient(160deg,rgba(16,35,60,.85),rgba(10,25,45,.92));border-color:rgba(34,211,238,.32);box-shadow:0 20px 40px rgba(8,15,35,.4)}
-.card--patriotic::after{content:"";position:absolute;inset:auto -40% -40% 40%;height:220px;background:radial-gradient(circle at 50% 50%,rgba(34,211,238,.25),rgba(8,15,35,0));pointer-events:none;opacity:.6}
 .training-list{margin:16px 0;padding-left:22px;display:grid;gap:12px;color:#e6eefb;line-height:1.6}
 .training-list li{line-height:1.5}
 .training-list strong{color:#7dd3fc;font-weight:600}
@@ -140,23 +127,24 @@ p{color:var(--muted);margin:0 0 18px}
 
 /* Email Lab Styling */
 .email-grid{display:grid;gap:24px;margin:20px 0}
-.email-card{background:rgba(16,23,43,.95);border:1px solid var(--border);border-radius:16px;padding:20px;transition:border-color .3s ease,box-shadow .3s ease}
+.email-card{background:rgba(20,30,55,.98);border:1px solid rgba(53,79,128,.5);border-radius:16px;padding:24px;transition:border-color .3s ease,box-shadow .3s ease}
 .email-card--correct{border-color:rgba(52,211,153,.5);box-shadow:0 12px 24px rgba(52,211,153,.2)}
 .email-card--incorrect{border-color:rgba(248,113,113,.5);box-shadow:0 12px 24px rgba(248,113,113,.2)}
-.email-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.email-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(100,120,160,.3)}
 .email-index{font-weight:700;color:var(--accent-2);font-size:.9rem}
 .expand-btn{background:transparent;border:1px solid rgba(34,211,238,.3);color:var(--accent-2);padding:8px 16px;border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s ease}
 .expand-btn:hover{background:rgba(34,211,238,.1);border-color:var(--accent-2)}
 .email-preview{display:grid;gap:8px;margin-bottom:16px}
-.email-details{display:grid;gap:8px;margin:16px 0;padding:16px;background:rgba(4,11,26,.6);border-radius:10px;border:1px solid rgba(53,79,128,.3)}
-.email-meta-row{display:grid;grid-template-columns:100px 1fr;gap:12px;font-size:.9rem;line-height:1.5}
-.email-label{color:var(--muted);font-weight:600}
-.email-value{color:#e6eefb;word-break:break-all}
-.email-value code{background:rgba(34,211,238,.1);padding:2px 8px;border-radius:4px;font-family:'Roboto Mono',monospace;font-size:.85rem;color:#7dd3fc}
+.email-details{display:grid;gap:10px;margin:16px 0;padding:18px;background:rgba(15,25,45,.85);border-radius:12px;border:1px solid rgba(70,90,130,.4)}
+.email-meta-row{display:grid;grid-template-columns:100px 1fr;gap:12px;font-size:.95rem;line-height:1.6}
+.email-label{color:#9db3d4;font-weight:600}
+.email-value{color:#f0f4ff;word-break:break-all;font-size:.95rem}
+.email-value code{background:rgba(34,211,238,.15);padding:3px 10px;border-radius:6px;font-family:'Roboto Mono',monospace;font-size:.88rem;color:#a5f3fc;border:1px solid rgba(34,211,238,.25)}
 .email-attachment{color:#fbbf24;font-weight:600}
-.email-body{margin-top:16px;padding-top:16px;border-top:1px solid var(--border);line-height:1.6;color:#d3ddf7}
-.email-body a{color:var(--accent-2);text-decoration:underline}
-.email-verdict{margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+.email-body{margin-top:18px;padding:20px;background:rgba(25,35,60,.7);border:1px solid rgba(70,90,130,.35);border-radius:10px;line-height:1.8;color:#f5f8ff;font-size:1rem}
+.email-body a{color:#60d5fa;text-decoration:underline;font-weight:600}
+.email-body strong{color:#ffffff;font-weight:700}
+.email-verdict{margin-top:16px;padding-top:16px;border-top:1px solid rgba(100,120,160,.3)}
 .verdict-label{font-weight:600;color:var(--muted);margin-bottom:10px;font-size:.9rem}
 .email-reveal{margin-top:16px;padding-top:16px;border-top:1px solid rgba(148,119,255,.28)}
 

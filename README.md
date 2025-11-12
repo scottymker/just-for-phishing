@@ -12,7 +12,7 @@
 
 ## 🎯 Mission Statement
 
-Phishing attacks target everyone—from individuals to corporations, veterans to students, healthcare workers to executives. This platform provides **hands-on, realistic training** to recognize and respond to the most common (and sophisticated) phishing attacks.
+Phishing attacks target everyone—from individuals to corporations, students to executives, healthcare workers to small business owners. This platform provides **hands-on, realistic training** to recognize and respond to the most common (and sophisticated) phishing attacks.
 
 **100% free. No tracking. No signup required.**
 
@@ -211,7 +211,7 @@ Replace files in `/assets/` with your organization's branding:
 
 Edit scenario files to add custom content:
 ```javascript
-// veteran-scenarios.js
+// phish-or-treat.js
 const SCENARIOS = [
   {
     id: 'custom-scenario',
@@ -265,9 +265,9 @@ Click "Export Data" to download your training history as JSON.
 We welcome contributions from:
 - Cybersecurity professionals
 - Educators
-- Veterans
 - Developers
 - UX designers
+- Security researchers
 
 **How to contribute:**
 
