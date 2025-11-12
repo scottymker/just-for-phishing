@@ -42,12 +42,12 @@
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-      padding: 16px 20px;
+      padding: 12px 15px;
       z-index: 1000;
     }
 
     .nav-content {
-      max-width: 1200px;
+      max-width: 900px;
       margin: 0 auto;
       display: flex;
       justify-content: space-between;
@@ -57,74 +57,74 @@
     .back-btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       color: var(--apple-blue);
       text-decoration: none;
       font-weight: 500;
-      font-size: 17px;
+      font-size: 13px;
       transition: gap 0.3s ease;
     }
 
     .back-btn:hover {
-      gap: 4px;
+      gap: 3px;
     }
 
     .nav-title {
-      font-size: 21px;
+      font-size: 16px;
       font-weight: 600;
     }
 
     .nav-spacer {
-      width: 100px;
+      width: 75px;
     }
 
     /* Header */
     .header {
-      padding: 80px 20px 60px;
+      padding: 60px 15px 45px;
       text-align: center;
       background: linear-gradient(135deg, rgba(0, 113, 227, 0.05) 0%, rgba(191, 90, 242, 0.05) 100%);
     }
 
     .header h1 {
-      font-size: clamp(40px, 6vw, 64px);
+      font-size: clamp(30px, 6vw, 48px);
       font-weight: 700;
       letter-spacing: -0.02em;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
 
     .header p {
-      font-size: 21px;
+      font-size: 16px;
       color: var(--text-secondary);
-      max-width: 680px;
+      max-width: 510px;
       margin: 0 auto;
       line-height: 1.5;
     }
 
     /* Lab Grid */
     .lab-container {
-      max-width: 1200px;
+      max-width: 900px;
       margin: 0 auto;
-      padding: 60px 20px;
+      padding: 45px 15px;
     }
 
     .section-title {
-      font-size: 32px;
+      font-size: 24px;
       font-weight: 700;
-      margin-bottom: 32px;
+      margin-bottom: 24px;
     }
 
     .lab-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 24px;
-      margin-bottom: 80px;
+      grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+      gap: 18px;
+      margin-bottom: 60px;
     }
 
     .lab-card {
       background: var(--bg-card);
-      border-radius: 24px;
-      padding: 32px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       overflow: hidden;
@@ -138,15 +138,15 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 4px;
+      height: 3px;
       background: linear-gradient(90deg, var(--accent-color), var(--accent-color-light));
       opacity: 0;
       transition: opacity 0.3s ease;
     }
 
     .lab-card:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+      transform: translateY(-6px) scale(1.015);
+      box-shadow: 0 9px 30px rgba(0, 0, 0, 0.12);
     }
 
     .lab-card:hover::before {
@@ -171,19 +171,19 @@
     .lab-header {
       display: flex;
       align-items: flex-start;
-      gap: 16px;
-      margin-bottom: 20px;
+      gap: 12px;
+      margin-bottom: 15px;
     }
 
     .lab-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 14px;
+      width: 42px;
+      height: 42px;
+      border-radius: 11px;
       background: linear-gradient(135deg, var(--accent-color), var(--accent-color-light));
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 28px;
+      font-size: 21px;
       flex-shrink: 0;
     }
 
@@ -193,13 +193,13 @@
 
     .lab-badge {
       display: inline-block;
-      padding: 4px 12px;
-      border-radius: 12px;
-      font-size: 12px;
+      padding: 3px 9px;
+      border-radius: 9px;
+      font-size: 9px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .badge-beginner {
@@ -218,51 +218,51 @@
     }
 
     .lab-card h3 {
-      font-size: 24px;
+      font-size: 18px;
       font-weight: 600;
-      margin-bottom: 12px;
+      margin-bottom: 9px;
       color: var(--text-primary);
     }
 
     .lab-description {
-      font-size: 17px;
+      font-size: 13px;
       line-height: 1.6;
       color: var(--text-secondary);
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       flex-grow: 1;
     }
 
     .lab-meta {
       display: flex;
-      gap: 16px;
-      font-size: 15px;
+      gap: 12px;
+      font-size: 11px;
       color: var(--text-secondary);
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
     .meta-item {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
     }
 
     .lab-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 14px 28px;
+      padding: 11px 21px;
       background: var(--accent-color);
       color: white;
       text-decoration: none;
       font-weight: 600;
-      border-radius: 12px;
+      border-radius: 9px;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      font-size: 17px;
+      font-size: 13px;
     }
 
     .lab-btn:hover {
       transform: scale(1.05);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
     }
 
     @media (max-width: 768px) {
