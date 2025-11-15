@@ -401,8 +401,11 @@
 
         if (currentScenarioIndex < MFA_SCENARIOS.length) {
           setTimeout(() => {
-            // Trigger next notification by calling the original system
-            window.pushNotification(`Login request #${currentScenarioIndex + 1} • ${MFA_SCENARIOS[currentScenarioIndex].location}`);
+            // Create next notification directly
+            const nextNotification = document.createElement('div');
+            nextNotification.className = 'notification';
+            nextNotification.textContent = `Login request #${currentScenarioIndex + 1} • ${MFA_SCENARIOS[currentScenarioIndex].location}`;
+            notificationStack.prepend(nextNotification);
           }, 3000);
         } else {
           // Drill complete
