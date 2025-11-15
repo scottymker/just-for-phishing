@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us — Just For Phishing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/favicon.svg" />
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    :root {
+      --apple-blue: #0071e3;
+      --apple-blue-hover: #0077ed;
+      --text-primary: #1d1d1f;
+      --text-secondary: #6e6e73;
+      --bg-light: #fbfbfd;
+      --bg-card: #ffffff;
+      --accent-green: #30d158;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-light);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    /* Navigation */
+    nav {
+      position: sticky;
+      top: 0;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      padding: 12px 20px;
+      z-index: 1000;
+    }
+
+    .nav-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    .nav-logo img {
+      height: 28px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--apple-blue);
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, rgba(0, 113, 227, 0.05) 0%, rgba(48, 209, 88, 0.05) 100%);
+      padding: 80px 20px 60px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Content Section */
+    .content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 20px;
+    }
+
+    .section {
+      margin-bottom: 80px;
+    }
+
+    .section h2 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: var(--text-primary);
+    }
+
+    .section p {
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    .value-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 16px;
+      padding: 28px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .value-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .value-icon {
+      font-size: 40px;
+      margin-bottom: 16px;
+    }
+
+    .value-card h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .value-card p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    /* Contact Form */
+    .contact-form {
+      background: var(--bg-card);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 20px;
+      padding: 48px;
+      max-width: 700px;
+      margin: 40px auto 0;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 15px;
+      transition: border-color 0.2s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--apple-blue);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 150px;
+    }
+
+    .submit-btn {
+      background: var(--apple-blue);
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      width: 100%;
+    }
+
+    .submit-btn:hover {
+      background: var(--apple-blue-hover);
+    }
+
+    .contact-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .info-item {
+      text-align: center;
+      padding: 24px;
+      background: var(--bg-card);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 16px;
+    }
+
+    .info-item-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .info-item h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .info-item a {
+      color: var(--apple-blue);
+      text-decoration: none;
+    }
+
+    .info-item a:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    footer {
+      background: #1d1d1f;
+      color: white;
+      padding: 60px 20px 30px;
+      margin-top: 80px;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-column h4 {
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .footer-column ul {
+      list-style: none;
+    }
+
+    .footer-column ul li {
+      margin-bottom: 10px;
+    }
+
+    .footer-column ul li a {
+      color: #a1a1a6;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s ease;
+    }
+
+    .footer-column ul li a:hover {
+      color: white;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 24px;
+      text-align: center;
+    }
+
+    .footer-bottom p {
+      color: #a1a1a6;
+      font-size: 13px;
+    }
+
+    .footer-bottom a {
+      color: var(--apple-blue);
+      text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        gap: 20px;
+      }
+
+      .contact-form {
+        padding: 32px 24px;
+      }
+
+      .values-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-content">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/logo.svg" alt="Just For Phishing">
+        <span>Just For Phishing</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="simulators.html">Simulators</a></li>
+        <li><a href="resources.html">Resources</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>About Just For Phishing</h1>
+    <p>Building a safer digital world through interactive cybersecurity education</p>
+  </section>
+
+  <!-- Content -->
+  <div class="content">
+    <!-- About Us Section -->
+    <section class="section" id="about">
+      <h2>🎣 About Us</h2>
+      <p>
+        Just For Phishing is a free, open-source cybersecurity training platform designed to help individuals and organizations recognize and defend against phishing attacks, social engineering, and other common cyber threats.
+      </p>
+      <p>
+        We believe that cybersecurity education should be accessible, engaging, and practical. Through interactive simulations, realistic scenarios, and hands-on learning experiences, we empower users to develop the skills and awareness needed to stay safe online.
+      </p>
+      <p>
+        Our platform was born from a simple observation: traditional security awareness training is often boring, forgettable, and disconnected from real-world threats. We set out to change that by creating immersive, scenario-based training that feels more like a game than a lecture.
+      </p>
+    </section>
+
+    <!-- Our Mission Section -->
+    <section class="section" id="mission">
+      <h2>🎯 Our Mission</h2>
+      <p>
+        Our mission is to make cybersecurity awareness training accessible, engaging, and effective for everyone—from individuals protecting their personal accounts to organizations safeguarding sensitive data.
+      </p>
+      <p>
+        We aim to reduce the success rate of phishing attacks by equipping people with the knowledge and muscle memory to identify threats instinctively. Through realistic simulations and immediate feedback, we help users build lasting security habits.
+      </p>
+
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="value-icon">🔓</div>
+          <h3>Open & Accessible</h3>
+          <p>Free, open-source, and available to everyone. No paywalls, no hidden costs.</p>
+        </div>
+
+        <div class="value-card">
+          <div class="value-icon">🎮</div>
+          <h3>Engaging Learning</h3>
+          <p>Interactive simulations that make security training feel like a challenge, not a chore.</p>
+        </div>
+
+        <div class="value-card">
+          <div class="value-icon">🌍</div>
+          <h3>Real-World Focus</h3>
+          <p>Scenarios based on actual phishing tactics used by attackers today.</p>
+        </div>
+
+        <div class="value-card">
+          <div class="value-icon">📈</div>
+          <h3>Continuous Improvement</h3>
+          <p>Regular updates with new scenarios, threat types, and learning modules.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section" id="contact">
+      <h2>📬 Get In Touch</h2>
+      <p>
+        Have questions, feedback, or suggestions? We'd love to hear from you! Whether you've found a bug, want to request a feature, or just want to say hello, feel free to reach out.
+      </p>
+
+      <div class="contact-info">
+        <div class="info-item">
+          <div class="info-item-icon">💻</div>
+          <h4>GitHub</h4>
+          <a href="https://github.com/scottymker/just-for-phishing" target="_blank">View Project</a>
+        </div>
+
+        <div class="info-item">
+          <div class="info-item-icon">🐛</div>
+          <h4>Report Issues</h4>
+          <a href="https://github.com/scottymker/just-for-phishing/issues" target="_blank">Submit Issue</a>
+        </div>
+
+        <div class="info-item">
+          <div class="info-item-icon">💡</div>
+          <h4>Feature Requests</h4>
+          <a href="https://github.com/scottymker/just-for-phishing/issues" target="_blank">Suggest Features</a>
+        </div>
+      </div>
+
+      <div class="contact-form">
+        <h3 style="margin-bottom: 24px; font-size: 24px;">Send Us a Message</h3>
+        <form id="contactForm" onsubmit="handleContactSubmit(event)">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required placeholder="Your name">
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required placeholder="your@email.com">
+          </div>
+
+          <div class="form-group">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" required placeholder="What's this about?">
+          </div>
+
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" required placeholder="Tell us what's on your mind..."></textarea>
+          </div>
+
+          <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+      </div>
+    </section>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div class="footer-column">
+          <h4>About</h4>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="about.html#mission">Our Mission</a></li>
+            <li><a href="about.html#contact">Contact</a></li>
+            <li><a href="https://github.com/scottymker/just-for-phishing">GitHub</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Training</h4>
+          <ul>
+            <li><a href="email-lab.html">Email Phishing Lab</a></li>
+            <li><a href="sms-smishing.html">SMS Smishing Lab</a></li>
+            <li><a href="targeted-phishing.html">Targeted Phishing</a></li>
+            <li><a href="mfa-fatigue.html">MFA Fatigue Drill</a></li>
+            <li><a href="phish-or-treat.html">Phish or Treat</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="resources.html">Best Practices</a></li>
+            <li><a href="resources.html">Security Guides</a></li>
+            <li><a href="quiz.html">Security Quiz</a></li>
+            <li><a href="about.html#contact">Support</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="accessibility.html">Accessibility</a></li>
+            <li><a href="https://github.com/scottymker/just-for-phishing/issues">Report a Bug</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>
+          &copy; 2025 Just For Phishing. Built with care for security education.
+          Open source on <a href="https://github.com/scottymker/just-for-phishing">GitHub</a>.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function handleContactSubmit(event) {
+      event.preventDefault();
+
+      const formData = new FormData(event.target);
+      const name = formData.get('name');
+      const email = formData.get('email');
+      const subject = formData.get('subject');
+      const message = formData.get('message');
+
+      // For now, just show a success message
+      // In production, this would send to a backend API
+      alert(`Thank you for your message, ${name}!\n\nWe'll get back to you at ${email} as soon as possible.\n\nFor immediate assistance, please visit our GitHub repository to submit an issue or discussion.`);
+
+      event.target.reset();
+    }
+  </script>
+</body>
+</html>
