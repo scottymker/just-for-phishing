@@ -1,0 +1,9 @@
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <rect width="32" height="32" fill="#0071e3" rx="6"/>
+  <text x="16" y="24"
+        font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif"
+        font-size="22"
+        font-weight="700"
+        fill="#ffffff"
+        text-anchor="middle">P</text>
+</svg>
