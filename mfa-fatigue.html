@@ -84,43 +84,15 @@
       font-weight: 600;
     }
 
-    .notification-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .notification-btn {
-      padding: 10px 16px;
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      border: none;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-family: inherit;
-    }
-
-    .notification-btn-approve {
-      background: #0071e3;
-      color: #ffffff;
-    }
-
-    .notification-btn-approve:hover {
-      background: #0077ed;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 113, 227, 0.4);
-    }
-
-    .notification-btn-deny {
-      background: rgba(142, 142, 147, 0.2);
-      color: #ffffff;
-      border: 1px solid rgba(142, 142, 147, 0.4);
-    }
-
-    .notification-btn-deny:hover {
-      background: rgba(142, 142, 147, 0.3);
-      transform: translateY(-1px);
+    .notification-instruction {
+      margin-top: 12px;
+      padding: 8px 12px;
+      background: rgba(0, 113, 227, 0.15);
+      border-left: 3px solid #0071e3;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      color: #64b5f6;
+      font-weight: 500;
     }
 
     /* Action button styling adjustments */
@@ -278,10 +250,9 @@
                     <div><strong>Device:</strong> Unknown Windows PC</div>
                     <div><strong>Time:</strong> ${new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</div>
                   </div>
-                </div>
-                <div class="notification-actions">
-                  <button class="notification-btn notification-btn-deny" disabled>Deny</button>
-                  <button class="notification-btn notification-btn-approve" disabled>Approve</button>
+                  <div class="notification-instruction">
+                    Use the response buttons below to make your decision
+                  </div>
                 </div>
               `;
 
