@@ -401,6 +401,9 @@
 
         if (currentScenarioIndex < MFA_SCENARIOS.length) {
           setTimeout(() => {
+            // Clear old notifications to prevent stacking
+            notificationStack.innerHTML = '';
+
             // Create next notification directly
             const nextNotification = document.createElement('div');
             nextNotification.className = 'notification';
