@@ -156,10 +156,13 @@
     el.score     = $('score');
     el.total     = $('total');
 
-    renderActions();
-    updateTimer();
+    // Only render action buttons if element exists (legacy support)
+    if (el.actions) {
+      renderActions();
+      el.actions.addEventListener('click', handleActionClick);
+    }
 
+    updateTimer();
     el.start.addEventListener('click', startDrill);
-    el.actions.addEventListener('click', handleActionClick);
   });
 })();
