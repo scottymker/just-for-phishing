@@ -84,15 +84,82 @@
       font-weight: 600;
     }
 
-    .notification-instruction {
+    .notification-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
       margin-top: 12px;
-      padding: 8px 12px;
-      background: rgba(0, 113, 227, 0.15);
-      border-left: 3px solid #0071e3;
-      border-radius: 6px;
-      font-size: 0.82rem;
-      color: #64b5f6;
+    }
+
+    .notification-btn {
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .notification-btn-approve {
+      background: #0071e3;
+      color: #ffffff;
+    }
+
+    .notification-btn-approve:hover:not(:disabled) {
+      background: #0077ed;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 113, 227, 0.4);
+    }
+
+    .notification-btn-deny {
+      background: rgba(142, 142, 147, 0.2);
+      color: #ffffff;
+      border: 1px solid rgba(142, 142, 147, 0.4);
+    }
+
+    .notification-btn-deny:hover:not(:disabled) {
+      background: rgba(142, 142, 147, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .notification-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .notification-feedback {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      line-height: 1.5;
       font-weight: 500;
+      animation: slideDown 0.3s ease;
+    }
+
+    .notification-feedback.correct {
+      background: rgba(48, 209, 88, 0.15);
+      border: 1px solid rgba(48, 209, 88, 0.3);
+      color: #30d158;
+    }
+
+    .notification-feedback.incorrect {
+      background: rgba(255, 59, 48, 0.15);
+      border: 1px solid rgba(255, 59, 48, 0.3);
+      color: #ff3b30;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* Action button styling adjustments */
@@ -183,21 +250,18 @@
         <div class="score-pill">
           <span id="score">0</span>/<span id="total">0</span>
         </div>
-        <h2>Choose your response strategy</h2>
+        <h2>Tap Deny or Approve on the phone</h2>
         <p class="helper-text">
-          Every push requires a decision. Stay calm, read the context, and pick the safest option before the attacker floods you with the next prompt.
+          MFA fatigue attacks flood you with notifications hoping you'll accidentally approve. Stay alert and deny unexpected requests!
         </p>
 
-        <!-- JS will render the four action buttons into this container -->
-        <div id="action-buttons" class="actions-grid"></div>
-
         <!-- Live feedback + summary -->
-        <div id="feedback" class="feedback" aria-live="polite">Awaiting your move...</div>
+        <div id="feedback" class="feedback" aria-live="polite">Awaiting your first decision...</div>
         <div id="summary" class="summary-banner hidden" aria-live="polite"></div>
 
         <!-- Event log -->
         <div id="event-log" class="event-log" aria-live="polite">
-          <div class="event-log-entry">Responses will appear here once the drill begins.</div>
+          <div class="event-log-entry">Tap buttons on the phone to respond to each MFA request.</div>
         </div>
       </section>
     </main>
@@ -217,52 +281,140 @@
     updateStatusTime();
     setInterval(updateStatusTime, 60000); // Update every minute
 
-    // Override pushNotification to create styled iOS-like notification cards
+    // Interactive MFA phone notification system
     document.addEventListener('DOMContentLoaded', () => {
-      const originalPushNotification = window.pushNotification;
       const notificationStack = document.getElementById('notification-stack');
+      let interactiveMode = false;
+      let currentNotificationElement = null;
 
-      // Intercept notification creation
+      // MFA scenarios with educational content
+      const MFA_SCENARIOS = [
+        {
+          location: 'Moscow, Russia',
+          device: 'Unknown Windows PC',
+          isLegit: false,
+          explanation: '✅ Correct! This sign-in attempt from Moscow is highly suspicious. Always DENY unexpected MFA requests from unfamiliar locations.',
+          incorrectMsg: '❌ Incorrect. Approving this request from an unfamiliar location (Moscow) could give an attacker access to your account.'
+        },
+        {
+          location: 'San Francisco, CA',
+          device: 'iPhone 14',
+          isLegit: false,
+          explanation: '✅ Correct! Even though the location might seem familiar, if YOU didn\'t initiate this login, always DENY and report it.',
+          incorrectMsg: '❌ Incorrect. Never approve an MFA request you didn\'t trigger yourself, even if the location seems reasonable.'
+        },
+        {
+          location: 'Lagos, Nigeria',
+          device: 'Unknown Android',
+          isLegit: false,
+          explanation: '✅ Correct! This is a classic MFA fatigue attack from an unexpected location. Always deny and report suspicious activity.',
+          incorrectMsg: '❌ Incorrect. International login attempts you didn\'t initiate are major red flags. Always deny and change your password.'
+        }
+      ];
+
+      let currentScenarioIndex = 0;
+      let score = 0;
+
+      // Intercept pushNotification calls and make them interactive
       const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
           mutation.addedNodes.forEach((node) => {
             if (node.className === 'notification' && node.textContent && !node.querySelector('.notification-header')) {
-              const text = node.textContent;
-
-              // Parse notification text
-              const parts = text.split('•');
-              const title = parts[0]?.trim() || 'Sign-in Attempt';
-              const location = parts[1]?.trim() || 'Unknown Location';
-
-              // Create structured notification
-              node.innerHTML = `
-                <div class="notification-header">
-                  <div class="notification-icon">🔐</div>
-                  <div class="notification-app">
-                    <div class="notification-app-name">Microsoft Authenticator</div>
-                    <div class="notification-time">now</div>
-                  </div>
-                </div>
-                <div class="notification-content">
-                  <div class="notification-title">Sign-in Attempt</div>
-                  <div class="notification-meta">
-                    <div><strong>Location:</strong> ${location}</div>
-                    <div><strong>Device:</strong> Unknown Windows PC</div>
-                    <div><strong>Time:</strong> ${new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</div>
-                  </div>
-                  <div class="notification-instruction">
-                    Use the response buttons below to make your decision
-                  </div>
-                </div>
-              `;
-
-              // Add active class briefly
-              node.classList.add('active');
-              setTimeout(() => node.classList.remove('active'), 500);
+              makeNotificationInteractive(node);
             }
           });
         });
       });
+
+      function makeNotificationInteractive(node) {
+        if (currentScenarioIndex >= MFA_SCENARIOS.length) return;
+
+        const scenario = MFA_SCENARIOS[currentScenarioIndex];
+        const time = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+        // Create structured interactive notification
+        node.innerHTML = `
+          <div class="notification-header">
+            <div class="notification-icon">🔐</div>
+            <div class="notification-app">
+              <div class="notification-app-name">Microsoft Authenticator</div>
+              <div class="notification-time">now</div>
+            </div>
+          </div>
+          <div class="notification-content">
+            <div class="notification-title">Sign-in Attempt</div>
+            <div class="notification-meta">
+              <div><strong>Location:</strong> ${scenario.location}</div>
+              <div><strong>Device:</strong> ${scenario.device}</div>
+              <div><strong>Time:</strong> ${time}</div>
+            </div>
+          </div>
+          <div class="notification-actions">
+            <button class="notification-btn notification-btn-deny" data-answer="deny">Deny</button>
+            <button class="notification-btn notification-btn-approve" data-answer="approve">Approve</button>
+          </div>
+          <div class="notification-feedback hidden"></div>
+        `;
+
+        currentNotificationElement = node;
+
+        // Add click handlers to buttons
+        const denyBtn = node.querySelector('[data-answer="deny"]');
+        const approveBtn = node.querySelector('[data-answer="approve"]');
+
+        denyBtn.addEventListener('click', () => handleAnswer('deny', node, scenario));
+        approveBtn.addEventListener('click', () => handleAnswer('approve', node, scenario));
+
+        // Add active class briefly
+        node.classList.add('active');
+        setTimeout(() => node.classList.remove('active'), 500);
+      }
+
+      function handleAnswer(answer, notificationElement, scenario) {
+        const correct = answer === 'deny'; // Deny is always the safe choice
+        if (correct) score++;
+
+        // Disable buttons
+        const buttons = notificationElement.querySelectorAll('.notification-btn');
+        buttons.forEach(btn => btn.disabled = true);
+
+        // Show feedback in notification
+        const feedbackEl = notificationElement.querySelector('.notification-feedback');
+        feedbackEl.textContent = correct ? scenario.explanation : scenario.incorrectMsg;
+        feedbackEl.className = `notification-feedback ${correct ? 'correct' : 'incorrect'}`;
+        feedbackEl.classList.remove('hidden');
+
+        // Update external score display
+        document.getElementById('score').textContent = score;
+        document.getElementById('total').textContent = currentScenarioIndex + 1;
+
+        // Log event
+        const eventLog = document.getElementById('event-log');
+        const logEntry = document.createElement('div');
+        logEntry.className = 'event-log-entry';
+        logEntry.textContent = `${correct ? '✅' : '❌'} ${answer === 'deny' ? 'Denied' : 'Approved'} request from ${scenario.location}`;
+        eventLog.appendChild(logEntry);
+        eventLog.scrollTop = eventLog.scrollHeight;
+
+        // Move to next scenario after delay
+        currentScenarioIndex++;
+
+        if (currentScenarioIndex < MFA_SCENARIOS.length) {
+          setTimeout(() => {
+            // Trigger next notification by calling the original system
+            window.pushNotification(`Login request #${currentScenarioIndex + 1} • ${MFA_SCENARIOS[currentScenarioIndex].location}`);
+          }, 3000);
+        } else {
+          // Drill complete
+          setTimeout(() => {
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = `🎉 Drill Complete! Score: ${score}/${MFA_SCENARIOS.length}`;
+            const summary = document.getElementById('summary');
+            summary.textContent = `You correctly identified ${score} out of ${MFA_SCENARIOS.length} suspicious MFA requests.`;
+            summary.classList.remove('hidden');
+          }, 3000);
+        }
+      }
 
       observer.observe(notificationStack, { childList: true, subtree: true });
     });
