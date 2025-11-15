@@ -15,6 +15,151 @@
 
   <!-- IMPORTANT: load JS after DOM with defer -->
   <script src="mfa-fatigue.js" defer></script>
+
+  <style>
+    /* MFA-specific notification styling */
+    .notification {
+      background: rgba(14, 23, 43, 0.95);
+      border: 1px solid rgba(34, 211, 238, 0.18);
+      border-radius: 18px;
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+      box-shadow: 0 12px 28px rgba(4, 16, 30, 0.45);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .notification.active {
+      border-color: rgba(34, 211, 238, 0.55);
+      box-shadow: 0 18px 36px rgba(34, 211, 238, 0.32);
+    }
+
+    /* MFA Notification Structure */
+    .notification-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .notification-icon {
+      font-size: 28px;
+    }
+
+    .notification-app {
+      flex: 1;
+    }
+
+    .notification-app-name {
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: #e6eefb;
+    }
+
+    .notification-time {
+      font-size: 0.78rem;
+      color: #6e6e73;
+    }
+
+    .notification-content {
+      margin-bottom: 12px;
+    }
+
+    .notification-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #f8fbff;
+      margin-bottom: 8px;
+    }
+
+    .notification-meta {
+      font-size: 0.78rem;
+      color: #6e6e73;
+      display: grid;
+      gap: 4px;
+    }
+
+    .notification-meta strong {
+      color: #e6eefb;
+      font-weight: 600;
+    }
+
+    .notification-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .notification-btn {
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .notification-btn-approve {
+      background: #0071e3;
+      color: #ffffff;
+    }
+
+    .notification-btn-approve:hover {
+      background: #0077ed;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 113, 227, 0.4);
+    }
+
+    .notification-btn-deny {
+      background: rgba(142, 142, 147, 0.2);
+      color: #ffffff;
+      border: 1px solid rgba(142, 142, 147, 0.4);
+    }
+
+    .notification-btn-deny:hover {
+      background: rgba(142, 142, 147, 0.3);
+      transform: translateY(-1px);
+    }
+
+    /* Action button styling adjustments */
+    .action-btn {
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      background: rgba(10, 16, 31, 0.95);
+      color: #f5f9ff;
+      padding: 16px;
+      border-radius: 14px;
+      font-weight: 600;
+      text-align: left;
+      line-height: 1.4;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-2px);
+      border-color: #30d158;
+      box-shadow: 0 12px 26px rgba(34, 211, 238, 0.25);
+    }
+
+    .action-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .action-btn[data-action="approve"] {
+      border-color: rgba(248, 113, 113, 0.4);
+      background: rgba(127, 29, 29, 0.4);
+    }
+
+    .action-btn[data-action="approve"]:hover {
+      border-color: rgba(248, 113, 113, 0.65);
+      box-shadow: 0 12px 26px rgba(248, 113, 113, 0.2);
+    }
+  </style>
 </head>
 <body>
   <div class="page">
@@ -30,16 +175,32 @@
 
     <main class="container drill-main">
       <section>
-        <div class="phone-frame">
-          <div class="phone-notch"></div>
-          <div class="phone-screen">
-            <div class="phone-status">
-              <span id="status-time">10:41 PM</span>
-              <span>LTE &bull; &#9679;&#9679;&#9679;&#9679;</span>
-            </div>
-            <div id="notification-stack" class="notification-stack">
-              <div class="notification-placeholder">
-                Press <strong>Start Drill</strong> to simulate rapid MFA push prompts.
+        <div class="phone-container">
+          <div class="phone-frame-large">
+            <div class="phone-notch"></div>
+            <div class="phone-screen-large">
+              <!-- Status Bar -->
+              <div class="phone-status-bar">
+                <span>📶 Verizon LTE</span>
+                <span id="status-time">10:41 PM</span>
+                <span>🔋 78%</span>
+              </div>
+
+              <!-- Messages Header Bar -->
+              <div class="messages-header-bar">
+                <div class="contact-info">
+                  <div class="contact-name">🔐 MFA Push Notifications</div>
+                  <div class="contact-number">Authentication Service</div>
+                </div>
+              </div>
+
+              <!-- Notification Stack -->
+              <div class="conversation-area">
+                <div id="notification-stack" class="notification-stack">
+                  <div class="notification-placeholder">
+                    Press <strong>Start Drill</strong> to simulate rapid MFA push prompts.
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -69,5 +230,71 @@
       </section>
     </main>
   </div>
+
+  <script>
+    // Update status bar time to current time
+    function updateStatusTime() {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      const displayHours = hours % 12 || 12;
+      const displayMinutes = String(minutes).padStart(2, '0');
+      document.getElementById('status-time').textContent = `${displayHours}:${displayMinutes} ${ampm}`;
+    }
+    updateStatusTime();
+    setInterval(updateStatusTime, 60000); // Update every minute
+
+    // Override pushNotification to create styled iOS-like notification cards
+    document.addEventListener('DOMContentLoaded', () => {
+      const originalPushNotification = window.pushNotification;
+      const notificationStack = document.getElementById('notification-stack');
+
+      // Intercept notification creation
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          mutation.addedNodes.forEach((node) => {
+            if (node.className === 'notification' && node.textContent && !node.querySelector('.notification-header')) {
+              const text = node.textContent;
+
+              // Parse notification text
+              const parts = text.split('•');
+              const title = parts[0]?.trim() || 'Sign-in Attempt';
+              const location = parts[1]?.trim() || 'Unknown Location';
+
+              // Create structured notification
+              node.innerHTML = `
+                <div class="notification-header">
+                  <div class="notification-icon">🔐</div>
+                  <div class="notification-app">
+                    <div class="notification-app-name">Microsoft Authenticator</div>
+                    <div class="notification-time">now</div>
+                  </div>
+                </div>
+                <div class="notification-content">
+                  <div class="notification-title">Sign-in Attempt</div>
+                  <div class="notification-meta">
+                    <div><strong>Location:</strong> ${location}</div>
+                    <div><strong>Device:</strong> Unknown Windows PC</div>
+                    <div><strong>Time:</strong> ${new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</div>
+                  </div>
+                </div>
+                <div class="notification-actions">
+                  <button class="notification-btn notification-btn-deny" disabled>Deny</button>
+                  <button class="notification-btn notification-btn-approve" disabled>Approve</button>
+                </div>
+              `;
+
+              // Add active class briefly
+              node.classList.add('active');
+              setTimeout(() => node.classList.remove('active'), 500);
+            }
+          });
+        });
+      });
+
+      observer.observe(notificationStack, { childList: true, subtree: true });
+    });
+  </script>
 </body>
 </html>

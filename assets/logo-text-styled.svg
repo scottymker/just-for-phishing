@@ -1,0 +1,33 @@
+<svg width="460" height="140" viewBox="0 0 460 140" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .top {
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-weight: 700;
+      font-size: 26px;
+      letter-spacing: 0.18em;
+      text-anchor: middle;
+    }
+    .bottom {
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-weight: 700;
+      font-size: 34px;
+      letter-spacing: 0.16em;
+      text-anchor: middle;
+    }
+  </style>
+  <!-- JUST FOR -->
+  <text x="230" y="40" class="top" fill="#111827">
+    JUST <tspan fill="#0071e3">FOR</tspan>
+  </text>
+  <!-- PHISHING -->
+  <text x="230" y="85" class="bottom" fill="#111827">PHISHING</text>
+  <!-- Flowing underline -->
+  <path d="M80 98
+           C 130 120, 190 108, 230 104
+           S 330 90, 380 104"
+        fill="none"
+        stroke="#0071e3"
+        stroke-width="3"
+        opacity="0.55"
+        stroke-linecap="round" />
+</svg>
