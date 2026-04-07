@@ -3,902 +3,1756 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Just For Phishing — Interactive Security Training</title>
+  <title>Just For Phishing — Interactive Phishing Awareness Training</title>
+  <meta name="description" content="Free, interactive phishing awareness training. No signup required. No data collected. Six modules covering email phishing, SMS smishing, MFA fatigue, and more." />
+  <link rel="icon" href="assets/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="icon" href="assets/favicon.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <!-- Google Analytics (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y3ZYDHQD6Z"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Y3ZYDHQD6Z');
+  </script>
+  <!-- sql.js for local SQLite database -->
+  <script src="https://sql.js.org/dist/sql-wasm.js"></script>
+
   <style>
-    * {
+    /* =============================================
+       CSS CUSTOM PROPERTIES
+    ============================================= */
+    :root {
+      /* Backgrounds */
+      --bg-void:       #0a0a0f;
+      --bg-deep:       #0d0d14;
+      --bg-base:       #12121a;
+      --bg-surface:    #1a1a2e;
+      --bg-card:       #16162a;
+      --bg-card-hover: #1e1e38;
+      --bg-glass:      rgba(22, 22, 42, 0.6);
+
+      /* Threat color language */
+      --red:           #ef4444;
+      --red-bright:    #ff3b30;
+      --red-glow:      rgba(239, 68, 68, 0.25);
+      --green:         #22c55e;
+      --green-bright:  #34d399;
+      --green-glow:    rgba(34, 197, 94, 0.25);
+      --amber:         #f59e0b;
+      --amber-bright:  #fbbf24;
+      --amber-glow:    rgba(245, 158, 11, 0.25);
+      --cyan:          #06b6d4;
+      --cyan-bright:   #22d3ee;
+      --cyan-glow:     rgba(6, 182, 212, 0.25);
+      --purple:        #a855f7;
+      --purple-glow:   rgba(168, 85, 247, 0.25);
+      --orange:        #f97316;
+      --orange-glow:   rgba(249, 115, 22, 0.25);
+      --blue:          #3b82f6;
+      --blue-glow:     rgba(59, 130, 246, 0.25);
+
+      /* Text */
+      --text-primary:   #f0f0f8;
+      --text-secondary: #8888aa;
+      --text-muted:     #4a4a6a;
+      --text-code:      #22d3ee;
+
+      /* Borders */
+      --border-subtle:  rgba(255,255,255,0.06);
+      --border-mid:     rgba(255,255,255,0.1);
+
+      /* Fonts */
+      --font-display: 'Instrument Serif', Georgia, serif;
+      --font-body:    'DM Sans', system-ui, sans-serif;
+      --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
+
+      /* Transitions */
+      --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* =============================================
+       RESET & BASE
+    ============================================= */
+    *, *::before, *::after {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
-    :root {
-      --apple-blue: #0071e3;
-      --apple-blue-hover: #0077ed;
-      --text-primary: #1d1d1f;
-      --text-secondary: #6e6e73;
-      --bg-light: #fbfbfd;
-      --bg-card: #ffffff;
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg-light);
+      font-family: var(--font-body);
+      background-color: var(--bg-void);
       color: var(--text-primary);
       overflow-x: hidden;
+      line-height: 1.6;
+      /* Noise texture overlay */
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
     }
 
-    /* Navigation Bar */
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    /* =============================================
+       SCROLL-REVEAL SYSTEM
+    ============================================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+    .reveal-delay-6 { transition-delay: 0.6s; }
+
+    /* =============================================
+       NAVIGATION
+    ============================================= */
     .navbar {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       z-index: 1000;
-      background: rgba(255, 255, 255, 0.8);
+      background: rgba(10, 10, 15, 0.6);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      transition: all 0.3s ease;
+      border-bottom: 1px solid var(--border-subtle);
+      transition: background var(--transition), border-color var(--transition);
     }
 
     .navbar.scrolled {
-      background: rgba(255, 255, 255, 0.95);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      background: rgba(10, 10, 15, 0.92);
+      border-bottom-color: var(--border-mid);
     }
 
-    .navbar-container {
-      max-width: 1440px;
+    .nav-inner {
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 12px 20px;
+      padding: 0 24px;
+      height: 64px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-    }
-
-    .navbar-brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      color: var(--text-primary);
-      font-weight: 600;
-      font-size: 20px;
-    }
-
-    .navbar-logo {
-      width: 40px;
-      height: 40px;
-    }
-
-    .navbar-menu {
-      display: flex;
-      list-style: none;
       gap: 32px;
-      align-items: center;
     }
 
-    .navbar-menu a {
-      color: var(--text-primary);
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
       text-decoration: none;
+    }
+
+    .nav-logo img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+    }
+
+    .nav-logo-text {
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+      flex: 1;
+    }
+
+    .nav-links a {
+      display: block;
+      padding: 6px 12px;
       font-size: 14px;
       font-weight: 500;
-      transition: color 0.2s ease;
+      color: var(--text-secondary);
+      border-radius: 6px;
+      transition: color var(--transition), background var(--transition);
     }
 
-    .navbar-menu a:hover {
-      color: var(--apple-blue);
+    .nav-links a:hover {
+      color: var(--text-primary);
+      background: rgba(255,255,255,0.05);
     }
 
-    .navbar-actions {
+    .nav-right {
       display: flex;
-      gap: 12px;
       align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
     }
 
-    .navbar-actions .btn {
-      padding: 8px 20px;
-      font-size: 14px;
-    }
-
-    .btn-login {
+    .btn-nav-secondary {
+      padding: 7px 16px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
       background: transparent;
-      color: var(--apple-blue);
-      border: 1px solid var(--apple-blue);
-    }
-
-    .btn-login:hover {
-      background: rgba(0, 113, 227, 0.05);
-    }
-
-    .btn-signup {
-      background: var(--apple-blue);
-      color: white;
-    }
-
-    .btn-signup:hover {
-      background: var(--apple-blue-hover);
-    }
-
-    .mobile-menu-toggle {
-      display: none;
-      background: none;
       border: none;
-      font-size: 24px;
+      border-radius: 6px;
       cursor: pointer;
+      transition: color var(--transition);
+    }
+
+    .btn-nav-secondary:hover {
       color: var(--text-primary);
     }
 
-    /* Hero Section */
+    .btn-nav-app {
+      padding: 7px 16px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--cyan-bright);
+      background: transparent;
+      border: 1px solid rgba(34, 211, 238, 0.35);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all var(--transition);
+      white-space: nowrap;
+    }
+
+    .btn-nav-app:hover {
+      background: rgba(34, 211, 238, 0.08);
+      border-color: rgba(34, 211, 238, 0.6);
+      box-shadow: 0 0 16px rgba(34, 211, 238, 0.15);
+    }
+
+    /* Mobile hamburger */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      margin-left: auto;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text-secondary);
+      border-radius: 2px;
+      transition: all var(--transition);
+    }
+
+    .nav-mobile {
+      display: none;
+      flex-direction: column;
+      padding: 12px 24px 20px;
+      border-top: 1px solid var(--border-subtle);
+      gap: 4px;
+    }
+
+    .nav-mobile.open {
+      display: flex;
+    }
+
+    .nav-mobile a {
+      padding: 10px 12px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-radius: 8px;
+      transition: all var(--transition);
+    }
+
+    .nav-mobile a:hover {
+      color: var(--text-primary);
+      background: rgba(255,255,255,0.05);
+    }
+
+    /* =============================================
+       HERO SECTION
+    ============================================= */
     .hero {
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 120px 20px 60px;
+      padding: 100px 24px 80px;
       position: relative;
       overflow: hidden;
     }
 
+    /* Grid pattern overlay */
     .hero::before {
       content: '';
       position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle at 50% 50%, rgba(0, 113, 227, 0.1) 0%, transparent 50%);
-      animation: rotate 20s linear infinite;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
     }
 
-    @keyframes rotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+    /* Radial glow behind hero content */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px;
+      height: 600px;
+      background: radial-gradient(ellipse, rgba(239,68,68,0.06) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
     }
 
     .hero-content {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      max-width: 980px;
+      max-width: 540px;
     }
 
-    .logo-3d {
-      width: 160px;
-      height: 160px;
-      margin: 0 auto 40px;
-      position: relative;
-      animation: float 6s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px) rotateY(0deg); }
-      50% { transform: translateY(-20px) rotateY(10deg); }
-    }
-
-    .logo-3d img {
-      width: 100%;
-      height: 100%;
-      filter: drop-shadow(0 20px 40px rgba(0, 113, 227, 0.3));
-    }
-
-    h1 {
-      font-size: clamp(48px, 8vw, 76px);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-      margin-bottom: 24px;
-      background: linear-gradient(135deg, #1d1d1f 0%, #0071e3 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .tagline {
-      font-size: clamp(21px, 3vw, 28px);
-      color: var(--text-secondary);
-      margin-bottom: 48px;
-      font-weight: 400;
-      line-height: 1.4;
-    }
-
-    .cta-buttons {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 80px;
-    }
-
-    .btn {
+    .hero-eyebrow {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      padding: 16px 32px;
-      font-size: 17px;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 11px;
       font-weight: 500;
-      text-decoration: none;
-      border-radius: 980px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      border: none;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
+      color: var(--red);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 6px 12px;
+      background: rgba(239,68,68,0.08);
+      border: 1px solid rgba(239,68,68,0.2);
+      border-radius: 100px;
+      margin-bottom: 28px;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 6px var(--red);
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--red); }
+      50% { opacity: 0.5; box-shadow: 0 0 12px var(--red); }
+    }
+
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(42px, 5.5vw, 72px);
+      font-weight: 400;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+    }
+
+    .hero-headline em {
+      font-style: italic;
+      color: var(--red-bright);
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin-bottom: 36px;
+      max-width: 420px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
     .btn-primary {
-      background: var(--apple-blue);
-      color: white;
-      box-shadow: 0 4px 20px rgba(0, 113, 227, 0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      background: var(--red);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all var(--transition);
+      text-decoration: none;
     }
 
     .btn-primary:hover {
-      background: var(--apple-blue-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(0, 113, 227, 0.4);
+      background: #dc2626;
+      box-shadow: 0 4px 24px rgba(239,68,68,0.4);
+      transform: translateY(-1px);
     }
 
     .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
       background: transparent;
-      color: var(--apple-blue);
-      border: 2px solid var(--apple-blue);
+      border: 1px solid var(--border-mid);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all var(--transition);
+      text-decoration: none;
     }
 
     .btn-secondary:hover {
-      background: rgba(0, 113, 227, 0.05);
-      transform: translateY(-2px);
+      background: rgba(255,255,255,0.04);
+      border-color: rgba(255,255,255,0.2);
+      transform: translateY(-1px);
     }
 
-    /* Section Headers */
-    .section-header {
+    /* =============================================
+       PHISHING EMAIL DISSECTION
+    ============================================= */
+    .hero-email-panel {
+      position: relative;
+    }
+
+    .email-dissect-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      overflow: hidden;
+      opacity: 0;
+      animation: fade-in-up 0.8s ease 0.2s forwards;
+    }
+
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .email-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .email-toolbar-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .toolbar-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .toolbar-dot:nth-child(1) { background: #ff5f57; }
+    .toolbar-dot:nth-child(2) { background: #febc2e; }
+    .toolbar-dot:nth-child(3) { background: #28c840; }
+
+    .email-toolbar-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      flex: 1;
       text-align: center;
-      margin-bottom: 60px;
+      padding-right: 24px;
     }
 
-    .section-header h2,
-    .how-it-works h2,
-    .why-choose h2 {
-      font-size: clamp(36px, 5vw, 48px);
-      font-weight: 700;
-      margin-bottom: 16px;
+    .email-body-wrap {
+      padding: 20px;
+    }
+
+    .email-field {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border-subtle);
+      position: relative;
+    }
+
+    .email-field:last-of-type {
+      border-bottom: none;
+    }
+
+    .email-field-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 3px;
+    }
+
+    .email-field-value {
+      font-family: var(--font-mono);
+      font-size: 13px;
       color: var(--text-primary);
+      line-height: 1.5;
     }
 
-    .section-subtitle {
-      font-size: 21px;
+    .email-field-value .flagged {
+      color: var(--red-bright);
+      background: rgba(255,59,48,0.1);
+      border-radius: 3px;
+      padding: 1px 4px;
+      position: relative;
+    }
+
+    .email-field-value .suspicious-link {
+      color: var(--amber-bright);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .email-message-text {
+      font-family: var(--font-body);
+      font-size: 13px;
       color: var(--text-secondary);
-      max-width: 600px;
-      margin: 0 auto;
+      line-height: 1.6;
+      margin-top: 8px;
     }
 
-    /* Feature Cards */
-    .features {
-      padding: 100px 20px;
+    /* Annotation pills */
+    .annotation {
+      position: absolute;
+      right: -180px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+    }
+
+    .annotation-line {
+      width: 40px;
+      height: 1px;
+      background: var(--red);
+      flex-shrink: 0;
+    }
+
+    .annotation-pill {
+      background: rgba(239,68,68,0.12);
+      border: 1px solid rgba(239,68,68,0.35);
+      border-radius: 6px;
+      padding: 5px 10px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--red-bright);
+      white-space: nowrap;
+      line-height: 1.4;
+      max-width: 150px;
+    }
+
+    /* Staggered annotation animations */
+    .annotation-1 {
+      top: 50%;
+      transform: translateY(-50%);
+      animation: slide-in-annotation 0.5s ease 1.0s forwards;
+    }
+    .annotation-2 {
+      top: 50%;
+      transform: translateY(-50%);
+      animation: slide-in-annotation 0.5s ease 1.5s forwards;
+    }
+    .annotation-3 {
+      top: 50%;
+      transform: translateY(-50%);
+      animation: slide-in-annotation 0.5s ease 2.0s forwards;
+    }
+    .annotation-4 {
+      top: 50%;
+      transform: translateY(-50%);
+      animation: slide-in-annotation 0.5s ease 2.5s forwards;
+    }
+
+    @keyframes slide-in-annotation {
+      from { opacity: 0; transform: translateY(-50%) translateX(-12px); }
+      to   { opacity: 1; transform: translateY(-50%) translateX(0); }
+    }
+
+    /* =============================================
+       SECTION SHARED STYLES
+    ============================================= */
+    section {
+      padding: 100px 24px;
+    }
+
+    .section-inner {
       max-width: 1200px;
       margin: 0 auto;
+      width: 100%;
     }
 
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 24px;
-      margin-top: 60px;
+    .section-eyebrow {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--cyan-bright);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 16px;
     }
 
-    .feature-list {
-      margin: 20px 0;
-      padding-left: 0;
-      list-style: none;
+    .section-heading {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4vw, 54px);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 16px;
     }
 
-    .feature-list li {
-      padding: 8px 0 8px 24px;
-      position: relative;
+    .section-sub {
+      font-size: 17px;
       color: var(--text-secondary);
-      font-size: 15px;
-      line-height: 1.6;
+      max-width: 520px;
+      line-height: 1.65;
     }
 
-    .feature-list li::before {
-      content: '✓';
-      position: absolute;
-      left: 0;
-      color: var(--apple-blue);
-      font-weight: 700;
+    .section-header {
+      margin-bottom: 56px;
+      text-align: center;
     }
 
-    .feature-card {
+    .section-header .section-sub {
+      margin: 0 auto;
+    }
+
+    /* =============================================
+       MODULES GRID
+    ============================================= */
+    .modules-section {
+      background: var(--bg-deep);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .module-card {
       background: var(--bg-card);
-      border-radius: 24px;
-      padding: 40px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 28px;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
       position: relative;
       overflow: hidden;
+      transition: all var(--transition);
+      cursor: pointer;
     }
 
-    .feature-card::before {
+    .module-card::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--apple-blue), #00c7be);
-      transform: scaleX(0);
-      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      height: 2px;
+      background: var(--card-accent, var(--cyan));
+      opacity: 0.6;
+      transition: opacity var(--transition);
     }
 
-    .feature-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    .module-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--card-accent, var(--cyan));
+      box-shadow: 0 0 0 1px var(--card-accent, var(--cyan)), 0 8px 32px rgba(0,0,0,0.4);
+      transform: translateY(-3px);
     }
 
-    .feature-card:hover::before {
-      transform: scaleX(1);
+    .module-card:hover::before {
+      opacity: 1;
     }
 
-    .feature-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 16px;
-      background: linear-gradient(135deg, rgba(0, 113, 227, 0.1), rgba(0, 199, 190, 0.1));
+    .module-card-top {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 32px;
-      margin-bottom: 24px;
-    }
-
-    .feature-card h3 {
-      font-size: 24px;
-      font-weight: 600;
-      margin-bottom: 12px;
-      color: var(--text-primary);
-    }
-
-    .feature-card p {
-      font-size: 17px;
-      line-height: 1.6;
-      color: var(--text-secondary);
-      margin-bottom: 24px;
-    }
-
-    .feature-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--apple-blue);
-      font-weight: 500;
-      text-decoration: none;
-      font-size: 17px;
-      transition: gap 0.3s ease;
-    }
-
-    .feature-link:hover {
+      align-items: flex-start;
+      justify-content: space-between;
       gap: 12px;
     }
 
-    .arrow {
-      transition: transform 0.3s ease;
+    .module-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      flex-shrink: 0;
     }
 
-    .feature-link:hover .arrow {
-      transform: translateX(4px);
+    .module-icon-wrap svg {
+      width: 22px;
+      height: 22px;
     }
 
-    /* How It Works Section */
-    .how-it-works {
-      background: linear-gradient(180deg, #f5f5f7 0%, #fbfbfd 100%);
-      padding: 100px 20px;
+    .module-badges {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
-    .how-it-works-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      text-align: center;
+    .badge {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .badge-platform {
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .badge-difficulty {
+      color: var(--amber-bright);
+      background: rgba(245,158,11,0.08);
+      border: 1px solid rgba(245,158,11,0.18);
+    }
+
+    .badge-difficulty.easy {
+      color: var(--green-bright);
+      background: rgba(34,197,94,0.08);
+      border-color: rgba(34,197,94,0.18);
+    }
+
+    .badge-difficulty.hard {
+      color: var(--red-bright);
+      background: rgba(239,68,68,0.08);
+      border-color: rgba(239,68,68,0.18);
+    }
+
+    .module-name {
+      font-family: var(--font-body);
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .module-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .module-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .module-duration {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .module-arrow {
+      display: flex;
+      align-items: center;
+      color: var(--card-accent, var(--cyan));
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: all var(--transition);
+    }
+
+    .module-card:hover .module-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* =============================================
+       HOW IT WORKS
+    ============================================= */
+    .how-section {
+      background: var(--bg-void);
     }
 
     .steps-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 32px;
-      margin-top: 60px;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: 0;
+      align-items: start;
+      margin-top: 64px;
     }
 
-    .step-card {
-      padding: 32px 24px;
+    .step-connector {
+      padding-top: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+    }
+
+    .step-connector-line {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .connector-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--border-mid);
+    }
+
+    .step {
       text-align: center;
+      padding: 0 24px;
     }
 
     .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       width: 64px;
       height: 64px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--apple-blue), #00c7be);
-      color: white;
-      font-size: 28px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 24px;
-      box-shadow: 0 4px 20px rgba(0, 113, 227, 0.3);
-    }
-
-    .step-card h3 {
-      font-size: 21px;
-      font-weight: 600;
-      margin-bottom: 12px;
-      color: var(--text-primary);
-    }
-
-    .step-card p {
-      font-size: 17px;
-      line-height: 1.6;
-      color: var(--text-secondary);
-    }
-
-    /* Why Choose Section */
-    .why-choose {
-      padding: 100px 20px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .why-choose-content {
-      text-align: center;
-    }
-
-    .benefits-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 32px;
-      margin-top: 60px;
-    }
-
-    .benefit-card {
+      border-radius: 16px;
       background: var(--bg-card);
-      border-radius: 20px;
-      padding: 32px;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid var(--border-subtle);
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .step-number-text {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--bg-base);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .step-icon {
+      color: var(--cyan-bright);
+    }
+
+    .step-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+
+    .step-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    /* =============================================
+       PLATFORM SECTION
+    ============================================= */
+    .platform-section {
+      background: var(--bg-base);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .platform-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    /* Desktop mockup */
+    .desktop-mockup {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .mockup-titlebar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .mockup-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .mockup-dot:nth-child(1) { background: #ff5f57; }
+    .mockup-dot:nth-child(2) { background: #febc2e; }
+    .mockup-dot:nth-child(3) { background: #28c840; }
+
+    .mockup-url {
+      flex: 1;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
       text-align: center;
     }
 
-    .benefit-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    .mockup-body {
+      padding: 16px;
     }
 
-    .benefit-icon {
-      width: 56px;
-      height: 56px;
+    .mockup-email-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid var(--border-subtle);
+      margin-bottom: 8px;
+    }
+
+    .mockup-sender-dot {
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      background: linear-gradient(135deg, rgba(0, 113, 227, 0.1), rgba(0, 199, 190, 0.1));
+      flex-shrink: 0;
+    }
+
+    .mockup-email-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .mockup-email-from {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .mockup-email-subj {
+      font-size: 10px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .mockup-flag {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      padding: 2px 6px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    .mockup-flag.red {
+      background: rgba(239,68,68,0.15);
+      color: var(--red-bright);
+      border: 1px solid rgba(239,68,68,0.3);
+    }
+
+    .mockup-flag.green {
+      background: rgba(34,197,94,0.1);
+      color: var(--green-bright);
+      border: 1px solid rgba(34,197,94,0.25);
+    }
+
+    .mockup-flag.amber {
+      background: rgba(245,158,11,0.1);
+      color: var(--amber-bright);
+      border: 1px solid rgba(245,158,11,0.25);
+    }
+
+    /* Platform center text */
+    .platform-center {
+      text-align: center;
+    }
+
+    .platform-center .section-heading {
+      font-size: clamp(26px, 3vw, 40px);
+      margin-bottom: 14px;
+    }
+
+    .platform-center .section-sub {
+      font-size: 14px;
+      max-width: 280px;
+      margin: 0 auto 24px;
+    }
+
+    .platform-tagline {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--cyan-bright);
+      text-align: center;
+    }
+
+    /* Phone mockup */
+    .phone-mockup-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .phone-mockup {
+      width: 200px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-mid);
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+    }
+
+    .phone-notch {
+      height: 28px;
+      background: var(--bg-void);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 28px;
-      margin: 0 auto 20px;
     }
 
-    .benefit-card h3 {
-      font-size: 20px;
-      font-weight: 600;
+    .phone-notch-bar {
+      width: 60px;
+      height: 4px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 2px;
+    }
+
+    .phone-screen {
+      padding: 12px;
+      min-height: 340px;
+      background: var(--bg-surface);
+    }
+
+    .phone-header {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-primary);
       margin-bottom: 12px;
+    }
+
+    .phone-streak {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .phone-streak-flame {
+      font-size: 20px;
+    }
+
+    .phone-streak-info .phone-streak-count {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--amber-bright);
+    }
+
+    .phone-streak-info .phone-streak-label {
+      font-size: 9px;
+      color: var(--text-muted);
+    }
+
+    .phone-challenge-card {
+      background: linear-gradient(135deg, rgba(239,68,68,0.12), rgba(239,68,68,0.04));
+      border: 1px solid rgba(239,68,68,0.2);
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .phone-challenge-label {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--red-bright);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+
+    .phone-challenge-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .phone-challenge-bar {
+      height: 3px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 2px;
+    }
+
+    .phone-challenge-fill {
+      height: 100%;
+      width: 60%;
+      background: var(--red);
+      border-radius: 2px;
+    }
+
+    .phone-tab-bar {
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .phone-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .phone-tab-dot {
+      width: 20px;
+      height: 3px;
+      border-radius: 2px;
+    }
+
+    .phone-tab-dot.active { background: var(--red); }
+    .phone-tab-dot.inactive { background: rgba(255,255,255,0.1); }
+
+    .phone-tab-label {
+      font-size: 7px;
+      color: var(--text-muted);
+    }
+
+    .phone-tab.active .phone-tab-label { color: var(--red); }
+
+    .app-store-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .app-store-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-mid);
+      border-radius: 8px;
+      font-size: 11px;
+      color: var(--text-secondary);
+      transition: all var(--transition);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .app-store-btn:hover {
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(255,255,255,0.2);
       color: var(--text-primary);
     }
 
-    .benefit-card p {
-      font-size: 16px;
-      line-height: 1.6;
-      color: var(--text-secondary);
+    .app-store-btn .store-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--text-muted);
+      display: block;
     }
 
-    /* Stats Section */
-    .stats {
-      background: linear-gradient(135deg, #0071e3 0%, #00c7be 100%);
-      padding: 80px 20px;
-      margin: 60px 0;
+    .app-store-btn .store-name {
+      font-weight: 600;
+      display: block;
+    }
+
+    /* =============================================
+       STATS BAR
+    ============================================= */
+    .stats-section {
+      padding: 60px 24px;
+      background: var(--bg-deep);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
     }
 
     .stats-grid {
-      max-width: 1200px;
-      margin: 0 auto;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 40px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .stat-item {
+      background: var(--bg-card);
+      padding: 36px 24px;
       text-align: center;
     }
 
-    .stat {
-      color: white;
-    }
-
     .stat-number {
-      font-size: 56px;
+      font-family: var(--font-mono);
+      font-size: clamp(36px, 4vw, 52px);
       font-weight: 700;
+      color: var(--cyan-bright);
+      text-shadow: 0 0 24px rgba(34,211,238,0.4);
+      letter-spacing: -0.03em;
       line-height: 1;
       margin-bottom: 8px;
     }
 
     .stat-label {
-      font-size: 19px;
-      opacity: 0.9;
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 500;
     }
 
-    /* Email Signup Section */
-    .email-signup {
-      padding: 100px 20px;
-      background: linear-gradient(180deg, #fbfbfd 0%, #f5f5f7 100%);
+    /* =============================================
+       ENTERPRISE SECTION
+    ============================================= */
+    .enterprise-section {
+      background: var(--bg-void);
     }
 
-    .email-signup-container {
-      max-width: 600px;
+    .enterprise-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 56px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Gradient border effect via box-shadow */
+    .enterprise-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(239,68,68,0.4), rgba(168,85,247,0.3), rgba(6,182,212,0.3));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .enterprise-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .enterprise-content .section-heading {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .enterprise-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .enterprise-bullets li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+
+    .enterprise-bullets li::before {
+      content: '';
+      display: block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green-bright);
+      flex-shrink: 0;
+      box-shadow: 0 0 6px var(--green);
+    }
+
+    .enterprise-stats {
+      display: flex;
+      gap: 32px;
+    }
+
+    .ent-stat-num {
+      font-family: var(--font-mono);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .ent-stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .enterprise-visual {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .ent-chart-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ent-chart-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      width: 120px;
+      flex-shrink: 0;
+    }
+
+    .ent-chart-track {
+      flex: 1;
+      height: 8px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .ent-chart-fill {
+      height: 100%;
+      border-radius: 4px;
+    }
+
+    .ent-chart-pct {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      width: 30px;
+      text-align: right;
+    }
+
+    /* =============================================
+       EMAIL SIGNUP
+    ============================================= */
+    .signup-section {
+      padding: 80px 24px;
+      background: var(--bg-base);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .signup-card {
+      max-width: 560px;
       margin: 0 auto;
       text-align: center;
     }
 
-    .email-signup h2 {
-      font-size: clamp(36px, 5vw, 48px);
-      font-weight: 700;
-      margin-bottom: 16px;
-      color: var(--text-primary);
+    .signup-card .section-heading {
+      font-size: clamp(28px, 3.5vw, 44px);
+      margin-bottom: 12px;
     }
 
-    .email-signup-subtext {
-      font-size: 19px;
-      color: var(--text-secondary);
-      margin-bottom: 40px;
-      line-height: 1.5;
+    .signup-card .section-sub {
+      max-width: 380px;
+      margin: 0 auto 32px;
+      font-size: 15px;
     }
 
-    .email-form {
+    .signup-form {
       display: flex;
-      gap: 12px;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-      justify-content: center;
+      gap: 10px;
+      max-width: 440px;
+      margin: 0 auto 14px;
     }
 
-    .email-input {
+    .signup-input {
       flex: 1;
-      min-width: 260px;
-      padding: 14px 20px;
-      font-size: 16px;
-      border: 2px solid rgba(0, 0, 0, 0.1);
-      border-radius: 12px;
-      font-family: inherit;
-      transition: border-color 0.2s ease;
-    }
-
-    .email-input:focus {
+      padding: 13px 18px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-mid);
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--text-primary);
       outline: none;
-      border-color: var(--apple-blue);
+      transition: border-color var(--transition), box-shadow var(--transition);
     }
 
-    .btn-subscribe {
-      padding: 14px 32px;
-      font-size: 16px;
-      background: var(--apple-blue);
-      color: white;
+    .signup-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .signup-input:focus {
+      border-color: rgba(34,211,238,0.4);
+      box-shadow: 0 0 0 3px rgba(34,211,238,0.08);
+    }
+
+    .btn-signup {
+      padding: 13px 24px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      background: var(--red);
       border: none;
-      border-radius: 12px;
-      font-weight: 500;
+      border-radius: 8px;
       cursor: pointer;
-      transition: background 0.2s ease;
+      white-space: nowrap;
+      transition: all var(--transition);
     }
 
-    .btn-subscribe:hover {
-      background: var(--apple-blue-hover);
+    .btn-signup:hover {
+      background: #dc2626;
+      box-shadow: 0 4px 20px rgba(239,68,68,0.35);
     }
 
-    .email-privacy {
-      font-size: 13px;
-      color: var(--text-secondary);
+    .signup-fine {
+      font-size: 12px;
+      color: var(--text-muted);
     }
 
-    /* Footer */
+    /* =============================================
+       SYNC PROGRESS SECTION
+    ============================================= */
+    .sync-section {
+      padding: 80px 24px;
+      background: var(--bg-void);
+    }
+
+    .sync-card {
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .sync-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: rgba(34,211,238,0.08);
+      border: 1px solid rgba(34,211,238,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      color: var(--cyan-bright);
+    }
+
+    .sync-card .section-heading {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .sync-card .section-sub {
+      margin: 0 auto 28px;
+      max-width: 380px;
+      font-size: 14px;
+    }
+
+    .btn-sync {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 28px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--cyan-bright);
+      background: rgba(34,211,238,0.06);
+      border: 1px solid rgba(34,211,238,0.3);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .btn-sync:hover {
+      background: rgba(34,211,238,0.1);
+      border-color: rgba(34,211,238,0.5);
+      box-shadow: 0 0 20px rgba(34,211,238,0.15);
+    }
+
+    /* =============================================
+       FOOTER
+    ============================================= */
     footer {
-      background: #1d1d1f;
-      color: #f5f5f7;
-      padding: 60px 20px 40px;
+      background: var(--bg-deep);
+      border-top: 1px solid var(--border-subtle);
+      padding: 72px 24px 40px;
     }
 
-    .footer-container {
+    .footer-inner {
       max-width: 1200px;
       margin: 0 auto;
     }
 
-    .footer-grid {
+    .footer-top {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 40px;
-      margin-bottom: 40px;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 56px;
     }
 
-    .footer-column h4 {
-      font-size: 14px;
-      font-weight: 600;
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       margin-bottom: 16px;
-      color: #f5f5f7;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
-    .footer-column ul {
-      list-style: none;
+    .footer-brand img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
     }
 
-    .footer-column ul li {
-      margin-bottom: 10px;
-    }
-
-    .footer-column a {
-      color: #a1a1a6;
-      text-decoration: none;
+    .footer-brand-text {
+      font-family: var(--font-body);
       font-size: 14px;
-      transition: color 0.2s ease;
-    }
-
-    .footer-column a:hover {
-      color: var(--apple-blue);
-    }
-
-    .footer-social {
-      display: flex;
-      gap: 16px;
-      margin-top: 16px;
-    }
-
-    .social-link {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      font-size: 18px;
-      transition: background 0.2s ease;
-    }
-
-    .social-link:hover {
-      background: var(--apple-blue);
-    }
-
-    .footer-bottom {
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding-top: 24px;
-      text-align: center;
-    }
-
-    .footer-bottom p {
-      color: #a1a1a6;
-      font-size: 13px;
-    }
-
-    .footer-bottom a {
-      color: var(--apple-blue);
-      text-decoration: none;
-    }
-
-    .footer-bottom a:hover {
-      text-decoration: underline;
-    }
-
-    /* Modal Styles */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 2000;
-      background: rgba(0, 0, 0, 0.5);
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-
-    .modal.active {
-      display: flex;
-    }
-
-    .modal-content {
-      background: white;
-      border-radius: 24px;
-      padding: 48px;
-      max-width: 440px;
-      width: 90%;
-      max-height: 90vh;
-      overflow-y: auto;
-      position: relative;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      animation: modalSlideIn 0.3s ease;
-    }
-
-    @keyframes modalSlideIn {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: none;
-      border: none;
-      font-size: 28px;
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: color 0.2s ease;
-    }
-
-    .modal-close:hover {
-      color: var(--text-primary);
-    }
-
-    .modal-content h2 {
-      font-size: 32px;
       font-weight: 700;
-      margin-bottom: 8px;
       color: var(--text-primary);
     }
 
-    .modal-content p {
-      color: var(--text-secondary);
-      margin-bottom: 32px;
-      font-size: 15px;
-    }
-
-    .form-group {
+    .footer-about-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.65;
       margin-bottom: 20px;
     }
 
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 14px;
+    .footer-github-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
       font-weight: 500;
+      color: var(--text-secondary);
+      transition: color var(--transition);
+    }
+
+    .footer-github-link:hover {
       color: var(--text-primary);
     }
 
-    .form-group input {
-      width: 100%;
-      padding: 14px 16px;
-      font-size: 16px;
-      border: 2px solid rgba(0, 0, 0, 0.1);
-      border-radius: 12px;
-      font-family: inherit;
-      transition: border-color 0.2s ease;
+    .footer-col h4 {
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 20px;
     }
 
-    .form-group input:focus {
-      outline: none;
-      border-color: var(--apple-blue);
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
-    .btn-modal-submit {
-      width: 100%;
-      padding: 14px;
-      font-size: 16px;
-      background: var(--apple-blue);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
-
-    .btn-modal-submit:hover {
-      background: var(--apple-blue-hover);
-    }
-
-    .modal-link {
-      text-align: center;
-      margin-top: 24px;
+    .footer-links a {
       font-size: 14px;
       color: var(--text-secondary);
+      transition: color var(--transition);
     }
 
-    .modal-link a {
-      color: var(--apple-blue);
-      text-decoration: none;
-      font-weight: 500;
+    .footer-links a:hover {
+      color: var(--text-primary);
     }
 
-    .modal-link a:hover {
-      text-decoration: underline;
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 32px;
+      border-top: 1px solid var(--border-subtle);
+      flex-wrap: wrap;
+      gap: 16px;
     }
 
-    .forgot-password {
-      text-align: right;
-      margin-top: 8px;
-      font-size: 14px;
-    }
-
-    .forgot-password a {
-      color: var(--apple-blue);
-      text-decoration: none;
-    }
-
-    .forgot-password a:hover {
-      text-decoration: underline;
-    }
-
-    .terms-notice {
+    .footer-copy {
       font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-bottom-links a {
+      font-size: 13px;
+      color: var(--text-muted);
+      transition: color var(--transition);
+    }
+
+    .footer-bottom-links a:hover {
       color: var(--text-secondary);
-      margin-top: 16px;
-      text-align: center;
-      line-height: 1.5;
+    }
+
+    /* =============================================
+       RESPONSIVE
+    ============================================= */
+    @media (max-width: 1024px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .hero-content {
+        max-width: 100%;
+        text-align: center;
+      }
+
+      .hero-sub {
+        max-width: 100%;
+      }
+
+      .hero-ctas {
+        justify-content: center;
+      }
+
+      .hero-eyebrow {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .annotation {
+        display: none;
+      }
+
+      .steps-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .step-connector {
+        display: none;
+      }
+
+      .platform-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .platform-center {
+        order: -1;
+      }
+
+      .phone-mockup-wrap {
+        order: 1;
+      }
+
+      .enterprise-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .footer-top {
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+      }
     }
 
     @media (max-width: 768px) {
-      .navbar-menu {
+      section { padding: 72px 20px; }
+
+      .nav-links,
+      .nav-right {
         display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: rgba(255, 255, 255, 0.98);
-        backdrop-filter: blur(20px);
-        flex-direction: column;
-        gap: 0;
-        padding: 20px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       }
 
-      .navbar-menu.active {
+      .nav-hamburger {
         display: flex;
       }
 
-      .navbar-menu li {
-        width: 100%;
-        text-align: center;
-        padding: 12px 0;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-      }
-
-      .navbar-menu li:last-child {
-        border-bottom: none;
-      }
-
-      .navbar-actions {
-        display: none;
-      }
-
-      .mobile-menu-toggle {
-        display: block;
-      }
-
-      .modal-content {
-        padding: 32px 24px;
-      }
-
-      .email-form {
-        flex-direction: column;
-      }
-
-      .email-input {
-        min-width: 100%;
-      }
-      .features-grid {
+      .modules-grid {
         grid-template-columns: 1fr;
       }
 
@@ -906,537 +1760,948 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .steps-grid {
-        grid-template-columns: 1fr;
+      .signup-form {
+        flex-direction: column;
       }
 
-      .benefits-grid {
-        grid-template-columns: 1fr;
+      .enterprise-card {
+        padding: 32px 24px;
       }
 
-      .how-it-works,
-      .why-choose,
-      .features {
-        padding: 60px 20px;
+      .footer-top {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1023px) {
+      .modules-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   </style>
 </head>
 <body>
-  <!-- Navigation Bar -->
+
+  <!-- ================================================
+       NAVIGATION
+  ================================================ -->
   <nav class="navbar" id="navbar">
-    <div class="navbar-container">
-      <a href="index.html" class="navbar-brand">
-        <img src="assets/P.png" alt="Logo" class="navbar-logo">
-        <span>Just For Phishing</span>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/P.png" alt="Just For Phishing logo" />
+        <span class="nav-logo-text">Just For Phishing</span>
       </a>
 
-      <ul class="navbar-menu" id="navbarMenu">
-        <li><a href="#features">Features</a></li>
+      <ul class="nav-links">
+        <li><a href="#modules">Modules</a></li>
         <li><a href="#how-it-works">How It Works</a></li>
-        <li><a href="lab.html">The Lab</a></li>
-        <li><a href="simulators.html">Simulators</a></li>
+        <li><a href="#platform">Platform</a></li>
         <li><a href="resources.html">Resources</a></li>
+        <li><a href="about.html">About</a></li>
       </ul>
 
-      <div class="navbar-actions">
-        <button class="btn btn-login" onclick="openLoginModal()">Log In</button>
-        <button class="btn btn-signup" onclick="openSignupModal()">Sign Up</button>
+      <div class="nav-right">
+        <button class="btn-nav-secondary" id="navLoginBtn">Log In</button>
+        <a href="#platform" class="btn-nav-app">Get the App</a>
       </div>
 
-      <button class="mobile-menu-toggle" id="mobileMenuToggle" onclick="toggleMobileMenu()">
-        ☰
+      <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
+    </div>
+
+    <div class="nav-mobile" id="navMobile">
+      <a href="#modules">Modules</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#platform">Platform</a>
+      <a href="resources.html">Resources</a>
+      <a href="about.html">About</a>
+      <a href="#platform">Get the App</a>
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-content">
-      <div class="logo-3d">
-        <img src="assets/P.png" alt="Just for Phishing" />
+  <!-- ================================================
+       HERO — PHISHING EMAIL DISSECTION
+  ================================================ -->
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-eyebrow">Threat Awareness Training</div>
+        <h1 class="hero-headline">See the trap<br/>before you're <em>caught</em></h1>
+        <p class="hero-sub">Free, interactive phishing training. No signup required. No data collected. Build the instincts that keep attackers out.</p>
+        <div class="hero-ctas">
+          <a href="lab.html" class="btn-primary">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Start Training
+          </a>
+          <a href="simulators.html" class="btn-secondary">
+            Try a Simulator
+          </a>
+        </div>
       </div>
 
-      <h1>Stay Sharp.<br>Stay Secure.</h1>
+      <div class="hero-email-panel">
+        <div class="email-dissect-card">
+          <div class="email-toolbar">
+            <div class="email-toolbar-dots">
+              <div class="toolbar-dot"></div>
+              <div class="toolbar-dot"></div>
+              <div class="toolbar-dot"></div>
+            </div>
+            <div class="email-toolbar-label">Inbox — Threat Analysis Mode</div>
+          </div>
 
-      <p class="tagline">
-        Interactive phishing awareness training that actually works.<br>
-        Learn to recognize threats before they recognize you.
-      </p>
+          <div class="email-body-wrap">
+            <!-- FROM field -->
+            <div class="email-field" style="position:relative;">
+              <div class="email-field-label">From</div>
+              <div class="email-field-value">
+                PayPaI Security &lt;<span class="flagged">alerts@paypa1-secure.net</span>&gt;
+              </div>
+              <!-- Annotation 1: homoglyph -->
+              <div class="annotation annotation-1">
+                <div class="annotation-line"></div>
+                <div class="annotation-pill">Homoglyph: "paypa<strong>1</strong>" uses '1' not 'l'</div>
+              </div>
+              <!-- Annotation 2: non-official domain -->
+              <div class="annotation annotation-2" style="top: 70%;">
+                <div class="annotation-line"></div>
+                <div class="annotation-pill">Non-official domain</div>
+              </div>
+            </div>
 
-      <div class="cta-buttons">
-        <a href="lab.html" class="btn btn-primary">Enter the Lab</a>
-        <a href="simulators.html" class="btn btn-secondary">Try Simulators</a>
+            <!-- SUBJECT field -->
+            <div class="email-field" style="position:relative;">
+              <div class="email-field-label">Subject</div>
+              <div class="email-field-value">
+                <span class="flagged">Urgent:</span> Your account has been compromised
+              </div>
+              <!-- Annotation 3: urgency -->
+              <div class="annotation annotation-3">
+                <div class="annotation-line"></div>
+                <div class="annotation-pill">Urgency tactics &amp; fear language</div>
+              </div>
+            </div>
+
+            <!-- BODY -->
+            <div class="email-field" style="position:relative; border-bottom:none;">
+              <div class="email-field-label">Message</div>
+              <div class="email-message-text">
+                Dear Valued Customer,<br/><br/>
+                We have detected unusual activity on your account. You must verify your identity immediately to avoid permanent suspension.<br/><br/>
+                <a class="suspicious-link" href="javascript:void(0)">Click here to secure your account &rarr; http://paypa1-secure.net/verify/confirm?token=8f3k2</a>
+              </div>
+              <!-- Annotation 4: suspicious link -->
+              <div class="annotation annotation-4" style="top:auto; bottom:8px; transform:none;">
+                <div class="annotation-line"></div>
+                <div class="annotation-pill">Suspicious link — mismatched domain</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Features Section -->
-  <section class="features" id="features">
-    <div class="section-header">
-      <h2>Train Your Security Instincts</h2>
-      <p class="section-subtitle">Three powerful ways to master phishing detection</p>
-    </div>
-
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">🔬</div>
-        <h3>The Lab</h3>
-        <p>Deep-dive training modules with detailed analysis. Learn to dissect emails, text messages, and sophisticated attacks with real-world examples.</p>
-        <ul class="feature-list">
-          <li>Email Phishing Lab - Analyze complete email headers</li>
-          <li>SMS Smishing Lab - Identify text message scams</li>
-          <li>Targeted Phishing - Industry-specific scenarios</li>
-        </ul>
-        <a href="lab.html" class="feature-link">
-          Explore the Lab
-          <span class="arrow">→</span>
-        </a>
+  <!-- ================================================
+       MODULES GRID
+  ================================================ -->
+  <section class="modules-section" id="modules">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="reveal">
+          <span class="section-eyebrow">Training Modules</span>
+          <h2 class="section-heading">Choose your training</h2>
+          <p class="section-sub">Six interactive scenarios covering every attack vector. Start with one, master them all.</p>
+        </div>
       </div>
 
-      <div class="feature-card">
-        <div class="feature-icon">⚡</div>
-        <h3>Simulators</h3>
-        <p>Fast-paced, realistic scenarios that test your skills under pressure. Experience real-world phishing attacks safely in a controlled environment.</p>
-        <ul class="feature-list">
-          <li>MFA Fatigue Drill - Rapid response training</li>
-          <li>Phish or Treat - Timed identification challenge</li>
-          <li>Speed drills - Build muscle memory</li>
-        </ul>
-        <a href="simulators.html" class="feature-link">
-          Launch Simulators
-          <span class="arrow">→</span>
-        </a>
-      </div>
+      <div class="modules-grid">
 
-      <div class="feature-card">
-        <div class="feature-icon">📚</div>
-        <h3>Resources</h3>
-        <p>Comprehensive guides, reporting tools, and security best practices to protect yourself and your organization from threats.</p>
-        <ul class="feature-list">
-          <li>Phishing reporting guidelines</li>
-          <li>Security best practices & checklists</li>
-          <li>Emergency response procedures</li>
-        </ul>
-        <a href="resources.html" class="feature-link">
-          View Resources
-          <span class="arrow">→</span>
+        <!-- Quick Check -->
+        <a href="quiz.html" class="module-card reveal reveal-delay-1" style="--card-accent: #22c55e;">
+          <div class="module-card-top">
+            <div class="module-icon-wrap">
+              <svg viewBox="0 0 22 22" fill="none" aria-hidden="true">
+                <path d="M11 2a9 9 0 1 1 0 18A9 9 0 0 1 11 2Z" stroke="#22c55e" stroke-width="1.5"/>
+                <path d="M8.5 9a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2-2.5 3.5" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="11" cy="15.5" r=".75" fill="#22c55e"/>
+              </svg>
+            </div>
+            <div class="module-badges">
+              <span class="badge badge-difficulty easy">Beginner</span>
+              <span class="badge badge-platform">Desktop</span>
+              <span class="badge badge-platform">Mobile</span>
+            </div>
+          </div>
+          <div class="module-name">Quick Check</div>
+          <div class="module-desc">Test your ability to spot phishing red flags in rapid-fire email scenarios. Build your baseline threat awareness score.</div>
+          <div class="module-footer">
+            <span class="module-duration">~5 min</span>
+            <span class="module-arrow">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
         </a>
+
+        <!-- Phish or Treat -->
+        <a href="phish-or-treat.html" class="module-card reveal reveal-delay-2" style="--card-accent: #f97316;">
+          <div class="module-card-top">
+            <div class="module-icon-wrap">
+              <svg viewBox="0 0 22 22" fill="none" aria-hidden="true">
+                <path d="M11 3c1 2 4 3 4 6a4 4 0 0 1-8 0c0-3 3-4 4-6Z" stroke="#f97316" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="M8 16v2M11 17v2M14 16v2" stroke="#f97316" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="module-badges">
+              <span class="badge badge-difficulty">Intermediate</span>
+              <span class="badge badge-platform">Desktop</span>
+              <span class="badge badge-platform">Mobile</span>
+            </div>
+          </div>
+          <div class="module-name">Phish or Treat</div>
+          <div class="module-desc">A timed challenge where you classify emails as phishing or legitimate. Score points, avoid traps, beat the clock.</div>
+          <div class="module-footer">
+            <span class="module-duration">~8 min</span>
+            <span class="module-arrow">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- MFA Fatigue -->
+        <a href="mfa-fatigue.html" class="module-card reveal reveal-delay-3" style="--card-accent: #a855f7;">
+          <div class="module-card-top">
+            <div class="module-icon-wrap">
+              <svg viewBox="0 0 22 22" fill="none" aria-hidden="true">
+                <rect x="4" y="8" width="14" height="10" rx="2" stroke="#a855f7" stroke-width="1.5"/>
+                <path d="M7.5 8V6a3.5 3.5 0 1 1 7 0v2" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="11" cy="13" r="1.5" fill="#a855f7"/>
+              </svg>
+            </div>
+            <div class="module-badges">
+              <span class="badge badge-difficulty hard">Advanced</span>
+              <span class="badge badge-platform">Desktop</span>
+              <span class="badge badge-platform">Mobile</span>
+            </div>
+          </div>
+          <div class="module-name">MFA Fatigue Drill</div>
+          <div class="module-desc">Experience a simulated MFA push-bombing attack. Learn when to approve, when to deny, and how attackers exploit fatigue.</div>
+          <div class="module-footer">
+            <span class="module-duration">~10 min</span>
+            <span class="module-arrow">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- Targeted Phishing -->
+        <a href="targeted-phishing.html" class="module-card reveal reveal-delay-4" style="--card-accent: #ef4444;">
+          <div class="module-card-top">
+            <div class="module-icon-wrap">
+              <svg viewBox="0 0 22 22" fill="none" aria-hidden="true">
+                <circle cx="11" cy="11" r="8" stroke="#ef4444" stroke-width="1.5"/>
+                <circle cx="11" cy="11" r="4" stroke="#ef4444" stroke-width="1.5"/>
+                <circle cx="11" cy="11" r="1.5" fill="#ef4444"/>
+                <path d="M11 2v3M11 17v3M2 11h3M17 11h3" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="module-badges">
+              <span class="badge badge-difficulty hard">Advanced</span>
+              <span class="badge badge-platform">Desktop</span>
+              <span class="badge badge-platform">Mobile</span>
+            </div>
+          </div>
+          <div class="module-name">Targeted Phishing</div>
+          <div class="module-desc">Spear phishing and whaling scenarios. Personalized attacks using OSINT-style data — the most dangerous category.</div>
+          <div class="module-footer">
+            <span class="module-duration">~12 min</span>
+            <span class="module-arrow">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- Email Lab -->
+        <a href="email-lab.html" class="module-card reveal reveal-delay-5" style="--card-accent: #06b6d4;">
+          <div class="module-card-top">
+            <div class="module-icon-wrap">
+              <svg viewBox="0 0 22 22" fill="none" aria-hidden="true">
+                <rect x="2" y="4" width="18" height="14" rx="2" stroke="#06b6d4" stroke-width="1.5"/>
+                <path d="M2 8l9 5 9-5" stroke="#06b6d4" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="module-badges">
+              <span class="badge badge-difficulty">Intermediate</span>
+              <span class="badge badge-platform">Desktop</span>
+              <span class="badge badge-platform">Mobile</span>
+            </div>
+          </div>
+          <div class="module-name">Email Phishing Lab</div>
+          <div class="module-desc">Deep-dive header analysis. Inspect raw email headers, trace spoofed senders, and identify malicious infrastructure.</div>
+          <div class="module-footer">
+            <span class="module-duration">~15 min</span>
+            <span class="module-arrow">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- SMS Smishing -->
+        <a href="sms-smishing.html" class="module-card reveal reveal-delay-6" style="--card-accent: #3b82f6;">
+          <div class="module-card-top">
+            <div class="module-icon-wrap">
+              <svg viewBox="0 0 22 22" fill="none" aria-hidden="true">
+                <rect x="5" y="2" width="12" height="18" rx="3" stroke="#3b82f6" stroke-width="1.5"/>
+                <path d="M8 6h6M8 9h4" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="11" cy="16.5" r="1" fill="#3b82f6"/>
+              </svg>
+            </div>
+            <div class="module-badges">
+              <span class="badge badge-difficulty easy">Beginner</span>
+              <span class="badge badge-platform">Desktop</span>
+              <span class="badge badge-platform">Mobile</span>
+            </div>
+          </div>
+          <div class="module-name">SMS Smishing</div>
+          <div class="module-desc">Identify fraudulent text messages. Package delivery scams, bank alerts, and government impersonation via SMS.</div>
+          <div class="module-footer">
+            <span class="module-duration">~6 min</span>
+            <span class="module-arrow">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+        </a>
+
       </div>
     </div>
   </section>
 
-  <!-- How It Works Section -->
-  <section class="how-it-works" id="how-it-works">
-    <div class="how-it-works-content">
-      <h2>How It Works</h2>
-      <p class="section-subtitle">Learn by doing - the most effective way to build security awareness</p>
+  <!-- ================================================
+       HOW IT WORKS
+  ================================================ -->
+  <section class="how-section" id="how-it-works">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="reveal">
+          <span class="section-eyebrow">Process</span>
+          <h2 class="section-heading">How it works</h2>
+          <p class="section-sub">Three steps from zero to threat-aware.</p>
+        </div>
+      </div>
 
       <div class="steps-grid">
-        <div class="step-card">
-          <div class="step-number">1</div>
-          <h3>Choose Your Training</h3>
-          <p>Pick from beginner-friendly quizzes to advanced email analysis labs</p>
+        <!-- Step 1 -->
+        <div class="step reveal">
+          <div class="step-number">
+            <span class="step-number-text">01</span>
+            <div class="step-icon">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+                <circle cx="13" cy="13" r="8" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M19 19l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M10.5 13a2.5 2.5 0 0 1 5 0" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+          <h3 class="step-title">Analyze</h3>
+          <p class="step-desc">Examine real-world phishing attempts in a fully safe, sandboxed environment. No credentials at risk. Ever.</p>
         </div>
 
-        <div class="step-card">
-          <div class="step-number">2</div>
-          <h3>Practice with Real Scenarios</h3>
-          <p>Interact with authentic phishing attempts in a safe, risk-free environment</p>
-        </div>
-
-        <div class="step-card">
-          <div class="step-number">3</div>
-          <h3>Learn from Feedback</h3>
-          <p>Get instant explanations showing exactly why emails are legitimate or malicious</p>
-        </div>
-
-        <div class="step-card">
-          <div class="step-number">4</div>
-          <h3>Build Your Skills</h3>
-          <p>Track progress and repeat modules to strengthen your phishing detection abilities</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Why Choose Section -->
-  <section class="why-choose">
-    <div class="why-choose-content">
-      <h2>Why Just For Phishing?</h2>
-      <div class="benefits-grid">
-        <div class="benefit-card">
-          <div class="benefit-icon">🎯</div>
-          <h3>Realistic Scenarios</h3>
-          <p>Train with actual phishing tactics used by attackers today</p>
-        </div>
-
-        <div class="benefit-card">
-          <div class="benefit-icon">🔒</div>
-          <h3>100% Private</h3>
-          <p>No tracking, no data collection, no signup required</p>
-        </div>
-
-        <div class="benefit-card">
-          <div class="benefit-icon">💰</div>
-          <h3>Completely Free</h3>
-          <p>Full access to all training modules at no cost</p>
-        </div>
-
-        <div class="benefit-card">
-          <div class="benefit-icon">📱</div>
-          <h3>Works Anywhere</h3>
-          <p>Fully responsive - train on desktop, tablet, or mobile</p>
-        </div>
-
-        <div class="benefit-card">
-          <div class="benefit-icon">⚡</div>
-          <h3>Self-Paced</h3>
-          <p>Learn at your own speed, on your own schedule</p>
-        </div>
-
-        <div class="benefit-card">
-          <div class="benefit-icon">🎓</div>
-          <h3>Evidence-Based</h3>
-          <p>Training methods proven to improve threat detection</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Stats Section -->
-  <section class="stats">
-    <div class="stats-grid">
-      <div class="stat">
-        <div class="stat-number">20+</div>
-        <div class="stat-label">Training Scenarios</div>
-      </div>
-      <div class="stat">
-        <div class="stat-number">6</div>
-        <div class="stat-label">Interactive Modules</div>
-      </div>
-      <div class="stat">
-        <div class="stat-number">100%</div>
-        <div class="stat-label">Free & Private</div>
-      </div>
-      <div class="stat">
-        <div class="stat-number">0</div>
-        <div class="stat-label">Data Tracking</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Email Signup Section -->
-  <section class="email-signup">
-    <div class="email-signup-container">
-      <h2>Stay Informed. Stay Protected.</h2>
-      <p class="email-signup-subtext">
-        Get security tips, new training scenarios, and threat alerts delivered to your inbox.
-      </p>
-      <form class="email-form" id="emailSignupForm" onsubmit="handleEmailSignup(event)">
-        <input
-          type="email"
-          class="email-input"
-          placeholder="Enter your email"
-          required
-          id="emailInput"
-        >
-        <button type="submit" class="btn-subscribe">Subscribe</button>
-      </form>
-      <p class="email-privacy">
-        No spam. Unsubscribe anytime. We respect your privacy.
-      </p>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <div class="footer-container">
-      <div class="footer-grid">
-        <div class="footer-column">
-          <h4>About</h4>
-          <ul>
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="about.html#mission">Our Mission</a></li>
-            <li><a href="about.html#contact">Contact</a></li>
-            <li><a href="https://github.com/scottymker/just-for-phishing">GitHub</a></li>
-          </ul>
-          <div class="footer-social">
-            <a href="#" class="social-link">𝕏</a>
-            <a href="https://github.com/scottymker/just-for-phishing" class="social-link">⚙</a>
-            <a href="#" class="social-link">📧</a>
+        <!-- Connector -->
+        <div class="step-connector reveal">
+          <div class="step-connector-line">
+            <div class="connector-dot"></div>
+            <div class="connector-dot"></div>
+            <div class="connector-dot"></div>
+            <div class="connector-dot"></div>
+            <div class="connector-dot"></div>
           </div>
         </div>
 
-        <div class="footer-column">
+        <!-- Step 2 -->
+        <div class="step reveal reveal-delay-2">
+          <div class="step-number">
+            <span class="step-number-text">02</span>
+            <div class="step-icon">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+                <path d="M14 4v3M14 21v3M4 14H7M21 14h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="14" cy="14" r="6" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M11 14l2 2 4-4" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          <h3 class="step-title">Identify</h3>
+          <p class="step-desc">Spot the red flags — suspicious senders, urgency tactics, homoglyphs, domain spoofing — that separate phishing from legitimate messages.</p>
+        </div>
+
+        <!-- Connector -->
+        <div class="step-connector reveal reveal-delay-3">
+          <div class="step-connector-line">
+            <div class="connector-dot"></div>
+            <div class="connector-dot"></div>
+            <div class="connector-dot"></div>
+            <div class="connector-dot"></div>
+            <div class="connector-dot"></div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step reveal reveal-delay-4">
+          <div class="step-number">
+            <span class="step-number-text">03</span>
+            <div class="step-icon">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+                <path d="M14 3L5 7v7c0 5 4 9.5 9 11 5-1.5 9-6 9-11V7L14 3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="M10 14l2.5 2.5 5-5" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          <h3 class="step-title">Protect</h3>
+          <p class="step-desc">Build instincts through repetition. The muscle memory you develop here protects you and your entire organization from real attacks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================
+       PLATFORM — DESKTOP + MOBILE
+  ================================================ -->
+  <section class="platform-section" id="platform">
+    <div class="section-inner">
+      <div class="platform-grid">
+
+        <!-- Desktop mockup -->
+        <div class="reveal">
+          <div class="desktop-mockup">
+            <div class="mockup-titlebar">
+              <div class="mockup-dot"></div>
+              <div class="mockup-dot"></div>
+              <div class="mockup-dot"></div>
+              <div class="mockup-url">justforphishing.com — Email Phishing Lab</div>
+            </div>
+            <div class="mockup-body">
+              <div class="mockup-email-row">
+                <div class="mockup-sender-dot" style="background:#ef4444;box-shadow:0 0 5px #ef4444;"></div>
+                <div class="mockup-email-info">
+                  <div class="mockup-email-from">alerts@paypa1-secure.net</div>
+                  <div class="mockup-email-subj">Urgent: Your account has been compromised</div>
+                </div>
+                <span class="mockup-flag red">PHISH</span>
+              </div>
+              <div class="mockup-email-row">
+                <div class="mockup-sender-dot" style="background:#22c55e;box-shadow:0 0 5px #22c55e;"></div>
+                <div class="mockup-email-info">
+                  <div class="mockup-email-from">no-reply@github.com</div>
+                  <div class="mockup-email-subj">Your pull request has been merged</div>
+                </div>
+                <span class="mockup-flag green">LEGIT</span>
+              </div>
+              <div class="mockup-email-row">
+                <div class="mockup-sender-dot" style="background:#f59e0b;box-shadow:0 0 5px #f59e0b;"></div>
+                <div class="mockup-email-info">
+                  <div class="mockup-email-from">support@arnazon-help.com</div>
+                  <div class="mockup-email-subj">Your order has shipped — verify now</div>
+                </div>
+                <span class="mockup-flag amber">REVIEW</span>
+              </div>
+              <div class="mockup-email-row">
+                <div class="mockup-sender-dot" style="background:#ef4444;box-shadow:0 0 5px #ef4444;"></div>
+                <div class="mockup-email-info">
+                  <div class="mockup-email-from">it-admin@corp-helpdesk-reset.net</div>
+                  <div class="mockup-email-subj">Password reset required immediately</div>
+                </div>
+                <span class="mockup-flag red">PHISH</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Center text -->
+        <div class="platform-center reveal reveal-delay-2">
+          <span class="section-eyebrow">Platform</span>
+          <h2 class="section-heading">Train anywhere</h2>
+          <p class="section-sub">Desktop simulator for deep header analysis. Mobile app for daily practice and streak building.</p>
+          <div class="app-store-buttons" style="margin-bottom:16px;">
+            <a href="#" class="app-store-btn" aria-label="Download on App Store">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M18.7 18.7C17.3 20.3 15.8 20.3 15 20c-.9-.4-1.7-.4-2.6 0-.9.4-1.7.4-2.4 0C8.4 19.3 6.9 18 5.6 15.5 4.3 13 4 10.8 5 9.2c.7-1.2 1.8-2 3.1-2 .8 0 1.5.3 2.1.5.6.2 1 .4 1.4.4.4 0 .9-.2 1.5-.4.7-.2 1.4-.5 2.2-.4 1.3.1 2.3.7 3 1.7-1.2.8-1.8 2-1.8 3.4 0 1.6.8 2.9 2.2 3.7ZM15 7c.1-1.7-1.2-3.2-2.9-3.3C11.9 5.5 13 7.2 15 7Z" fill="currentColor"/>
+              </svg>
+              <div>
+                <span class="store-label">Download on the</span>
+                <span class="store-name">App Store</span>
+              </div>
+            </a>
+            <a href="#" class="app-store-btn" aria-label="Get it on Google Play">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 3.5L13.5 12 4 20.5V3.5Z" fill="currentColor" opacity=".7"/>
+                <path d="M4 3.5l14 5.5-4.5 3L4 3.5Z" fill="currentColor" opacity=".85"/>
+                <path d="M4 20.5l9.5-9 4.5 3L4 20.5Z" fill="currentColor" opacity=".85"/>
+                <path d="M18 9l2 3-2 3-4.5-3L18 9Z" fill="currentColor"/>
+              </svg>
+              <div>
+                <span class="store-label">Get it on</span>
+                <span class="store-name">Google Play</span>
+              </div>
+            </a>
+          </div>
+          <p class="platform-tagline">Sync your progress across devices</p>
+        </div>
+
+        <!-- Phone mockup -->
+        <div class="phone-mockup-wrap reveal reveal-delay-4">
+          <div class="phone-mockup">
+            <div class="phone-notch">
+              <div class="phone-notch-bar"></div>
+            </div>
+            <div class="phone-screen">
+              <div class="phone-header">Just For Phishing</div>
+
+              <div class="phone-streak">
+                <div class="phone-streak-flame">🔥</div>
+                <div class="phone-streak-info">
+                  <div class="phone-streak-count">7</div>
+                  <div class="phone-streak-label">Day streak</div>
+                </div>
+              </div>
+
+              <div class="phone-challenge-card">
+                <div class="phone-challenge-label">Daily Challenge</div>
+                <div class="phone-challenge-title">Spot the Spear Phish</div>
+                <div class="phone-challenge-bar">
+                  <div class="phone-challenge-fill"></div>
+                </div>
+              </div>
+
+              <div style="display:flex;gap:6px;margin-bottom:8px;">
+                <div style="flex:1;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:8px;">
+                  <div style="font-family:var(--font-mono);font-size:16px;color:#22c55e;font-weight:700;line-height:1;">84%</div>
+                  <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">Accuracy</div>
+                </div>
+                <div style="flex:1;background:rgba(6,182,212,0.08);border:1px solid rgba(6,182,212,0.2);border-radius:8px;padding:8px;">
+                  <div style="font-family:var(--font-mono);font-size:16px;color:var(--cyan-bright);font-weight:700;line-height:1;">4/6</div>
+                  <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">Modules</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="phone-tab-bar">
+              <div class="phone-tab active">
+                <div class="phone-tab-dot active"></div>
+                <div class="phone-tab-label">Home</div>
+              </div>
+              <div class="phone-tab">
+                <div class="phone-tab-dot inactive"></div>
+                <div class="phone-tab-label">Train</div>
+              </div>
+              <div class="phone-tab">
+                <div class="phone-tab-dot inactive"></div>
+                <div class="phone-tab-label">Progress</div>
+              </div>
+              <div class="phone-tab">
+                <div class="phone-tab-dot inactive"></div>
+                <div class="phone-tab-label">Settings</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================
+       STATS BAR
+  ================================================ -->
+  <section class="stats-section" id="stats">
+    <div class="section-inner">
+      <div class="stats-grid">
+        <div class="stat-item reveal">
+          <div class="stat-number" data-target="20" data-suffix="+">0</div>
+          <div class="stat-label">Training Scenarios</div>
+        </div>
+        <div class="stat-item reveal reveal-delay-2">
+          <div class="stat-number" data-target="6" data-suffix="">0</div>
+          <div class="stat-label">Interactive Modules</div>
+        </div>
+        <div class="stat-item reveal reveal-delay-3">
+          <div class="stat-number" data-target="100" data-suffix="%">0</div>
+          <div class="stat-label">Free &amp; Private</div>
+        </div>
+        <div class="stat-item reveal reveal-delay-4">
+          <div class="stat-number" data-target="0" data-suffix="" data-zero="true">0</div>
+          <div class="stat-label">Data Tracking</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================
+       ENTERPRISE / FOR ORGANIZATIONS
+  ================================================ -->
+  <section class="enterprise-section" id="enterprise">
+    <div class="section-inner">
+      <div class="enterprise-card reveal">
+        <div class="enterprise-inner">
+          <div class="enterprise-content">
+            <span class="section-eyebrow">For Organizations</span>
+            <h2 class="section-heading" style="text-align:left;font-size:clamp(28px,3.5vw,48px);">Bring phishing training<br/>to your team</h2>
+            <ul class="enterprise-bullets">
+              <li>Deploy realistic phishing simulations across your organization</li>
+              <li>Track employee progress with real-time dashboards</li>
+              <li>Export compliance-ready training reports</li>
+              <li>Run team leaderboards to drive engagement</li>
+              <li>Customize scenarios to match your threat landscape</li>
+            </ul>
+            <div class="enterprise-stats">
+              <div>
+                <div class="ent-stat-num">20+</div>
+                <div class="ent-stat-label">Scenarios</div>
+              </div>
+              <div>
+                <div class="ent-stat-num">6</div>
+                <div class="ent-stat-label">Modules</div>
+              </div>
+              <div>
+                <div class="ent-stat-num">Real-time</div>
+                <div class="ent-stat-label">Analytics</div>
+              </div>
+            </div>
+            <div style="margin-top:32px;">
+              <a href="about.html" class="btn-primary">Admin Dashboard</a>
+            </div>
+          </div>
+
+          <div class="enterprise-visual reveal reveal-delay-3">
+            <div style="margin-bottom:20px;">
+              <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);margin-bottom:14px;text-transform:uppercase;letter-spacing:.08em;">Team Click-Through Rates</div>
+
+              <div class="ent-chart-row">
+                <div class="ent-chart-label">Before Training</div>
+                <div class="ent-chart-track">
+                  <div class="ent-chart-fill" style="width:68%;background:var(--red);"></div>
+                </div>
+                <div class="ent-chart-pct">68%</div>
+              </div>
+              <div style="height:8px;"></div>
+              <div class="ent-chart-row">
+                <div class="ent-chart-label">After 2 Weeks</div>
+                <div class="ent-chart-track">
+                  <div class="ent-chart-fill" style="width:31%;background:var(--amber);"></div>
+                </div>
+                <div class="ent-chart-pct">31%</div>
+              </div>
+              <div style="height:8px;"></div>
+              <div class="ent-chart-row">
+                <div class="ent-chart-label">After 1 Month</div>
+                <div class="ent-chart-track">
+                  <div class="ent-chart-fill" style="width:7%;background:var(--green);"></div>
+                </div>
+                <div class="ent-chart-pct">7%</div>
+              </div>
+            </div>
+
+            <div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);border-radius:10px;padding:16px;">
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--green-bright);margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em;">Result</div>
+              <div style="font-family:var(--font-display);font-size:22px;color:var(--text-primary);">90% reduction in<br/><em>click-through rate</em></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================
+       EMAIL SIGNUP
+  ================================================ -->
+  <section class="signup-section" id="signup">
+    <div class="section-inner">
+      <div class="signup-card reveal">
+        <span class="section-eyebrow">Stay Current</span>
+        <h2 class="section-heading">Stay ahead of emerging threats</h2>
+        <p class="section-sub">New phishing tactics appear every week. Get notified when we add new modules and scenarios.</p>
+        <form class="signup-form" onsubmit="handleEmailSignup(event)">
+          <input type="email" class="signup-input" placeholder="you@company.com" required autocomplete="email" />
+          <button type="submit" class="btn-signup">Subscribe</button>
+        </form>
+        <p class="signup-fine">No spam. Unsubscribe anytime. We respect your privacy.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================
+       SYNC PROGRESS
+  ================================================ -->
+  <section class="sync-section" id="sync">
+    <div class="section-inner">
+      <div class="sync-card reveal">
+        <div class="sync-icon">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+            <path d="M4 13A9 9 0 0 1 22 10M22 13A9 9 0 0 1 4 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M19 7l3 3-3 3M7 13l-3 3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="section-eyebrow">Cross-Device</span>
+        <h2 class="section-heading">Sync Your Web Progress to the App</h2>
+        <p class="section-sub">Completed modules on desktop? Carry your progress to the mobile app in one tap.</p>
+        <button id="syncProgressBtn" class="btn-sync" onclick="handleSyncProgress()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2.5 8a5.5 5.5 0 0 1 10-3.1M13.5 8a5.5 5.5 0 0 1-10 3.1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            <path d="M11.5 4.5l1 .4 1-1.5M3.5 11.1l-1-.4-1 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Sync Progress to App
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================
+       FOOTER
+  ================================================ -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+
+        <!-- Column 1: Brand -->
+        <div>
+          <div class="footer-brand">
+            <img src="assets/P.png" alt="Just For Phishing" />
+            <span class="footer-brand-text">Just For Phishing</span>
+          </div>
+          <p class="footer-about-text">Free, open-source phishing awareness training. Built for individuals and organizations who believe security education should be accessible to everyone.</p>
+          <a href="https://github.com/scottymker/just-for-phishing" class="footer-github-link" target="_blank" rel="noopener noreferrer">
+            <!-- GitHub SVG icon -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z"/>
+            </svg>
+            View on GitHub
+          </a>
+        </div>
+
+        <!-- Column 2: Training -->
+        <div class="footer-col">
           <h4>Training</h4>
-          <ul>
-            <li><a href="lab.html">Email Phishing Lab</a></li>
-            <li><a href="lab.html">SMS Smishing Lab</a></li>
-            <li><a href="lab.html">Targeted Phishing</a></li>
-            <li><a href="simulators.html">MFA Fatigue Drill</a></li>
-            <li><a href="simulators.html">Phish or Treat</a></li>
+          <ul class="footer-links">
+            <li><a href="quiz.html">Quick Check</a></li>
+            <li><a href="phish-or-treat.html">Phish or Treat</a></li>
+            <li><a href="mfa-fatigue.html">MFA Fatigue Drill</a></li>
+            <li><a href="targeted-phishing.html">Targeted Phishing</a></li>
+            <li><a href="email-lab.html">Email Phishing Lab</a></li>
+            <li><a href="sms-smishing.html">SMS Smishing</a></li>
           </ul>
         </div>
 
-        <div class="footer-column">
+        <!-- Column 3: Resources -->
+        <div class="footer-col">
           <h4>Resources</h4>
-          <ul>
-            <li><a href="resources.html">Reporting Guidelines</a></li>
-            <li><a href="resources.html">Best Practices</a></li>
-            <li><a href="resources.html">Security Checklists</a></li>
-            <li><a href="resources.html">Emergency Response</a></li>
-            <li><a href="resources.html">Support</a></li>
+          <ul class="footer-links">
+            <li><a href="resources.html">All Resources</a></li>
+            <li><a href="resources.html#reporting">Reporting Guidelines</a></li>
+            <li><a href="resources.html#best-practices">Best Practices</a></li>
+            <li><a href="resources.html#checklists">Security Checklists</a></li>
+            <li><a href="resources.html#emergency">Emergency Response</a></li>
+            <li><a href="lab.html">Training Lab</a></li>
           </ul>
         </div>
 
-        <div class="footer-column">
-          <h4>Company</h4>
-          <ul>
+        <!-- Column 4: Legal -->
+        <div class="footer-col">
+          <h4>Legal &amp; More</h4>
+          <ul class="footer-links">
             <li><a href="privacy.html">Privacy Policy</a></li>
-            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="terms.html">Terms of Use</a></li>
             <li><a href="accessibility.html">Accessibility</a></li>
-            <li><a href="https://github.com/scottymker/just-for-phishing/issues">Report a Bug</a></li>
-            <li><a href="https://github.com/scottymker/just-for-phishing/issues">Feature Requests</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="https://github.com/scottymker/just-for-phishing/issues" target="_blank" rel="noopener noreferrer">Bug Reports</a></li>
+            <li><a href="https://github.com/scottymker/just-for-phishing/issues" target="_blank" rel="noopener noreferrer">Feature Requests</a></li>
           </ul>
         </div>
+
       </div>
 
       <div class="footer-bottom">
-        <p>
-          &copy; 2025 Just For Phishing. Built with care for security education.
-          Open source on <a href="https://github.com/scottymker/just-for-phishing">GitHub</a>.
+        <p class="footer-copy">
+          &copy; 2025 Just For Phishing. Open source under MIT License. Built with &#x2764;&#xFE0F; for a safer internet.
         </p>
+        <div class="footer-bottom-links">
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+          <a href="https://github.com/scottymker/just-for-phishing" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
       </div>
     </div>
   </footer>
 
-  <!-- Login Modal -->
-  <div class="modal" id="loginModal">
-    <div class="modal-content">
-      <button class="modal-close" onclick="closeLoginModal()">&times;</button>
-      <h2>Welcome Back</h2>
-      <p>Log in to track your progress and access premium features.</p>
-
-      <form id="loginForm" onsubmit="handleLogin(event)">
-        <div class="form-group">
-          <label for="loginEmail">Email</label>
-          <input type="email" id="loginEmail" required>
-        </div>
-
-        <div class="form-group">
-          <label for="loginPassword">Password</label>
-          <input type="password" id="loginPassword" required>
-        </div>
-
-        <div class="forgot-password">
-          <a href="#" onclick="alert('Password reset coming soon!'); return false;">Forgot password?</a>
-        </div>
-
-        <button type="submit" class="btn-modal-submit">Log In</button>
-      </form>
-
-      <div class="modal-link">
-        Don't have an account? <a href="#" onclick="closeLoginModal(); openSignupModal(); return false;">Sign up</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Signup Modal -->
-  <div class="modal" id="signupModal">
-    <div class="modal-content">
-      <button class="modal-close" onclick="closeSignupModal()">&times;</button>
-      <h2>Get Started</h2>
-      <p>Create an account to track progress and unlock features.</p>
-
-      <form id="signupForm" onsubmit="handleSignup(event)">
-        <div class="form-group">
-          <label for="signupName">Full Name</label>
-          <input type="text" id="signupName" required>
-        </div>
-
-        <div class="form-group">
-          <label for="signupEmail">Email</label>
-          <input type="email" id="signupEmail" required>
-        </div>
-
-        <div class="form-group">
-          <label for="signupPassword">Password</label>
-          <input type="password" id="signupPassword" required minlength="8">
-        </div>
-
-        <button type="submit" class="btn-modal-submit">Create Account</button>
-
-        <p class="terms-notice">
-          By signing up, you agree to our Terms of Service and Privacy Policy.
-        </p>
-      </form>
-
-      <div class="modal-link">
-        Already have an account? <a href="#" onclick="closeSignupModal(); openLoginModal(); return false;">Log in</a>
-      </div>
-    </div>
-  </div>
+  <!-- Auth modal script -->
+  <script src="auth.js"></script>
 
   <script>
-    // Navbar scroll effect
-    window.addEventListener('scroll', () => {
-      const navbar = document.getElementById('navbar');
-      const scrolled = window.pageYOffset;
+    // ================================================
+    // NAVBAR — SCROLL BEHAVIOR + HAMBURGER
+    // ================================================
+    const navbar = document.getElementById('navbar');
+    const hamburger = document.getElementById('hamburger');
+    const navMobile = document.getElementById('navMobile');
 
-      if (scrolled > 50) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 48) {
         navbar.classList.add('scrolled');
       } else {
         navbar.classList.remove('scrolled');
       }
-
-      // Parallax effect on hero
-      const hero = document.querySelector('.hero-content');
-      if (hero && scrolled < window.innerHeight) {
-        hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-        hero.style.opacity = 1 - (scrolled / window.innerHeight);
-      }
     });
 
-    // Mobile menu toggle
-    function toggleMobileMenu() {
-      const menu = document.getElementById('navbarMenu');
-      menu.classList.toggle('active');
-    }
-
-    // Smooth scroll behavior
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        const href = this.getAttribute('href');
-        if (href !== '#') {
-          e.preventDefault();
-          const target = document.querySelector(href);
-          if (target) {
-            const navbar = document.getElementById('navbar');
-            const navbarHeight = navbar.offsetHeight;
-            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
-
-            window.scrollTo({
-              top: targetPosition,
-              behavior: 'smooth'
-            });
-
-            // Close mobile menu if open
-            const menu = document.getElementById('navbarMenu');
-            menu.classList.remove('active');
-          }
-        }
-      });
+    hamburger.addEventListener('click', () => {
+      navMobile.classList.toggle('open');
     });
 
-    // Modal functions
-    function openLoginModal() {
-      document.getElementById('loginModal').classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeLoginModal() {
-      document.getElementById('loginModal').classList.remove('active');
-      document.body.style.overflow = '';
-    }
-
-    function openSignupModal() {
-      document.getElementById('signupModal').classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeSignupModal() {
-      document.getElementById('signupModal').classList.remove('active');
-      document.body.style.overflow = '';
-    }
-
-    // Close modals on backdrop click
-    document.getElementById('loginModal').addEventListener('click', function(e) {
-      if (e.target === this) {
-        closeLoginModal();
-      }
+    // Close mobile nav when a link is clicked
+    navMobile.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => navMobile.classList.remove('open'));
     });
 
-    document.getElementById('signupModal').addEventListener('click', function(e) {
-      if (e.target === this) {
-        closeSignupModal();
-      }
-    });
-
-    // Close modals on Escape key
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') {
-        closeLoginModal();
-        closeSignupModal();
-      }
-    });
-
-    // Handle login form submission
-    function handleLogin(event) {
-      event.preventDefault();
-      const email = document.getElementById('loginEmail').value;
-      const password = document.getElementById('loginPassword').value;
-
-      // Demo alert - replace with actual authentication
-      alert(`Login demo:\nEmail: ${email}\n\nThis is a demo. Authentication coming soon!`);
-      closeLoginModal();
-
-      // Clear form
-      document.getElementById('loginForm').reset();
-    }
-
-    // Handle signup form submission
-    function handleSignup(event) {
-      event.preventDefault();
-      const name = document.getElementById('signupName').value;
-      const email = document.getElementById('signupEmail').value;
-      const password = document.getElementById('signupPassword').value;
-
-      // Demo alert - replace with actual registration
-      alert(`Signup demo:\nName: ${name}\nEmail: ${email}\n\nThis is a demo. Registration coming soon!`);
-      closeSignupModal();
-
-      // Clear form
-      document.getElementById('signupForm').reset();
-    }
-
-    // Handle email signup
-    function handleEmailSignup(event) {
-      event.preventDefault();
-      const email = document.getElementById('emailInput').value;
-
-      // Demo alert - replace with actual newsletter signup
-      alert(`Thank you for subscribing!\n\nEmail: ${email}\n\nThis is a demo. Newsletter signup coming soon!`);
-
-      // Clear form
-      document.getElementById('emailSignupForm').reset();
-    }
-
-    // Card animations on scroll
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
+    // ================================================
+    // SCROLL-REVEAL — INTERSECTION OBSERVER
+    // ================================================
+    const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
+          entry.target.classList.add('visible');
         }
       });
-    }, observerOptions);
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
-    // Observe feature cards and benefit cards
-    document.addEventListener('DOMContentLoaded', () => {
-      const cards = document.querySelectorAll('.feature-card, .benefit-card, .step-card');
-      cards.forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
-        observer.observe(card);
-      });
+    document.querySelectorAll('.reveal').forEach(el => {
+      revealObserver.observe(el);
     });
+
+    // ================================================
+    // STAT COUNTER ANIMATION
+    // ================================================
+    function animateCounter(el) {
+      const target = parseInt(el.dataset.target, 10);
+      const suffix = el.dataset.suffix || '';
+      const isZero = el.dataset.zero === 'true';
+
+      if (isZero) {
+        el.textContent = '0';
+        return;
+      }
+
+      const duration = 1400;
+      const startTime = performance.now();
+
+      function step(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        // Ease out cubic
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(eased * target);
+        el.textContent = current + suffix;
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        }
+      }
+
+      requestAnimationFrame(step);
+    }
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.stat-number').forEach(animateCounter);
+          statsObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+
+    const statsSection = document.getElementById('stats');
+    if (statsSection) statsObserver.observe(statsSection);
+
+    // ================================================
+    // EMAIL SIGNUP HANDLER
+    // ================================================
+    function handleEmailSignup(e) {
+      e.preventDefault();
+      const input = e.target.querySelector('input[type="email"]');
+      const btn = e.target.querySelector('button');
+      const email = input.value.trim();
+      if (!email) return;
+
+      // Placeholder — replace with your email service integration
+      btn.textContent = 'Subscribed!';
+      btn.style.background = '#22c55e';
+      input.value = '';
+      input.disabled = true;
+      btn.disabled = true;
+    }
+
+    // ================================================
+    // SYNC PROGRESS TO APP
+    // ================================================
+    function handleSyncProgress() {
+      const progressData = [];
+      const raw = localStorage.getItem('phishing-training-progress');
+
+      if (!raw) {
+        alert('No training progress found. Complete some modules first!');
+        return;
+      }
+
+      try {
+        const progress = JSON.parse(raw);
+        const moduleMap = {
+          'emailLab': 'email-lab',
+          'smsSmishing': 'sms-smishing',
+          'targetedPhishing': 'targeted-phishing',
+          'quickCheck': 'quick-check',
+          'phishOrTreat': 'phish-or-treat',
+          'mfaFatigue': 'mfa-fatigue'
+        };
+
+        for (const [key, data] of Object.entries(progress)) {
+          if (data && data.completed) {
+            progressData.push({
+              moduleSlug: moduleMap[key] || key,
+              score: data.score || 0,
+              total: data.total || 0
+            });
+          }
+        }
+      } catch (e) {
+        alert('Could not read progress data.');
+        return;
+      }
+
+      if (progressData.length === 0) {
+        alert('No completed modules found. Complete at least one module to sync.');
+        return;
+      }
+
+      const syncPayload = btoa(JSON.stringify(progressData));
+      const deepLink = `justforphishing://sync?data=${syncPayload}`;
+
+      const btn = document.getElementById('syncProgressBtn');
+      btn.textContent = `${progressData.length} module(s) ready!`;
+      btn.style.borderColor = '#22c55e';
+      btn.style.color = '#22c55e';
+
+      navigator.clipboard.writeText(deepLink).then(() => {
+        alert(`Progress for ${progressData.length} module(s) copied! Open the app and paste in Settings > Sync.`);
+      }).catch(() => {
+        window.location.href = deepLink;
+      });
+    }
   </script>
+
 </body>
 </html>
