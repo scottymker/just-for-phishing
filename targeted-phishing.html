@@ -3,11 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Targeted Phishing Lab — Just for Phishing</title>
+  <title>Targeted Phishing Lab — Just For Phishing</title>
+  <meta name="description" content="Targeted phishing lab. Study spear phishing and whaling scenarios that exploit insider knowledge and trust." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/favicon.svg" />
+  <link rel="stylesheet" href="theme.css" />
   <link rel="stylesheet" href="styles.css" />
   <!-- Google Analytics (GA4) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y3ZYDHQD6Z"></script>
@@ -19,6 +21,35 @@
   </script>
 </head>
 <body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/P.png" alt="Just For Phishing logo" />
+        <span class="nav-logo-text">Just For Phishing</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html#modules">Modules</a></li>
+        <li><a href="index.html#how-it-works">How It Works</a></li>
+        <li><a href="index.html#platform">Platform</a></li>
+        <li><a href="resources.html">Resources</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+      <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div class="nav-mobile" id="navMobile">
+      <a href="index.html#modules">Modules</a>
+      <a href="index.html#how-it-works">How It Works</a>
+      <a href="index.html#platform">Platform</a>
+      <a href="resources.html">Resources</a>
+      <a href="about.html">About</a>
+    </div>
+  </nav>
+  <div class="nav-spacer"></div>
+
   <div class="page">
     <header class="drill-header">
       <div class="container">
@@ -42,6 +73,69 @@
     </main>
   </div>
 
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand">
+            <img src="assets/P.png" alt="Just For Phishing" />
+            <span class="footer-brand-text">Just For Phishing</span>
+          </div>
+          <p class="footer-about-text">Free, open-source phishing awareness training. Built for individuals and organizations who believe security education should be accessible to everyone.</p>
+          <a href="https://github.com/scottymker/just-for-phishing" class="footer-github-link" target="_blank" rel="noopener noreferrer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z"/>
+            </svg>
+            View on GitHub
+          </a>
+        </div>
+        <div class="footer-col">
+          <h4>Training</h4>
+          <ul class="footer-links">
+            <li><a href="quiz.html">Quick Check</a></li>
+            <li><a href="phish-or-treat.html">Phish or Treat</a></li>
+            <li><a href="mfa-fatigue.html">MFA Fatigue Drill</a></li>
+            <li><a href="targeted-phishing.html">Targeted Phishing</a></li>
+            <li><a href="email-lab.html">Email Phishing Lab</a></li>
+            <li><a href="sms-smishing.html">SMS Smishing</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <ul class="footer-links">
+            <li><a href="resources.html">All Resources</a></li>
+            <li><a href="resources.html#reporting">Reporting Guidelines</a></li>
+            <li><a href="resources.html#best-practices">Best Practices</a></li>
+            <li><a href="resources.html#emergency">Emergency Response</a></li>
+            <li><a href="lab.html">Training Lab</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Legal &amp; More</h4>
+          <ul class="footer-links">
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Use</a></li>
+            <li><a href="accessibility.html">Accessibility</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="https://github.com/scottymker/just-for-phishing/issues" target="_blank" rel="noopener noreferrer">Bug Reports</a></li>
+            <li><a href="https://github.com/scottymker/just-for-phishing/issues" target="_blank" rel="noopener noreferrer">Feature Requests</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">
+          &copy; 2025 Just For Phishing. Open source under MIT License. Built with &#x2764;&#xFE0F; for a safer internet.
+        </p>
+        <div class="footer-bottom-links">
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+          <a href="https://github.com/scottymker/just-for-phishing" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="theme.js"></script>
   <script src="targeted-phishing.js"></script>
 </body>
 </html>

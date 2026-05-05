@@ -227,26 +227,6 @@
       color: var(--text-primary);
     }
 
-    .btn-nav-app {
-      padding: 7px 16px;
-      font-family: var(--font-body);
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--cyan-bright);
-      background: transparent;
-      border: 1px solid rgba(34, 211, 238, 0.35);
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all var(--transition);
-      white-space: nowrap;
-    }
-
-    .btn-nav-app:hover {
-      background: rgba(34, 211, 238, 0.08);
-      border-color: rgba(34, 211, 238, 0.6);
-      box-shadow: 0 0 16px rgba(34, 211, 238, 0.15);
-    }
-
     /* Mobile hamburger */
     .nav-hamburger {
       display: none;
@@ -928,7 +908,7 @@
 
     .platform-grid {
       display: grid;
-      grid-template-columns: 1fr 380px 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 48px;
       align-items: center;
     }
@@ -1051,193 +1031,6 @@
       font-size: 14px;
       max-width: 280px;
       margin: 0 auto 24px;
-    }
-
-    .platform-tagline {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--cyan-bright);
-      text-align: center;
-    }
-
-    /* Phone mockup */
-    .phone-mockup-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .phone-mockup {
-      width: 200px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-mid);
-      border-radius: 28px;
-      overflow: hidden;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.5);
-    }
-
-    .phone-notch {
-      height: 28px;
-      background: var(--bg-void);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .phone-notch-bar {
-      width: 60px;
-      height: 4px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 2px;
-    }
-
-    .phone-screen {
-      padding: 12px;
-      min-height: 340px;
-      background: var(--bg-surface);
-    }
-
-    .phone-header {
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 12px;
-    }
-
-    .phone-streak {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 10px;
-      padding: 10px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .phone-streak-flame {
-      font-size: 20px;
-    }
-
-    .phone-streak-info .phone-streak-count {
-      font-family: var(--font-mono);
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--amber-bright);
-    }
-
-    .phone-streak-info .phone-streak-label {
-      font-size: 9px;
-      color: var(--text-muted);
-    }
-
-    .phone-challenge-card {
-      background: linear-gradient(135deg, rgba(239,68,68,0.12), rgba(239,68,68,0.04));
-      border: 1px solid rgba(239,68,68,0.2);
-      border-radius: 10px;
-      padding: 10px;
-      margin-bottom: 10px;
-    }
-
-    .phone-challenge-label {
-      font-family: var(--font-mono);
-      font-size: 8px;
-      color: var(--red-bright);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 4px;
-    }
-
-    .phone-challenge-title {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 6px;
-    }
-
-    .phone-challenge-bar {
-      height: 3px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 2px;
-    }
-
-    .phone-challenge-fill {
-      height: 100%;
-      width: 60%;
-      background: var(--red);
-      border-radius: 2px;
-    }
-
-    .phone-tab-bar {
-      display: flex;
-      justify-content: space-around;
-      padding: 8px 0;
-      background: var(--bg-card);
-      border-top: 1px solid var(--border-subtle);
-    }
-
-    .phone-tab {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-    }
-
-    .phone-tab-dot {
-      width: 20px;
-      height: 3px;
-      border-radius: 2px;
-    }
-
-    .phone-tab-dot.active { background: var(--red); }
-    .phone-tab-dot.inactive { background: rgba(255,255,255,0.1); }
-
-    .phone-tab-label {
-      font-size: 7px;
-      color: var(--text-muted);
-    }
-
-    .phone-tab.active .phone-tab-label { color: var(--red); }
-
-    .app-store-buttons {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .app-store-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 16px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border-mid);
-      border-radius: 8px;
-      font-size: 11px;
-      color: var(--text-secondary);
-      transition: all var(--transition);
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    .app-store-btn:hover {
-      background: rgba(255,255,255,0.07);
-      border-color: rgba(255,255,255,0.2);
-      color: var(--text-primary);
-    }
-
-    .app-store-btn .store-label {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      color: var(--text-muted);
-      display: block;
-    }
-
-    .app-store-btn .store-name {
-      font-weight: 600;
-      display: block;
     }
 
     /* =============================================
@@ -1493,70 +1286,6 @@
     }
 
     /* =============================================
-       SYNC PROGRESS SECTION
-    ============================================= */
-    .sync-section {
-      padding: 80px 24px;
-      background: var(--bg-void);
-    }
-
-    .sync-card {
-      max-width: 600px;
-      margin: 0 auto;
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      padding: 40px;
-      text-align: center;
-    }
-
-    .sync-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 14px;
-      background: rgba(34,211,238,0.08);
-      border: 1px solid rgba(34,211,238,0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 20px;
-      color: var(--cyan-bright);
-    }
-
-    .sync-card .section-heading {
-      font-size: 30px;
-      margin-bottom: 10px;
-    }
-
-    .sync-card .section-sub {
-      margin: 0 auto 28px;
-      max-width: 380px;
-      font-size: 14px;
-    }
-
-    .btn-sync {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 13px 28px;
-      font-family: var(--font-body);
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--cyan-bright);
-      background: rgba(34,211,238,0.06);
-      border: 1px solid rgba(34,211,238,0.3);
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all var(--transition);
-    }
-
-    .btn-sync:hover {
-      background: rgba(34,211,238,0.1);
-      border-color: rgba(34,211,238,0.5);
-      box-shadow: 0 0 20px rgba(34,211,238,0.15);
-    }
-
-    /* =============================================
        FOOTER
     ============================================= */
     footer {
@@ -1725,10 +1454,6 @@
         order: -1;
       }
 
-      .phone-mockup-wrap {
-        order: 1;
-      }
-
       .enterprise-inner {
         grid-template-columns: 1fr;
         gap: 40px;
@@ -1806,11 +1531,6 @@
         <li><a href="about.html">About</a></li>
       </ul>
 
-      <div class="nav-right">
-        <button class="btn-nav-secondary" id="navLoginBtn">Log In</button>
-        <a href="#platform" class="btn-nav-app">Get the App</a>
-      </div>
-
       <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
         <span></span>
         <span></span>
@@ -1824,7 +1544,6 @@
       <a href="#platform">Platform</a>
       <a href="resources.html">Resources</a>
       <a href="about.html">About</a>
-      <a href="#platform">Get the App</a>
     </div>
   </nav>
 
@@ -1941,7 +1660,6 @@
             <div class="module-badges">
               <span class="badge badge-difficulty easy">Beginner</span>
               <span class="badge badge-platform">Desktop</span>
-              <span class="badge badge-platform">Mobile</span>
             </div>
           </div>
           <div class="module-name">Quick Check</div>
@@ -1966,7 +1684,6 @@
             <div class="module-badges">
               <span class="badge badge-difficulty">Intermediate</span>
               <span class="badge badge-platform">Desktop</span>
-              <span class="badge badge-platform">Mobile</span>
             </div>
           </div>
           <div class="module-name">Phish or Treat</div>
@@ -1992,7 +1709,6 @@
             <div class="module-badges">
               <span class="badge badge-difficulty hard">Advanced</span>
               <span class="badge badge-platform">Desktop</span>
-              <span class="badge badge-platform">Mobile</span>
             </div>
           </div>
           <div class="module-name">MFA Fatigue Drill</div>
@@ -2019,7 +1735,6 @@
             <div class="module-badges">
               <span class="badge badge-difficulty hard">Advanced</span>
               <span class="badge badge-platform">Desktop</span>
-              <span class="badge badge-platform">Mobile</span>
             </div>
           </div>
           <div class="module-name">Targeted Phishing</div>
@@ -2044,7 +1759,6 @@
             <div class="module-badges">
               <span class="badge badge-difficulty">Intermediate</span>
               <span class="badge badge-platform">Desktop</span>
-              <span class="badge badge-platform">Mobile</span>
             </div>
           </div>
           <div class="module-name">Email Phishing Lab</div>
@@ -2070,7 +1784,6 @@
             <div class="module-badges">
               <span class="badge badge-difficulty easy">Beginner</span>
               <span class="badge badge-platform">Desktop</span>
-              <span class="badge badge-platform">Mobile</span>
             </div>
           </div>
           <div class="module-name">SMS Smishing</div>
@@ -2229,90 +1942,8 @@
         <!-- Center text -->
         <div class="platform-center reveal reveal-delay-2">
           <span class="section-eyebrow">Platform</span>
-          <h2 class="section-heading">Train anywhere</h2>
-          <p class="section-sub">Desktop simulator for deep header analysis. Mobile app for daily practice and streak building.</p>
-          <div class="app-store-buttons" style="margin-bottom:16px;">
-            <a href="#" class="app-store-btn" aria-label="Download on App Store">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M18.7 18.7C17.3 20.3 15.8 20.3 15 20c-.9-.4-1.7-.4-2.6 0-.9.4-1.7.4-2.4 0C8.4 19.3 6.9 18 5.6 15.5 4.3 13 4 10.8 5 9.2c.7-1.2 1.8-2 3.1-2 .8 0 1.5.3 2.1.5.6.2 1 .4 1.4.4.4 0 .9-.2 1.5-.4.7-.2 1.4-.5 2.2-.4 1.3.1 2.3.7 3 1.7-1.2.8-1.8 2-1.8 3.4 0 1.6.8 2.9 2.2 3.7ZM15 7c.1-1.7-1.2-3.2-2.9-3.3C11.9 5.5 13 7.2 15 7Z" fill="currentColor"/>
-              </svg>
-              <div>
-                <span class="store-label">Download on the</span>
-                <span class="store-name">App Store</span>
-              </div>
-            </a>
-            <a href="#" class="app-store-btn" aria-label="Get it on Google Play">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M4 3.5L13.5 12 4 20.5V3.5Z" fill="currentColor" opacity=".7"/>
-                <path d="M4 3.5l14 5.5-4.5 3L4 3.5Z" fill="currentColor" opacity=".85"/>
-                <path d="M4 20.5l9.5-9 4.5 3L4 20.5Z" fill="currentColor" opacity=".85"/>
-                <path d="M18 9l2 3-2 3-4.5-3L18 9Z" fill="currentColor"/>
-              </svg>
-              <div>
-                <span class="store-label">Get it on</span>
-                <span class="store-name">Google Play</span>
-              </div>
-            </a>
-          </div>
-          <p class="platform-tagline">Sync your progress across devices</p>
-        </div>
-
-        <!-- Phone mockup -->
-        <div class="phone-mockup-wrap reveal reveal-delay-4">
-          <div class="phone-mockup">
-            <div class="phone-notch">
-              <div class="phone-notch-bar"></div>
-            </div>
-            <div class="phone-screen">
-              <div class="phone-header">Just For Phishing</div>
-
-              <div class="phone-streak">
-                <div class="phone-streak-flame">🔥</div>
-                <div class="phone-streak-info">
-                  <div class="phone-streak-count">7</div>
-                  <div class="phone-streak-label">Day streak</div>
-                </div>
-              </div>
-
-              <div class="phone-challenge-card">
-                <div class="phone-challenge-label">Daily Challenge</div>
-                <div class="phone-challenge-title">Spot the Spear Phish</div>
-                <div class="phone-challenge-bar">
-                  <div class="phone-challenge-fill"></div>
-                </div>
-              </div>
-
-              <div style="display:flex;gap:6px;margin-bottom:8px;">
-                <div style="flex:1;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:8px;">
-                  <div style="font-family:var(--font-mono);font-size:16px;color:#22c55e;font-weight:700;line-height:1;">84%</div>
-                  <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">Accuracy</div>
-                </div>
-                <div style="flex:1;background:rgba(6,182,212,0.08);border:1px solid rgba(6,182,212,0.2);border-radius:8px;padding:8px;">
-                  <div style="font-family:var(--font-mono);font-size:16px;color:var(--cyan-bright);font-weight:700;line-height:1;">4/6</div>
-                  <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">Modules</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="phone-tab-bar">
-              <div class="phone-tab active">
-                <div class="phone-tab-dot active"></div>
-                <div class="phone-tab-label">Home</div>
-              </div>
-              <div class="phone-tab">
-                <div class="phone-tab-dot inactive"></div>
-                <div class="phone-tab-label">Train</div>
-              </div>
-              <div class="phone-tab">
-                <div class="phone-tab-dot inactive"></div>
-                <div class="phone-tab-label">Progress</div>
-              </div>
-              <div class="phone-tab">
-                <div class="phone-tab-dot inactive"></div>
-                <div class="phone-tab-label">Settings</div>
-              </div>
-            </div>
-          </div>
+          <h2 class="section-heading">Train on any device</h2>
+          <p class="section-sub">Desktop, tablet, or phone — just open the site and start training. No install, no signup, no data collected.</p>
         </div>
 
       </div>
@@ -2376,9 +2007,6 @@
                 <div class="ent-stat-label">Analytics</div>
               </div>
             </div>
-            <div style="margin-top:32px;">
-              <a href="about.html" class="btn-primary">Admin Dashboard</a>
-            </div>
           </div>
 
           <div class="enterprise-visual reveal reveal-delay-3">
@@ -2439,32 +2067,6 @@
   </section>
 
   <!-- ================================================
-       SYNC PROGRESS
-  ================================================ -->
-  <section class="sync-section" id="sync">
-    <div class="section-inner">
-      <div class="sync-card reveal">
-        <div class="sync-icon">
-          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
-            <path d="M4 13A9 9 0 0 1 22 10M22 13A9 9 0 0 1 4 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M19 7l3 3-3 3M7 13l-3 3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <span class="section-eyebrow">Cross-Device</span>
-        <h2 class="section-heading">Sync Your Web Progress to the App</h2>
-        <p class="section-sub">Completed modules on desktop? Carry your progress to the mobile app in one tap.</p>
-        <button id="syncProgressBtn" class="btn-sync" onclick="handleSyncProgress()">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <path d="M2.5 8a5.5 5.5 0 0 1 10-3.1M13.5 8a5.5 5.5 0 0 1-10 3.1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-            <path d="M11.5 4.5l1 .4 1-1.5M3.5 11.1l-1-.4-1 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Sync Progress to App
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================================================
        FOOTER
   ================================================ -->
   <footer>
@@ -2507,7 +2109,6 @@
             <li><a href="resources.html">All Resources</a></li>
             <li><a href="resources.html#reporting">Reporting Guidelines</a></li>
             <li><a href="resources.html#best-practices">Best Practices</a></li>
-            <li><a href="resources.html#checklists">Security Checklists</a></li>
             <li><a href="resources.html#emergency">Emergency Response</a></li>
             <li><a href="lab.html">Training Lab</a></li>
           </ul>
@@ -2540,9 +2141,6 @@
       </div>
     </div>
   </footer>
-
-  <!-- Auth modal script -->
-  <script src="auth.js"></script>
 
   <script>
     // ================================================
@@ -2645,62 +2243,6 @@
       btn.disabled = true;
     }
 
-    // ================================================
-    // SYNC PROGRESS TO APP
-    // ================================================
-    function handleSyncProgress() {
-      const progressData = [];
-      const raw = localStorage.getItem('phishing-training-progress');
-
-      if (!raw) {
-        alert('No training progress found. Complete some modules first!');
-        return;
-      }
-
-      try {
-        const progress = JSON.parse(raw);
-        const moduleMap = {
-          'emailLab': 'email-lab',
-          'smsSmishing': 'sms-smishing',
-          'targetedPhishing': 'targeted-phishing',
-          'quickCheck': 'quick-check',
-          'phishOrTreat': 'phish-or-treat',
-          'mfaFatigue': 'mfa-fatigue'
-        };
-
-        for (const [key, data] of Object.entries(progress)) {
-          if (data && data.completed) {
-            progressData.push({
-              moduleSlug: moduleMap[key] || key,
-              score: data.score || 0,
-              total: data.total || 0
-            });
-          }
-        }
-      } catch (e) {
-        alert('Could not read progress data.');
-        return;
-      }
-
-      if (progressData.length === 0) {
-        alert('No completed modules found. Complete at least one module to sync.');
-        return;
-      }
-
-      const syncPayload = btoa(JSON.stringify(progressData));
-      const deepLink = `justforphishing://sync?data=${syncPayload}`;
-
-      const btn = document.getElementById('syncProgressBtn');
-      btn.textContent = `${progressData.length} module(s) ready!`;
-      btn.style.borderColor = '#22c55e';
-      btn.style.color = '#22c55e';
-
-      navigator.clipboard.writeText(deepLink).then(() => {
-        alert(`Progress for ${progressData.length} module(s) copied! Open the app and paste in Settings > Sync.`);
-      }).catch(() => {
-        window.location.href = deepLink;
-      });
-    }
   </script>
 
 </body>

@@ -4,106 +4,39 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Security Knowledge Quiz — Just For Phishing</title>
+  <meta name="description" content="Quick security knowledge quiz covering phishing basics, MFA, password hygiene, and safe practices." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/favicon.svg" />
+  <link rel="stylesheet" href="theme.css" />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --apple-blue: #0071e3;
-      --apple-blue-hover: #0077ed;
-      --text-primary: #1d1d1f;
-      --text-secondary: #6e6e73;
-      --bg-light: #fbfbfd;
-      --bg-card: #ffffff;
-      --accent-purple: #bf5af2;
-      --accent-green: #30d158;
-      --accent-orange: #ff9f0a;
-      --accent-red: #ff3b30;
-    }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg-light);
-      color: var(--text-primary);
-      min-height: 100vh;
-    }
-
-    /* Navigation */
-    nav {
-      position: sticky;
-      top: 0;
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-      padding: 12px 15px;
-      z-index: 1000;
-    }
-
-    .nav-content {
-      max-width: 900px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .back-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--apple-blue);
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 13px;
-      transition: gap 0.3s ease;
-    }
-
-    .back-btn:hover {
-      gap: 3px;
-    }
-
-    .nav-title {
-      font-size: 16px;
-      font-weight: 600;
-    }
-
-    .nav-spacer {
-      width: 75px;
-    }
-
-    /* Header */
-    .header {
-      padding: 60px 15px 45px;
+    .quiz-hero {
+      padding: 72px 24px 56px;
       text-align: center;
-      background: linear-gradient(135deg, rgba(0, 113, 227, 0.05) 0%, rgba(48, 209, 88, 0.05) 100%);
+      background:
+        radial-gradient(ellipse at center, rgba(34,211,238,0.06) 0%, transparent 60%),
+        var(--bg-deep);
+      border-bottom: 1px solid var(--border-subtle);
       position: relative;
       overflow: hidden;
     }
-
-    .header h1 {
-      font-size: clamp(30px, 6vw, 48px);
-      font-weight: 700;
+    .quiz-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(34px, 5vw, 52px);
+      font-weight: 400;
+      line-height: 1.1;
       letter-spacing: -0.02em;
+      color: var(--text-primary);
       margin-bottom: 12px;
     }
-
-    .header p {
+    .quiz-hero p {
       font-size: 16px;
       color: var(--text-secondary);
-      max-width: 510px;
+      max-width: 540px;
       margin: 0 auto;
-      line-height: 1.5;
+      line-height: 1.6;
     }
-
-    /* Apple animation in header */
     .apple-container {
       position: absolute;
       top: 50%;
@@ -112,462 +45,353 @@
       opacity: 0.05;
       pointer-events: none;
     }
-
     .apple {
       font-size: 120px;
       animation: float-apple 6s ease-in-out infinite;
     }
-
     @keyframes float-apple {
       0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-20px) rotate(5deg); }
+      50%      { transform: translateY(-20px) rotate(5deg); }
     }
 
-    /* Quiz Container */
+    /* Quiz container */
     .quiz-container {
       max-width: 800px;
       margin: 0 auto;
-      padding: 45px 15px;
+      padding: 48px 24px 96px;
     }
 
-    /* Progress Bar */
-    .progress-section {
-      margin-bottom: 32px;
-    }
-
+    /* Progress */
+    .progress-section { margin-bottom: 32px; }
     .progress-text {
       text-align: center;
-      font-size: 13px;
+      font-family: var(--font-mono);
+      font-size: 11px;
       font-weight: 600;
-      color: var(--text-secondary);
+      color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
       margin-bottom: 12px;
     }
-
     .progress-bar {
-      height: 8px;
-      background: rgba(0, 113, 227, 0.1);
+      height: 6px;
+      background: rgba(255,255,255,0.05);
       border-radius: 999px;
       overflow: hidden;
       position: relative;
     }
-
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, var(--apple-blue), var(--accent-green));
+      background: linear-gradient(90deg, var(--cyan), var(--green));
       border-radius: 999px;
       transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       overflow: hidden;
     }
-
     .progress-fill::after {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
       animation: shimmer 2s infinite;
     }
-
     @keyframes shimmer {
-      0% { transform: translateX(-100%); }
+      0%   { transform: translateX(-100%); }
       100% { transform: translateX(100%); }
     }
 
-    /* Question Card */
+    /* Question card */
     .question-card {
       background: var(--bg-card);
-      border-radius: 24px;
-      padding: 48px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 40px;
       margin-bottom: 24px;
-      position: relative;
-      overflow: hidden;
     }
-
     .question-number {
       display: inline-block;
-      padding: 6px 14px;
-      background: rgba(0, 113, 227, 0.1);
+      padding: 4px 12px;
+      background: rgba(34,211,238,0.08);
+      border: 1px solid rgba(34,211,238,0.18);
       border-radius: 999px;
-      font-size: 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
       font-weight: 700;
-      color: var(--apple-blue);
+      color: var(--cyan-bright);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
       margin-bottom: 20px;
     }
-
     .question-text {
-      font-size: 24px;
-      font-weight: 600;
-      line-height: 1.4;
-      margin-bottom: 32px;
+      font-family: var(--font-display);
+      font-size: clamp(22px, 2.4vw, 28px);
+      font-weight: 400;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
       color: var(--text-primary);
+      margin-bottom: 32px;
     }
-
-    .options {
-      display: grid;
-      gap: 14px;
-    }
-
+    .options { display: grid; gap: 12px; }
     .option {
-      background: var(--bg-light);
-      border: 2px solid rgba(0, 0, 0, 0.08);
-      border-radius: 16px;
-      padding: 20px 24px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 18px 22px;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      font-size: 16px;
+      transition: all var(--transition);
+      font-family: var(--font-body);
+      font-size: 15px;
       font-weight: 500;
       color: var(--text-primary);
-      position: relative;
       display: flex;
       align-items: center;
       gap: 14px;
     }
-
     .option::before {
       content: '';
-      width: 24px;
-      height: 24px;
-      border: 2px solid rgba(0, 0, 0, 0.2);
+      width: 20px;
+      height: 20px;
+      border: 1.5px solid var(--text-muted);
       border-radius: 50%;
       flex-shrink: 0;
-      transition: all 0.3s ease;
+      transition: all var(--transition);
     }
-
     .option:hover {
-      border-color: var(--apple-blue);
+      border-color: var(--cyan);
+      background: var(--bg-card-hover);
       transform: translateX(4px);
-      box-shadow: 0 6px 20px rgba(0, 113, 227, 0.15);
     }
-
     .option.selected {
-      border-color: var(--apple-blue);
-      background: rgba(0, 113, 227, 0.05);
+      border-color: var(--cyan);
+      background: rgba(34,211,238,0.06);
     }
-
     .option.selected::before {
-      background: var(--apple-blue);
-      border-color: var(--apple-blue);
-      box-shadow: inset 0 0 0 4px white;
+      background: var(--cyan-bright);
+      border-color: var(--cyan-bright);
+      box-shadow: inset 0 0 0 4px var(--bg-card);
     }
-
     .option.correct {
-      border-color: var(--accent-green);
-      background: rgba(48, 209, 88, 0.08);
+      border-color: var(--green);
+      background: rgba(34,197,94,0.08);
       animation: correct-bounce 0.6s ease;
     }
-
     .option.correct::before {
       content: '✓';
-      background: var(--accent-green);
-      border-color: var(--accent-green);
-      color: white;
+      background: var(--green);
+      border-color: var(--green);
+      color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 700;
-      font-size: 16px;
+      font-size: 14px;
     }
-
     .option.incorrect {
-      border-color: var(--accent-red);
-      background: rgba(255, 59, 48, 0.08);
+      border-color: var(--red);
+      background: rgba(239,68,68,0.08);
       animation: shake 0.5s ease;
     }
-
     .option.incorrect::before {
       content: '✕';
-      background: var(--accent-red);
-      border-color: var(--accent-red);
-      color: white;
+      background: var(--red);
+      border-color: var(--red);
+      color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 700;
-      font-size: 16px;
+      font-size: 14px;
     }
-
-    .option.disabled {
-      cursor: not-allowed;
-      opacity: 0.6;
-    }
-
+    .option.disabled { cursor: not-allowed; opacity: 0.6; }
     @keyframes correct-bounce {
       0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-4px); }
-      75% { transform: translateX(4px); }
+      25%      { transform: translateX(-4px); }
+      75%      { transform: translateX(4px); }
     }
-
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-8px); }
-      75% { transform: translateX(8px); }
+      25%      { transform: translateX(-8px); }
+      75%      { transform: translateX(8px); }
     }
 
-    /* Feedback Card */
+    /* Feedback */
     .feedback-card {
       background: var(--bg-card);
-      border-radius: 20px;
-      padding: 32px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border: 1px solid var(--border-subtle);
+      border-left: 3px solid var(--cyan);
+      border-radius: 12px;
+      padding: 28px;
       margin-bottom: 24px;
-      border-left: 4px solid var(--apple-blue);
       display: none;
     }
-
-    .feedback-card.show {
-      display: block;
-      animation: slide-up 0.4s ease;
-    }
-
+    .feedback-card.show { display: block; animation: slide-up 0.4s ease; }
     @keyframes slide-up {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
-
-    .feedback-card.correct {
-      border-left-color: var(--accent-green);
-    }
-
-    .feedback-card.incorrect {
-      border-left-color: var(--accent-red);
-    }
-
-    .feedback-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .feedback-icon {
-      font-size: 32px;
-    }
-
+    .feedback-card.correct   { border-left-color: var(--green); }
+    .feedback-card.incorrect { border-left-color: var(--red); }
+    .feedback-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .feedback-icon { font-size: 28px; }
     .feedback-title {
-      font-size: 20px;
+      font-family: var(--font-body);
+      font-size: 18px;
       font-weight: 700;
       color: var(--text-primary);
     }
-
     .feedback-text {
-      font-size: 16px;
-      line-height: 1.6;
+      font-size: 14px;
+      line-height: 1.65;
       color: var(--text-secondary);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
-
     .feedback-category {
       display: inline-block;
-      padding: 6px 12px;
-      background: rgba(0, 113, 227, 0.1);
-      border-radius: 8px;
-      font-size: 13px;
+      padding: 4px 12px;
+      background: rgba(34,211,238,0.08);
+      border: 1px solid rgba(34,211,238,0.18);
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 11px;
       font-weight: 600;
-      color: var(--apple-blue);
-      margin-top: 8px;
+      color: var(--cyan-bright);
     }
 
-    /* Navigation Buttons */
+    /* Nav buttons */
     .nav-buttons {
       display: flex;
       gap: 12px;
       justify-content: space-between;
       margin-top: 24px;
     }
-
     .btn {
-      padding: 14px 32px;
+      padding: 12px 28px;
       border: none;
-      border-radius: 980px;
-      font-size: 16px;
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 14px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      font-family: inherit;
+      transition: all var(--transition);
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      text-decoration: none;
     }
-
-    .btn-primary {
-      background: var(--apple-blue);
-      color: white;
-      box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+    .btn-quiz-primary {
+      background: var(--cyan);
+      color: #0a0a0f;
     }
-
-    .btn-primary:hover:not(:disabled) {
-      background: var(--apple-blue-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0, 113, 227, 0.4);
+    .btn-quiz-primary:hover:not(:disabled) {
+      background: var(--cyan-bright);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 24px rgba(34,211,238,0.3);
     }
-
-    .btn-secondary {
+    .btn-quiz-secondary {
       background: transparent;
-      color: var(--apple-blue);
-      border: 2px solid rgba(0, 0, 0, 0.1);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-mid);
     }
-
-    .btn-secondary:hover:not(:disabled) {
-      background: rgba(0, 113, 227, 0.05);
-      border-color: var(--apple-blue);
+    .btn-quiz-secondary:hover:not(:disabled) {
+      color: var(--text-primary);
+      border-color: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.04);
     }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
 
-    .btn:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
-
-    /* Summary Card */
+    /* Summary card */
     .summary-card {
       background: var(--bg-card);
-      border-radius: 24px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
       padding: 48px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
       text-align: center;
     }
-
-    .summary-icon {
-      font-size: 80px;
-      margin-bottom: 24px;
-      animation: bounce-in 0.6s ease;
-    }
-
+    .summary-icon { font-size: 64px; margin-bottom: 20px; animation: bounce-in 0.6s ease; }
     @keyframes bounce-in {
-      0% { transform: scale(0); }
-      50% { transform: scale(1.1); }
+      0%   { transform: scale(0); }
+      50%  { transform: scale(1.1); }
       100% { transform: scale(1); }
     }
-
     .summary-title {
-      font-size: 36px;
-      font-weight: 700;
-      margin-bottom: 16px;
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3.5vw, 40px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
       color: var(--text-primary);
     }
-
     .summary-score {
-      font-size: 64px;
-      font-weight: 700;
-      margin-bottom: 24px;
-      background: linear-gradient(135deg, var(--apple-blue), var(--accent-green));
+      font-family: var(--font-display);
+      font-size: 56px;
+      font-weight: 400;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, var(--cyan-bright), var(--green-bright));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-
     .summary-message {
-      font-size: 18px;
-      line-height: 1.6;
+      font-size: 16px;
+      line-height: 1.65;
       color: var(--text-secondary);
-      margin-bottom: 32px;
+      margin-bottom: 28px;
     }
-
     .knowledge-areas {
-      background: var(--bg-light);
-      border-radius: 16px;
-      padding: 32px;
-      margin: 32px 0;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 28px;
+      margin: 28px 0;
       text-align: left;
     }
-
     .knowledge-areas h3 {
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 20px;
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
       color: var(--text-primary);
     }
-
     .area-item {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 16px;
-      margin-bottom: 12px;
-      background: white;
-      border-radius: 12px;
-      border-left: 4px solid transparent;
+      padding: 14px;
+      margin-bottom: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-left: 3px solid transparent;
+      border-radius: 8px;
     }
-
-    .area-item.strong {
-      border-left-color: var(--accent-green);
-    }
-
-    .area-item.needs-work {
-      border-left-color: var(--accent-orange);
-    }
-
-    .area-icon {
-      font-size: 24px;
-    }
-
-    .area-content {
-      flex: 1;
-    }
-
+    .area-item:last-child { margin-bottom: 0; }
+    .area-item.strong      { border-left-color: var(--green); }
+    .area-item.needs-work  { border-left-color: var(--amber); }
+    .area-icon { font-size: 22px; }
+    .area-content { flex: 1; }
     .area-name {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 600;
       color: var(--text-primary);
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
-
     .area-status {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--text-secondary);
     }
-
     .summary-actions {
       display: flex;
       gap: 12px;
       justify-content: center;
       flex-wrap: wrap;
-      margin-top: 32px;
+      margin-top: 28px;
     }
-
-    .hidden {
-      display: none !important;
-    }
+    .hidden { display: none !important; }
 
     @media (max-width: 768px) {
-      .question-card {
-        padding: 32px 24px;
-      }
-
-      .question-text {
-        font-size: 20px;
-      }
-
-      .summary-card {
-        padding: 32px 24px;
-      }
-
-      .nav-buttons {
-        flex-direction: column;
-      }
-
-      .btn {
-        width: 100%;
-      }
-
-      .nav-title {
-        display: none;
-      }
+      .question-card { padding: 28px 22px; }
+      .summary-card { padding: 32px 22px; }
+      .nav-buttons { flex-direction: column; }
+      .btn { width: 100%; justify-content: center; }
     }
   </style>
   <!-- Google Analytics (GA4) -->
@@ -580,19 +404,36 @@
   </script>
 </head>
 <body>
-  <!-- Navigation -->
-  <nav>
-    <div class="nav-content">
-      <a href="lab.html" class="back-btn">
-        ← Back
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/P.png" alt="Just For Phishing logo" />
+        <span class="nav-logo-text">Just For Phishing</span>
       </a>
-      <div class="nav-title">Security Knowledge Quiz</div>
-      <div class="nav-spacer"></div>
+      <ul class="nav-links">
+        <li><a href="index.html#modules">Modules</a></li>
+        <li><a href="index.html#how-it-works">How It Works</a></li>
+        <li><a href="index.html#platform">Platform</a></li>
+        <li><a href="resources.html">Resources</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+      <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div class="nav-mobile" id="navMobile">
+      <a href="index.html#modules">Modules</a>
+      <a href="index.html#how-it-works">How It Works</a>
+      <a href="index.html#platform">Platform</a>
+      <a href="resources.html">Resources</a>
+      <a href="about.html">About</a>
     </div>
   </nav>
+  <div class="nav-spacer"></div>
 
-  <!-- Header -->
-  <section class="header">
+  <section class="quiz-hero">
     <div class="apple-container">
       <div class="apple">🍎</div>
     </div>
@@ -600,9 +441,7 @@
     <p>Test your cybersecurity knowledge with 5 beginner-friendly questions covering phishing, MFA, and security best practices.</p>
   </section>
 
-  <!-- Quiz Container -->
   <div class="quiz-container">
-    <!-- Progress Bar -->
     <div class="progress-section">
       <div class="progress-text" id="progress-text">Question 1 of 5</div>
       <div class="progress-bar">
@@ -610,14 +449,12 @@
       </div>
     </div>
 
-    <!-- Question Card -->
     <div class="question-card" id="question-card">
       <div class="question-number" id="question-number">Question 1</div>
       <div class="question-text" id="question-text"></div>
       <div class="options" id="options"></div>
     </div>
 
-    <!-- Feedback Card -->
     <div class="feedback-card" id="feedback-card">
       <div class="feedback-header">
         <div class="feedback-icon" id="feedback-icon"></div>
@@ -627,17 +464,15 @@
       <div class="feedback-category" id="feedback-category"></div>
     </div>
 
-    <!-- Navigation Buttons -->
     <div class="nav-buttons">
-      <button class="btn btn-secondary hidden" id="prev-btn" onclick="previousQuestion()">
+      <button class="btn btn-quiz-secondary hidden" id="prev-btn" onclick="previousQuestion()">
         ← Previous
       </button>
-      <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()" disabled>
+      <button class="btn btn-quiz-primary" id="next-btn" onclick="nextQuestion()" disabled>
         Next Question →
       </button>
     </div>
 
-    <!-- Summary Card (Hidden initially) -->
     <div class="summary-card hidden" id="summary-card">
       <div class="summary-icon" id="summary-icon">🎯</div>
       <h2 class="summary-title">Quiz Complete!</h2>
@@ -650,19 +485,82 @@
       </div>
 
       <div class="summary-actions">
-        <button class="btn btn-primary" onclick="retakeQuiz()">
+        <button class="btn btn-quiz-primary" onclick="retakeQuiz()">
           🔄 Retake Quiz
         </button>
-        <a href="lab.html" class="btn btn-secondary">
+        <a href="lab.html" class="btn btn-quiz-secondary">
           ← Back to Lab
         </a>
-        <a href="resources.html" class="btn btn-secondary">
+        <a href="resources.html" class="btn btn-quiz-secondary">
           📚 Learn More
         </a>
       </div>
     </div>
   </div>
 
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand">
+            <img src="assets/P.png" alt="Just For Phishing" />
+            <span class="footer-brand-text">Just For Phishing</span>
+          </div>
+          <p class="footer-about-text">Free, open-source phishing awareness training. Built for individuals and organizations who believe security education should be accessible to everyone.</p>
+          <a href="https://github.com/scottymker/just-for-phishing" class="footer-github-link" target="_blank" rel="noopener noreferrer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z"/>
+            </svg>
+            View on GitHub
+          </a>
+        </div>
+        <div class="footer-col">
+          <h4>Training</h4>
+          <ul class="footer-links">
+            <li><a href="quiz.html">Quick Check</a></li>
+            <li><a href="phish-or-treat.html">Phish or Treat</a></li>
+            <li><a href="mfa-fatigue.html">MFA Fatigue Drill</a></li>
+            <li><a href="targeted-phishing.html">Targeted Phishing</a></li>
+            <li><a href="email-lab.html">Email Phishing Lab</a></li>
+            <li><a href="sms-smishing.html">SMS Smishing</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <ul class="footer-links">
+            <li><a href="resources.html">All Resources</a></li>
+            <li><a href="resources.html#reporting">Reporting Guidelines</a></li>
+            <li><a href="resources.html#best-practices">Best Practices</a></li>
+            <li><a href="resources.html#emergency">Emergency Response</a></li>
+            <li><a href="lab.html">Training Lab</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Legal &amp; More</h4>
+          <ul class="footer-links">
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Use</a></li>
+            <li><a href="accessibility.html">Accessibility</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="https://github.com/scottymker/just-for-phishing/issues" target="_blank" rel="noopener noreferrer">Bug Reports</a></li>
+            <li><a href="https://github.com/scottymker/just-for-phishing/issues" target="_blank" rel="noopener noreferrer">Feature Requests</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">
+          &copy; 2025 Just For Phishing. Open source under MIT License. Built with &#x2764;&#xFE0F; for a safer internet.
+        </p>
+        <div class="footer-bottom-links">
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+          <a href="https://github.com/scottymker/just-for-phishing" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="theme.js"></script>
   <script src="quiz.js"></script>
 </body>
 </html>

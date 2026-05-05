@@ -4,94 +4,84 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Accessibility — Just For Phishing</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="description" content="Accessibility statement for Just For Phishing — our commitments, features, known limitations, and how to report issues." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="icon" href="assets/favicon.svg" />
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="theme.css" />
   <style>
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      line-height: 1.7;
-      color: #1d1d1f;
-      background: #fbfbfd;
-    }
-
-    nav {
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-      padding: 16px 20px;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    nav a {
-      color: #0071e3;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .container {
+    .legal-container {
       max-width: 800px;
-      margin: 40px auto;
+      margin: 40px auto 80px;
       padding: 40px;
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
     }
-
-    h1 {
-      font-size: 42px;
-      font-weight: 700;
-      margin-bottom: 12px;
+    .legal-container h1 {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 52px);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 8px;
     }
-
+    .legal-container h2 {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      margin-top: 36px;
+      margin-bottom: 14px;
+    }
+    .legal-container p, .legal-container ul, .legal-container ol {
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+    }
+    .legal-container ul, .legal-container ol { padding-left: 22px; }
+    .legal-container li { margin-bottom: 8px; }
+    .legal-container strong { color: var(--text-primary); font-weight: 600; }
+    .legal-container a {
+      color: var(--cyan-bright);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .legal-container a:hover { color: var(--cyan); }
     .last-updated {
-      color: #6e6e73;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 13px;
       margin-bottom: 32px;
     }
-
-    h2 {
-      font-size: 28px;
-      font-weight: 600;
-      margin-top: 40px;
-      margin-bottom: 16px;
-    }
-
-    p {
-      margin-bottom: 16px;
-      color: #6e6e73;
-    }
-
-    ul {
-      margin-bottom: 16px;
-      color: #6e6e73;
-    }
-
-    ul li {
-      margin-bottom: 8px;
-    }
-
     .feature-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
       margin: 24px 0;
     }
-
     .feature-card {
-      background: #f5f9ff;
-      border: 1px solid #0071e3;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
       padding: 20px;
-      border-radius: 12px;
+      border-radius: 10px;
     }
-
     .feature-card h3 {
-      font-size: 18px;
-      margin-bottom: 8px;
-      color: #0071e3;
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--cyan-bright);
+      margin-bottom: 6px;
+    }
+    .feature-card p {
+      color: var(--text-secondary);
+      font-size: 13px;
+      margin: 0;
+    }
+    @media (max-width: 768px) {
+      .legal-container { padding: 28px 20px; margin: 24px auto 60px; }
     }
   </style>
   <!-- Google Analytics (GA4) -->
@@ -104,11 +94,36 @@
   </script>
 </head>
 <body>
-  <nav>
-    <a href="index.html">← Back to Just For Phishing</a>
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/P.png" alt="Just For Phishing logo" />
+        <span class="nav-logo-text">Just For Phishing</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html#modules">Modules</a></li>
+        <li><a href="index.html#how-it-works">How It Works</a></li>
+        <li><a href="index.html#platform">Platform</a></li>
+        <li><a href="resources.html">Resources</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+      <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div class="nav-mobile" id="navMobile">
+      <a href="index.html#modules">Modules</a>
+      <a href="index.html#how-it-works">How It Works</a>
+      <a href="index.html#platform">Platform</a>
+      <a href="resources.html">Resources</a>
+      <a href="about.html">About</a>
+    </div>
   </nav>
+  <div class="nav-spacer"></div>
 
-  <div class="container">
+  <div class="legal-container">
     <h1>Accessibility Statement</h1>
     <p class="last-updated">Last updated: November 15, 2025</p>
 
@@ -169,13 +184,13 @@
       We aim to conform to <strong>WCAG 2.1 Level AA</strong> standards. As an open-source project under active development, we continuously work to improve accessibility compliance.
     </p>
 
-    <h2>Feedback & Assistance</h2>
+    <h2>Feedback &amp; Assistance</h2>
     <p>
       We welcome feedback on the accessibility of Just For Phishing. If you encounter accessibility barriers:
     </p>
     <ul>
       <li>Visit our <a href="about.html#contact">Contact page</a> to report issues</li>
-      <li>Open an issue on <a href="https://github.com/scottymker/just-for-phishing/issues" target="_blank">GitHub</a> with the "accessibility" label</li>
+      <li>Open an issue on <a href="https://github.com/scottymker/just-for-phishing/issues" target="_blank" rel="noopener noreferrer">GitHub</a> with the "accessibility" label</li>
       <li>Describe the specific issue and the steps to reproduce it</li>
       <li>Include information about your assistive technology (if applicable)</li>
     </ul>
@@ -199,7 +214,7 @@
 
     <h2>Continuous Improvement</h2>
     <p>
-      This is an open-source project, and we encourage contributions that improve accessibility. If you're a developer interested in helping make Just For Phishing more accessible, please visit our <a href="https://github.com/scottymker/just-for-phishing" target="_blank">GitHub repository</a>.
+      This is an open-source project, and we encourage contributions that improve accessibility. If you're a developer interested in helping make Just For Phishing more accessible, please visit our <a href="https://github.com/scottymker/just-for-phishing" target="_blank" rel="noopener noreferrer">GitHub repository</a>.
     </p>
 
     <h2>Contact Us</h2>
@@ -207,5 +222,69 @@
       For accessibility questions or to report issues, please <a href="about.html#contact">contact us</a>. We typically respond within 3-5 business days.
     </p>
   </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand">
+            <img src="assets/P.png" alt="Just For Phishing" />
+            <span class="footer-brand-text">Just For Phishing</span>
+          </div>
+          <p class="footer-about-text">Free, open-source phishing awareness training. Built for individuals and organizations who believe security education should be accessible to everyone.</p>
+          <a href="https://github.com/scottymker/just-for-phishing" class="footer-github-link" target="_blank" rel="noopener noreferrer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z"/>
+            </svg>
+            View on GitHub
+          </a>
+        </div>
+        <div class="footer-col">
+          <h4>Training</h4>
+          <ul class="footer-links">
+            <li><a href="quiz.html">Quick Check</a></li>
+            <li><a href="phish-or-treat.html">Phish or Treat</a></li>
+            <li><a href="mfa-fatigue.html">MFA Fatigue Drill</a></li>
+            <li><a href="targeted-phishing.html">Targeted Phishing</a></li>
+            <li><a href="email-lab.html">Email Phishing Lab</a></li>
+            <li><a href="sms-smishing.html">SMS Smishing</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <ul class="footer-links">
+            <li><a href="resources.html">All Resources</a></li>
+            <li><a href="resources.html#reporting">Reporting Guidelines</a></li>
+            <li><a href="resources.html#best-practices">Best Practices</a></li>
+            <li><a href="resources.html#emergency">Emergency Response</a></li>
+            <li><a href="lab.html">Training Lab</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Legal &amp; More</h4>
+          <ul class="footer-links">
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Use</a></li>
+            <li><a href="accessibility.html">Accessibility</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="https://github.com/scottymker/just-for-phishing/issues" target="_blank" rel="noopener noreferrer">Bug Reports</a></li>
+            <li><a href="https://github.com/scottymker/just-for-phishing/issues" target="_blank" rel="noopener noreferrer">Feature Requests</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">
+          &copy; 2025 Just For Phishing. Open source under MIT License. Built with &#x2764;&#xFE0F; for a safer internet.
+        </p>
+        <div class="footer-bottom-links">
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+          <a href="https://github.com/scottymker/just-for-phishing" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="theme.js"></script>
 </body>
 </html>

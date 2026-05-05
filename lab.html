@@ -4,132 +4,44 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The Lab — Just For Phishing</title>
+  <meta name="description" content="Deep-dive phishing labs. Analyze real-world emails, SMS, and targeted attacks at your own pace." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/favicon.svg" />
+  <link rel="stylesheet" href="theme.css" />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --apple-blue: #0071e3;
-      --apple-blue-hover: #0077ed;
-      --text-primary: #1d1d1f;
-      --text-secondary: #6e6e73;
-      --bg-light: #fbfbfd;
-      --bg-card: #ffffff;
-      --accent-purple: #bf5af2;
-      --accent-green: #30d158;
-      --accent-orange: #ff9f0a;
-    }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg-light);
-      color: var(--text-primary);
-      min-height: 100vh;
-    }
-
-    /* Navigation */
-    nav {
-      position: sticky;
-      top: 0;
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-      padding: 12px 15px;
-      z-index: 1000;
-    }
-
-    .nav-content {
-      max-width: 900px;
+    .grid-container {
+      max-width: 1100px;
       margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .back-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--apple-blue);
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 13px;
-      transition: gap 0.3s ease;
-    }
-
-    .back-btn:hover {
-      gap: 3px;
-    }
-
-    .nav-title {
-      font-size: 16px;
-      font-weight: 600;
-    }
-
-    .nav-spacer {
-      width: 75px;
-    }
-
-    /* Header */
-    .header {
-      padding: 60px 15px 45px;
-      text-align: center;
-      background: linear-gradient(135deg, rgba(0, 113, 227, 0.05) 0%, rgba(191, 90, 242, 0.05) 100%);
-    }
-
-    .header h1 {
-      font-size: clamp(30px, 6vw, 48px);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 12px;
-    }
-
-    .header p {
-      font-size: 16px;
-      color: var(--text-secondary);
-      max-width: 510px;
-      margin: 0 auto;
-      line-height: 1.5;
-    }
-
-    /* Lab Grid */
-    .lab-container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 45px 15px;
+      padding: 56px 24px 96px;
     }
 
     .section-title {
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 24px;
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3.5vw, 36px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 28px;
     }
 
     .lab-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 18px;
-      margin-bottom: 60px;
     }
 
     .lab-card {
       background: var(--bg-card);
-      border-radius: 18px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
       padding: 24px;
-      box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
       display: flex;
       flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      transition: all var(--transition);
     }
 
     .lab-card::before {
@@ -138,141 +50,112 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent-color), var(--accent-color-light));
-      opacity: 0;
-      transition: opacity 0.3s ease;
+      height: 2px;
+      background: var(--accent-color);
+      opacity: 0.6;
+      transition: opacity var(--transition);
     }
 
     .lab-card:hover {
-      transform: translateY(-6px) scale(1.015);
-      box-shadow: 0 9px 30px rgba(0, 0, 0, 0.12);
+      background: var(--bg-card-hover);
+      border-color: var(--accent-color);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
     }
 
-    .lab-card:hover::before {
-      opacity: 1;
-    }
+    .lab-card:hover::before { opacity: 1; }
 
-    .lab-card.blue {
-      --accent-color: #0071e3;
-      --accent-color-light: #00c7be;
-    }
-
-    .lab-card.purple {
-      --accent-color: #bf5af2;
-      --accent-color-light: #ff375f;
-    }
-
-    .lab-card.green {
-      --accent-color: #30d158;
-      --accent-color-light: #00c7be;
-    }
+    .lab-card.blue   { --accent-color: var(--cyan-bright); }
+    .lab-card.purple { --accent-color: var(--purple); }
+    .lab-card.green  { --accent-color: var(--green-bright); }
 
     .lab-header {
       display: flex;
       align-items: flex-start;
       gap: 12px;
-      margin-bottom: 15px;
+      margin-bottom: 14px;
     }
 
     .lab-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 11px;
-      background: linear-gradient(135deg, var(--accent-color), var(--accent-color-light));
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 21px;
+      font-size: 18px;
       flex-shrink: 0;
     }
 
-    .lab-info {
-      flex: 1;
-    }
+    .lab-info { flex: 1; }
 
     .lab-badge {
       display: inline-block;
-      padding: 3px 9px;
-      border-radius: 9px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
       font-size: 9px;
-      font-weight: 600;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       margin-bottom: 6px;
     }
 
-    .badge-beginner {
-      background: rgba(48, 209, 88, 0.1);
-      color: #30d158;
-    }
-
-    .badge-advanced {
-      background: rgba(191, 90, 242, 0.1);
-      color: #bf5af2;
-    }
-
-    .badge-intermediate {
-      background: rgba(0, 113, 227, 0.1);
-      color: #0071e3;
-    }
+    .badge-beginner     { color: var(--green-bright); background: rgba(34,197,94,0.08);  border: 1px solid rgba(34,197,94,0.18); }
+    .badge-intermediate { color: var(--cyan-bright);  background: rgba(6,182,212,0.08);  border: 1px solid rgba(6,182,212,0.18); }
+    .badge-advanced     { color: var(--purple);       background: rgba(168,85,247,0.08); border: 1px solid rgba(168,85,247,0.18); }
 
     .lab-card h3 {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 9px;
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 700;
       color: var(--text-primary);
+      letter-spacing: -0.01em;
+      margin: 0;
     }
 
     .lab-description {
       font-size: 13px;
       line-height: 1.6;
       color: var(--text-secondary);
-      margin-bottom: 15px;
+      margin-bottom: 16px;
       flex-grow: 1;
     }
 
     .lab-meta {
       display: flex;
       gap: 12px;
+      font-family: var(--font-mono);
       font-size: 11px;
-      color: var(--text-secondary);
-      margin-bottom: 15px;
-    }
-
-    .meta-item {
-      display: flex;
-      align-items: center;
-      gap: 4px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
     }
 
     .lab-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 11px 21px;
+      padding: 10px 20px;
       background: var(--accent-color);
-      color: white;
+      color: #0a0a0f;
       text-decoration: none;
+      font-family: var(--font-body);
       font-weight: 600;
-      border-radius: 9px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       font-size: 13px;
+      border-radius: 8px;
+      transition: all var(--transition);
     }
 
     .lab-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+      filter: brightness(1.15);
+      box-shadow: 0 4px 24px var(--accent-color);
+      transform: translateY(-1px);
     }
 
     @media (max-width: 768px) {
-      .lab-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .nav-title {
-        display: none;
-      }
+      .grid-container { padding: 32px 20px 64px; }
     }
   </style>
   <!-- Google Analytics (GA4) -->
@@ -285,29 +168,44 @@
   </script>
 </head>
 <body>
-  <!-- Navigation -->
-  <nav>
-    <div class="nav-content">
-      <a href="index.html" class="back-btn">
-        ← Back
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/P.png" alt="Just For Phishing logo" />
+        <span class="nav-logo-text">Just For Phishing</span>
       </a>
-      <div class="nav-title">The Lab</div>
-      <div class="nav-spacer"></div>
+      <ul class="nav-links">
+        <li><a href="index.html#modules">Modules</a></li>
+        <li><a href="index.html#how-it-works">How It Works</a></li>
+        <li><a href="index.html#platform">Platform</a></li>
+        <li><a href="resources.html">Resources</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+      <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div class="nav-mobile" id="navMobile">
+      <a href="index.html#modules">Modules</a>
+      <a href="index.html#how-it-works">How It Works</a>
+      <a href="index.html#platform">Platform</a>
+      <a href="resources.html">Resources</a>
+      <a href="about.html">About</a>
     </div>
   </nav>
+  <div class="nav-spacer"></div>
 
-  <!-- Header -->
-  <section class="header">
+  <section class="page-header">
     <h1>🔬 The Lab</h1>
     <p>Deep-dive training modules where you'll analyze real-world phishing attacks in detail. Take your time, examine every element, and master the art of threat detection.</p>
   </section>
 
-  <!-- Lab Modules -->
-  <section class="lab-container">
+  <section class="grid-container">
     <h2 class="section-title">Training Modules</h2>
 
     <div class="lab-grid">
-      <!-- Email Lab -->
       <div class="lab-card blue">
         <div class="lab-header">
           <div class="lab-icon">📧</div>
@@ -320,13 +218,12 @@
           Analyze complete emails including headers, sender addresses, links, and attachments. Learn to spot sophisticated email-based attacks.
         </p>
         <div class="lab-meta">
-          <div class="meta-item">⏱️ 15 min</div>
-          <div class="meta-item">📊 6 scenarios</div>
+          <div>⏱ 15 min</div>
+          <div>📊 6 scenarios</div>
         </div>
         <a href="email-lab.html" class="lab-btn">Start Lab</a>
       </div>
 
-      <!-- SMS Lab -->
       <div class="lab-card purple">
         <div class="lab-header">
           <div class="lab-icon">📱</div>
@@ -339,13 +236,12 @@
           Examine text message phishing attempts in a realistic phone interface. Identify red flags in SMS attacks.
         </p>
         <div class="lab-meta">
-          <div class="meta-item">⏱️ 5 min</div>
-          <div class="meta-item">📊 6 messages</div>
+          <div>⏱ 5 min</div>
+          <div>📊 6 messages</div>
         </div>
         <a href="sms-smishing.html" class="lab-btn">Start Lab</a>
       </div>
 
-      <!-- Targeted Phishing -->
       <div class="lab-card green">
         <div class="lab-header">
           <div class="lab-icon">🎯</div>
@@ -358,13 +254,12 @@
           Study spear phishing attacks that target specific industries like finance, healthcare, and tech. Learn how attackers exploit trust and insider knowledge.
         </p>
         <div class="lab-meta">
-          <div class="meta-item">⏱️ 10 min</div>
-          <div class="meta-item">📊 8 scenarios</div>
+          <div>⏱ 10 min</div>
+          <div>📊 8 scenarios</div>
         </div>
         <a href="targeted-phishing.html" class="lab-btn">Start Lab</a>
       </div>
 
-      <!-- Quick Check -->
       <div class="lab-card blue">
         <div class="lab-header">
           <div class="lab-icon">🧪</div>
@@ -377,12 +272,76 @@
           Test your foundational security knowledge with a quick quiz covering phishing basics, MFA, and safe practices.
         </p>
         <div class="lab-meta">
-          <div class="meta-item">⏱️ 5 min</div>
-          <div class="meta-item">📊 5 questions</div>
+          <div>⏱ 5 min</div>
+          <div>📊 5 questions</div>
         </div>
         <a href="quiz.html" class="lab-btn">Start Quiz</a>
       </div>
     </div>
   </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand">
+            <img src="assets/P.png" alt="Just For Phishing" />
+            <span class="footer-brand-text">Just For Phishing</span>
+          </div>
+          <p class="footer-about-text">Free, open-source phishing awareness training. Built for individuals and organizations who believe security education should be accessible to everyone.</p>
+          <a href="https://github.com/scottymker/just-for-phishing" class="footer-github-link" target="_blank" rel="noopener noreferrer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z"/>
+            </svg>
+            View on GitHub
+          </a>
+        </div>
+        <div class="footer-col">
+          <h4>Training</h4>
+          <ul class="footer-links">
+            <li><a href="quiz.html">Quick Check</a></li>
+            <li><a href="phish-or-treat.html">Phish or Treat</a></li>
+            <li><a href="mfa-fatigue.html">MFA Fatigue Drill</a></li>
+            <li><a href="targeted-phishing.html">Targeted Phishing</a></li>
+            <li><a href="email-lab.html">Email Phishing Lab</a></li>
+            <li><a href="sms-smishing.html">SMS Smishing</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <ul class="footer-links">
+            <li><a href="resources.html">All Resources</a></li>
+            <li><a href="resources.html#reporting">Reporting Guidelines</a></li>
+            <li><a href="resources.html#best-practices">Best Practices</a></li>
+            <li><a href="resources.html#emergency">Emergency Response</a></li>
+            <li><a href="lab.html">Training Lab</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Legal &amp; More</h4>
+          <ul class="footer-links">
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Use</a></li>
+            <li><a href="accessibility.html">Accessibility</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="https://github.com/scottymker/just-for-phishing/issues" target="_blank" rel="noopener noreferrer">Bug Reports</a></li>
+            <li><a href="https://github.com/scottymker/just-for-phishing/issues" target="_blank" rel="noopener noreferrer">Feature Requests</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">
+          &copy; 2025 Just For Phishing. Open source under MIT License. Built with &#x2764;&#xFE0F; for a safer internet.
+        </p>
+        <div class="footer-bottom-links">
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+          <a href="https://github.com/scottymker/just-for-phishing" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="theme.js"></script>
 </body>
 </html>

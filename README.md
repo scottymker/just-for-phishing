@@ -334,7 +334,6 @@ MIT License - See [LICENSE](LICENSE) file
 - [ ] Gamification features
 - [ ] Team leaderboards
 - [ ] Custom scenario builder
-- [ ] Mobile app versions
 - [ ] Virtual reality training
 
 ---
