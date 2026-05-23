@@ -4,7 +4,7 @@
 
 > *Hands-on cybersecurity training to recognize and respond to real-world phishing attacks.*
 
-[![Live Demo](https://img.shields.io/badge/Demo-Live-brightgreen)](https://scottymker.github.io/just-for-phishing/)
+[![Live Demo](https://img.shields.io/badge/Demo-Live-brightgreen)](https://justforphishing.com/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Contributions Welcome](https://img.shields.io/badge/Contributions-Welcome-orange.svg)](CONTRIBUTING.md)
 
@@ -14,7 +14,7 @@
 
 Phishing attacks target everyone—from individuals to corporations, students to executives, healthcare workers to small business owners. This platform provides **hands-on, realistic training** to recognize and respond to the most common (and sophisticated) phishing attacks.
 
-**100% free. No tracking. No signup required.**
+**100% free. No signup required. Training progress stays in your browser.**
 
 ---
 
@@ -39,7 +39,7 @@ Phishing attacks target everyone—from individuals to corporations, students to
 ✅ **Shareable Certificates** - Prove your training completion
 ✅ **Mobile Responsive** - Train on any device
 ✅ **Accessibility First** - Screen reader compatible
-✅ **Privacy Focused** - All data stored locally, nothing sent to servers
+✅ **Privacy Focused** - Training progress stays local; aggregate site analytics help improve content
 
 ---
 
@@ -153,7 +153,7 @@ Track your cybersecurity awareness journey:
 ### For Users
 
 **Option 1: Use the live site**
-Visit [https://scottymker.github.io/just-for-phishing/](https://scottymker.github.io/just-for-phishing/)
+Visit [https://justforphishing.com/](https://justforphishing.com/)
 
 **Option 2: Run locally**
 ```bash
@@ -178,7 +178,7 @@ python3 -m http.server 8080
 4. **Brand** with your logo in `assets/` (optional)
 5. **Launch** and track completion
 
-**No backend required. No data sent to third parties.**
+**No backend required. Training progress remains local to the browser.**
 
 ---
 
@@ -186,16 +186,17 @@ python3 -m http.server 8080
 
 - **HTML5** - Semantic markup
 - **CSS3** - Custom properties, Grid, Flexbox
-- **Vanilla JavaScript** - Zero dependencies
+- **Vanilla JavaScript** - No frontend framework required
 - **Local Storage API** - Progress persistence
-- **Web Accessibility** - WCAG 2.1 AA compliant
+- **sql.js** - Browser-local SQLite support for lab-style training data
+- **Web Accessibility** - WCAG 2.1 AA goals
 
-**Why no frameworks?**
-- ⚡ Instant load times
-- 🔒 No supply chain attacks
+**Why minimal dependencies?**
+- ⚡ Fast static-site load times
+- 🔒 Smaller supply-chain surface area
 - 📦 No build process
-- 🌐 Works offline
-- ♿ Better accessibility
+- 🌐 Works on static hosting
+- ♿ Easier accessibility auditing
 
 ---
 
@@ -238,16 +239,11 @@ Override CSS variables in `styles.css`:
 
 ## 📊 Analytics & Metrics
 
-### Privacy-First Analytics
+### Analytics
 
-All analytics stored in **browser local storage only**:
-- No cookies
-- No tracking scripts
-- No third-party services
-- No personal data collection
-- No network requests
+Training progress and scores are stored in **browser local storage only**. The public site also uses Google Analytics 4 to understand aggregate traffic patterns (popular modules, referral sources, device/browser mix) so the training can be improved. See [`privacy.html`](privacy.html) for details.
 
-### What We Track Locally
+### What We Store Locally
 
 - Module completion status
 - Quiz scores (anonymous)
@@ -313,7 +309,7 @@ MIT License - See [LICENSE](LICENSE) file
 
 - 🐛 **Bug Reports**: [Open an issue](https://github.com/scottymker/just-for-phishing/issues)
 - 💡 **Feature Requests**: [Start a discussion](https://github.com/scottymker/just-for-phishing/discussions)
-- 📧 **Security Issues**: [security@example.com](mailto:security@example.com)
+- 📧 **Security Issues**: see [SECURITY.md](SECURITY.md)
 - 🌟 **Star the repo**: Help others find this tool!
 
 ---
@@ -355,6 +351,6 @@ If this project helps you or your organization:
 
 *"Security awareness through hands-on practice"*
 
-[Get Started](https://scottymker.github.io/just-for-phishing/) • [Report Issue](https://github.com/scottymker/just-for-phishing/issues) • [Contribute](CONTRIBUTING.md)
+[Get Started](https://justforphishing.com/) • [Report Issue](https://github.com/scottymker/just-for-phishing/issues) • [Contribute](CONTRIBUTING.md)
 
 </div>
