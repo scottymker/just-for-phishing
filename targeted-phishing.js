@@ -483,7 +483,7 @@
 
           <div class="summary-actions">
             <button id="review-btn" class="btn btn-secondary">Review Answers</button>
-            <button onclick="location.reload()" class="btn btn-secondary">Retry Lab</button>
+            <button id="retry-btn" class="btn btn-secondary">Retry Lab</button>
             <a href="lab.html" class="btn btn-primary">Back to Lab Hub</a>
           </div>
         </div>
@@ -494,6 +494,8 @@
       currentIndex = 0;
       renderScenario();
     });
+
+    document.getElementById('retry-btn')?.addEventListener('click', () => location.reload());
 
     // Save progress
     try {
