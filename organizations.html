@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For Organizations — Just For Phishing</title>
+  <meta name="description" content="Use Just For Phishing for free phishing awareness training at your organization. Get rollout guidance, privacy notes, self-hosting options, and optional implementation support." />
+  <link rel="canonical" href="https://justforphishing.com/organizations.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Just For Phishing" />
+  <meta property="og:title" content="For Organizations — Just For Phishing" />
+  <meta property="og:description" content="Free, open-source phishing awareness training for teams, schools, nonprofits, and small businesses — with practical rollout guidance and privacy-first deployment options." />
+  <meta property="og:url" content="https://justforphishing.com/organizations.html" />
+  <meta property="og:image" content="https://justforphishing.com/assets/JustforPhishingLogo.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="For Organizations — Just For Phishing" />
+  <meta name="twitter:description" content="Free, open-source phishing awareness training for teams, schools, nonprofits, and small businesses." />
+  <meta name="twitter:image" content="https://justforphishing.com/assets/JustforPhishingLogo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/favicon.svg" />
+  <link rel="stylesheet" href="theme.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y3ZYDHQD6Z"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Y3ZYDHQD6Z');
+  </script>
+  <style>
+    .org-hero {
+      padding: 104px 24px 72px;
+      background:
+        radial-gradient(circle at 18% 20%, rgba(34,211,238,0.12), transparent 34%),
+        radial-gradient(circle at 82% 12%, rgba(168,85,247,0.10), transparent 34%),
+        var(--bg-deep);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .org-hero-inner,
+    .org-section-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .org-hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+      gap: 48px;
+      align-items: center;
+    }
+
+    .org-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--cyan-bright);
+      margin-bottom: 18px;
+    }
+
+    .org-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(44px, 7vw, 76px);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+      font-weight: 400;
+      color: var(--text-primary);
+      margin: 0 0 22px;
+    }
+
+    .org-hero h1 em {
+      color: var(--cyan-bright);
+      font-style: italic;
+    }
+
+    .org-hero p {
+      color: var(--text-secondary);
+      font-size: 18px;
+      line-height: 1.7;
+      max-width: 680px;
+      margin: 0 0 28px;
+    }
+
+    .org-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 30px;
+    }
+
+    .org-primary,
+    .org-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 999px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform var(--transition), border-color var(--transition), background var(--transition);
+    }
+
+    .org-primary {
+      color: #041014;
+      background: var(--cyan-bright);
+      box-shadow: 0 16px 40px rgba(34,211,238,.18);
+    }
+
+    .org-secondary {
+      color: var(--text-primary);
+      border: 1px solid var(--border-subtle);
+      background: rgba(255,255,255,.03);
+    }
+
+    .org-primary:hover,
+    .org-secondary:hover {
+      transform: translateY(-2px);
+      text-decoration: none;
+    }
+
+    .org-note {
+      margin-top: 22px;
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .org-snapshot {
+      background: rgba(8,13,20,.78);
+      border: 1px solid var(--border-subtle);
+      border-radius: 22px;
+      padding: 24px;
+      box-shadow: 0 28px 90px rgba(0,0,0,.35);
+    }
+
+    .snapshot-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 18px;
+    }
+
+    .snapshot-title {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+
+    .snapshot-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--green-bright);
+      border: 1px solid rgba(34,197,94,.25);
+      background: rgba(34,197,94,.08);
+      border-radius: 999px;
+      padding: 6px 9px;
+    }
+
+    .snapshot-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .snapshot-item {
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 14px;
+      background: rgba(255,255,255,.03);
+    }
+
+    .snapshot-item strong {
+      display: block;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .snapshot-item span {
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .org-section {
+      padding: 76px 24px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .org-section.alt {
+      background: rgba(255,255,255,.015);
+    }
+
+    .section-kicker {
+      display: block;
+      color: var(--cyan-bright);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .org-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4.5vw, 52px);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      font-weight: 400;
+      color: var(--text-primary);
+      margin: 0 0 18px;
+      max-width: 780px;
+    }
+
+    .section-lede {
+      color: var(--text-secondary);
+      font-size: 17px;
+      line-height: 1.7;
+      max-width: 760px;
+      margin: 0 0 34px;
+    }
+
+    .org-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .org-card,
+    .step-card,
+    .privacy-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 24px;
+    }
+
+    .org-card h3,
+    .step-card h3,
+    .privacy-card h3 {
+      color: var(--text-primary);
+      font-size: 18px;
+      margin: 0 0 10px;
+    }
+
+    .org-card p,
+    .step-card p,
+    .privacy-card p,
+    .org-list li {
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    .card-icon {
+      font-size: 30px;
+      margin-bottom: 14px;
+    }
+
+    .steps {
+      display: grid;
+      gap: 18px;
+      counter-reset: step;
+    }
+
+    .step-card {
+      position: relative;
+      padding-left: 82px;
+    }
+
+    .step-card::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      left: 24px;
+      top: 24px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(34,211,238,.12);
+      color: var(--cyan-bright);
+      font-family: var(--font-mono);
+      font-weight: 700;
+      border: 1px solid rgba(34,211,238,.25);
+    }
+
+    .org-list {
+      display: grid;
+      gap: 10px;
+      padding-left: 20px;
+      margin: 0;
+    }
+
+    .privacy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+    }
+
+    .support-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+      gap: 28px;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(34,211,238,.09), rgba(168,85,247,.07));
+      border: 1px solid rgba(34,211,238,.18);
+      border-radius: 24px;
+      padding: clamp(26px, 5vw, 44px);
+    }
+
+    .support-panel h2 {
+      margin-bottom: 14px;
+    }
+
+    .support-box {
+      background: rgba(5,10,16,.68);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 22px;
+    }
+
+    .support-box ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    @media (max-width: 860px) {
+      .org-hero-grid,
+      .support-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .step-card {
+        padding-left: 24px;
+        padding-top: 76px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/P.png" alt="Just For Phishing logo" />
+        <span class="nav-logo-text">Just For Phishing</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html#modules">Modules</a></li>
+        <li><a href="index.html#how-it-works">How It Works</a></li>
+        <li><a href="index.html#platform">Platform</a></li>
+        <li><a href="resources.html">Resources</a></li>
+        <li><a href="organizations.html">Organizations</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+      <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div class="nav-mobile" id="navMobile">
+      <a href="index.html#modules">Modules</a>
+      <a href="index.html#how-it-works">How It Works</a>
+      <a href="index.html#platform">Platform</a>
+      <a href="resources.html">Resources</a>
+      <a href="organizations.html">Organizations</a>
+      <a href="about.html">About</a>
+    </div>
+  </nav>
+  <div class="nav-spacer"></div>
+
+  <header class="org-hero">
+    <div class="org-hero-inner org-hero-grid">
+      <div>
+        <span class="org-eyebrow">For Organizations</span>
+        <h1>Roll out phishing training without putting it behind a <em>paywall</em>.</h1>
+        <p>Just For Phishing is free, open-source training for schools, nonprofits, small businesses, and teams that need practical phishing awareness without vendor lock-in or surprise licensing costs.</p>
+        <div class="org-ctas">
+          <a class="org-primary" href="#rollout">Plan a rollout</a>
+          <a class="org-secondary" href="https://github.com/scottymker/just-for-phishing" target="_blank" rel="noopener noreferrer">Self-host from GitHub</a>
+        </div>
+        <p class="org-note">The public site stays free. Optional help is implementation support — not a gate around the training.</p>
+      </div>
+
+      <aside class="org-snapshot" aria-label="Organization readiness snapshot">
+        <div class="snapshot-header">
+          <div class="snapshot-title">Readiness Snapshot</div>
+          <div class="snapshot-badge">Free to use</div>
+        </div>
+        <div class="snapshot-list">
+          <div class="snapshot-item">
+            <strong>No learner accounts required</strong>
+            <span>Modules run in the browser, so teams can start training without collecting names, passwords, or employee lists.</span>
+          </div>
+          <div class="snapshot-item">
+            <strong>Shareable module links</strong>
+            <span>Send employees directly to a quick check, smishing drill, MFA fatigue simulation, or full lab hub.</span>
+          </div>
+          <div class="snapshot-item">
+            <strong>Open-source deployment path</strong>
+            <span>Fork it, self-host it, customize scenarios, and adapt the copy for your organization’s internal policy.</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </header>
+
+  <main>
+    <section class="org-section">
+      <div class="org-section-inner">
+        <span class="section-kicker">Use cases</span>
+        <h2>Simple enough for a one-person rollout. Credible enough for a real security program.</h2>
+        <p class="section-lede">Use the public site as a lightweight awareness exercise, or fork the project and adapt it for internal onboarding, annual refreshers, tabletop prep, or post-incident reinforcement.</p>
+        <div class="org-card-grid">
+          <article class="org-card">
+            <div class="card-icon">🏫</div>
+            <h3>Schools &amp; nonprofits</h3>
+            <p>Give staff and volunteers realistic phishing practice without adding another paid platform to the budget.</p>
+          </article>
+          <article class="org-card">
+            <div class="card-icon">🏢</div>
+            <h3>Small businesses</h3>
+            <p>Build baseline awareness before employees handle invoices, customer data, shared mailboxes, or admin tools.</p>
+          </article>
+          <article class="org-card">
+            <div class="card-icon">🧑‍💻</div>
+            <h3>IT &amp; security teams</h3>
+            <p>Pair modules with internal policy: how to report suspicious mail, when to deny MFA prompts, and where to get help.</p>
+          </article>
+          <article class="org-card">
+            <div class="card-icon">🚀</div>
+            <h3>Onboarding</h3>
+            <p>Send new hires through a short training path before they receive broader access to business systems.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="org-section alt" id="rollout">
+      <div class="org-section-inner">
+        <span class="section-kicker">Rollout plan</span>
+        <h2>A practical launch path that does not require accounts, LMS integration, or procurement.</h2>
+        <p class="section-lede">This is intentionally lightweight. Start with the public modules, gather aggregate completion feedback however your organization already tracks training, and only customize when you know what your team needs.</p>
+        <div class="steps">
+          <article class="step-card">
+            <h3>Pick the training path</h3>
+            <p>For most teams, start with Quick Check, Phish or Treat, MFA Fatigue Drill, and SMS Smishing. Add Email Lab and Targeted Phishing for higher-risk roles.</p>
+          </article>
+          <article class="step-card">
+            <h3>Explain the privacy model</h3>
+            <p>Tell learners that progress stays in their browser on the public site. The site uses aggregate analytics to improve content, not employee-level monitoring.</p>
+          </article>
+          <article class="step-card">
+            <h3>Connect it to your policy</h3>
+            <p>Pair the modules with your actual reporting process: where to forward suspicious email, how to report smishing, and who to call after an accidental click.</p>
+          </article>
+          <article class="step-card">
+            <h3>Decide whether to self-host</h3>
+            <p>Self-host if you need internal branding, custom scenarios, private analytics, or an intranet-only copy. The MIT license allows adaptation.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="org-section">
+      <div class="org-section-inner privacy-grid">
+        <article class="privacy-card">
+          <span class="section-kicker">Privacy</span>
+          <h2>Public-site training is intentionally low-data.</h2>
+          <p>The public version does not ask learners to create accounts or submit names, employers, passwords, or answers in free-text fields. Training runs in the browser, and module progress stays local to the learner’s device.</p>
+        </article>
+        <article class="privacy-card">
+          <span class="section-kicker">Analytics</span>
+          <h2>Aggregate signals, not employee surveillance.</h2>
+          <p>Google Analytics is used for aggregate site improvement signals such as module starts, completions, and score ranges. If your organization needs employee-level records, self-host and implement your own consent, policy, and reporting workflow.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="org-section alt">
+      <div class="org-section-inner">
+        <span class="section-kicker">Self-hosting</span>
+        <h2>Fork it, brand it, and make the scenarios match your real threat model.</h2>
+        <p class="section-lede">Because Just For Phishing is a static, open-source site, an organization can host a customized copy with GitHub Pages, Cloudflare Pages, Netlify, an internal web server, or another static host.</p>
+        <ul class="org-list">
+          <li>Swap in your reporting address, security contact, and internal escalation process.</li>
+          <li>Add organization-specific examples: payroll fraud, gift-card scams, fake vendor invoices, student account takeovers, or helpdesk impersonation.</li>
+          <li>Configure your own analytics or remove analytics entirely for an internal-only deployment.</li>
+          <li>Keep the public training free while using custom implementation only when it adds value.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="org-section">
+      <div class="org-section-inner support-panel">
+        <div>
+          <span class="section-kicker">Optional support</span>
+          <h2>Need help turning this into an internal training rollout?</h2>
+          <p class="section-lede">The free public site is the default. If you want a customized deployment, help adapting scenarios, or a rollout plan for a specific school or business, reach out through the project channels.</p>
+          <div class="org-ctas">
+            <a class="org-primary" href="about.html#contact">Contact the project</a>
+            <a class="org-secondary" href="https://github.com/scottymker/just-for-phishing/issues" target="_blank" rel="noopener noreferrer">Open a GitHub issue</a>
+          </div>
+        </div>
+        <aside class="support-box">
+          <h3>Good fit for help with:</h3>
+          <ul>
+            <li>custom scenario writing</li>
+            <li>self-hosted static deployment</li>
+            <li>Cloudflare security headers</li>
+            <li>privacy-friendly analytics choices</li>
+            <li>organization rollout messaging</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand">
+            <img src="assets/P.png" alt="Just For Phishing" />
+            <span class="footer-brand-text">Just For Phishing</span>
+          </div>
+          <p class="footer-about-text">Free, open-source phishing awareness training. Built for individuals and organizations who believe security education should be accessible to everyone.</p>
+          <a href="https://github.com/scottymker/just-for-phishing" class="footer-github-link" target="_blank" rel="noopener noreferrer">View on GitHub</a>
+        </div>
+        <div class="footer-col">
+          <h4>Training</h4>
+          <ul class="footer-links">
+            <li><a href="quiz.html">Quick Check</a></li>
+            <li><a href="phish-or-treat.html">Phish or Treat</a></li>
+            <li><a href="mfa-fatigue.html">MFA Fatigue Drill</a></li>
+            <li><a href="targeted-phishing.html">Targeted Phishing</a></li>
+            <li><a href="email-lab.html">Email Phishing Lab</a></li>
+            <li><a href="sms-smishing.html">SMS Smishing</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <ul class="footer-links">
+            <li><a href="resources.html">All Resources</a></li>
+            <li><a href="organizations.html">For Organizations</a></li>
+            <li><a href="resources.html#reporting">Reporting Guidelines</a></li>
+            <li><a href="resources.html#best-practices">Best Practices</a></li>
+            <li><a href="resources.html#emergency">Emergency Response</a></li>
+            <li><a href="lab.html">Training Lab</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Legal &amp; More</h4>
+          <ul class="footer-links">
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Use</a></li>
+            <li><a href="accessibility.html">Accessibility</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="https://github.com/scottymker/just-for-phishing/issues" target="_blank" rel="noopener noreferrer">Bug Reports</a></li>
+            <li><a href="https://github.com/scottymker/just-for-phishing/issues" target="_blank" rel="noopener noreferrer">Feature Requests</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2025 Just For Phishing. Open source under MIT License. Built with &#x2764;&#xFE0F; for a safer internet.</p>
+        <div class="footer-bottom-links">
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+          <a href="https://github.com/scottymker/just-for-phishing" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="theme.js"></script>
+  <script src="analytics.js"></script>
+</body>
+</html>
