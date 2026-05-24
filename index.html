@@ -1295,6 +1295,13 @@
       color: var(--text-muted);
     }
 
+    .signup-status {
+      font-size: 13px;
+      min-height: 20px;
+      margin-top: 4px;
+      transition: color var(--transition);
+    }
+
     /* =============================================
        FOOTER
     ============================================= */
@@ -2091,11 +2098,12 @@
         <span class="section-eyebrow">Stay Current</span>
         <h2 class="section-heading">Stay ahead of emerging threats</h2>
         <p class="section-sub">New phishing tactics appear every week. Get notified when we add new modules and scenarios.</p>
-        <form class="signup-form" onsubmit="handleEmailSignup(event)">
-          <input type="email" class="signup-input" placeholder="you@company.com" required autocomplete="email" />
-          <button type="submit" class="btn-signup">Subscribe</button>
+        <form class="signup-form" id="signup-form" onsubmit="handleEmailSignup(event)">
+          <input type="email" class="signup-input" id="signup-email" placeholder="you@company.com" required autocomplete="email" />
+          <button type="submit" class="btn-signup" id="signup-btn">Subscribe</button>
         </form>
         <p class="signup-fine">No spam. Unsubscribe anytime. We respect your privacy.</p>
+        <p class="signup-status" id="signup-status" aria-live="polite"></p>
       </div>
     </div>
   </section>
@@ -2261,21 +2269,50 @@
     if (statsSection) statsObserver.observe(statsSection);
 
     // ================================================
-    // EMAIL SIGNUP HANDLER
+    // EMAIL SIGNUP — proxied via Cloudflare Worker
     // ================================================
-    function handleEmailSignup(e) {
+    const SUBSCRIBE_URL = 'https://jfp-subscribe.scottymker.workers.dev';
+
+    async function handleEmailSignup(e) {
       e.preventDefault();
-      const input = e.target.querySelector('input[type="email"]');
-      const btn = e.target.querySelector('button');
-      const email = input.value.trim();
+      const input  = document.getElementById('signup-email');
+      const btn    = document.getElementById('signup-btn');
+      const status = document.getElementById('signup-status');
+      const email  = input.value.trim();
       if (!email) return;
 
-      // Placeholder — replace with your email service integration
-      btn.textContent = 'Subscribed!';
-      btn.style.background = '#22c55e';
-      input.value = '';
-      input.disabled = true;
-      btn.disabled = true;
+      btn.textContent    = 'Subscribing…';
+      btn.disabled       = true;
+      input.disabled     = true;
+      status.textContent = '';
+      status.style.color = '';
+
+      try {
+        const res  = await fetch(SUBSCRIBE_URL, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
+        const data = await res.json().catch(() => ({}));
+
+        if (res.ok && data.ok) {
+          btn.textContent      = "You're in!";
+          btn.style.background = 'var(--green)';
+          input.value          = '';
+          status.textContent   = "Thanks for subscribing — we'll let you know when new modules drop.";
+          status.style.color   = 'var(--green)';
+          window.JFPAnalytics?.sendEvent('newsletter_signup');
+        } else {
+          throw new Error(data.error || `HTTP ${res.status}`);
+        }
+      } catch (err) {
+        btn.textContent    = 'Subscribe';
+        btn.disabled       = false;
+        input.disabled     = false;
+        status.textContent = 'Something went wrong — please try again.';
+        status.style.color = 'var(--red)';
+        console.error('[signup]', err.message);
+      }
     }
 
   </script>

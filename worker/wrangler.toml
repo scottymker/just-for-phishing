@@ -1,0 +1,11 @@
+name            = "jfp-subscribe"
+main            = "worker.js"
+compatibility_date = "2025-01-01"
+
+# After deploying, add your Brevo key as a secret (never stored here):
+#   wrangler secret put BREVO_API_KEY
+#
+# Optional: serve on your own domain instead of *.workers.dev
+# [[routes]]
+# pattern = "justforphishing.com/api/subscribe"
+# zone_name = "justforphishing.com"
