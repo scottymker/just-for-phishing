@@ -1,0 +1,184 @@
+    .grid-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 56px 24px 96px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3.5vw, 36px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 28px;
+    }
+
+    .sim-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .sim-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      transition: all var(--transition);
+    }
+
+    .sim-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent-color);
+      opacity: 0.6;
+      transition: opacity var(--transition);
+    }
+
+    .sim-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--accent-color);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+
+    .sim-card:hover::before { opacity: 1; }
+
+    .sim-card.red    { --accent-color: var(--red-bright); }
+    .sim-card.orange { --accent-color: var(--orange); }
+    .sim-card.purple { --accent-color: var(--purple); }
+
+    .sim-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .sim-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .sim-info { flex: 1; }
+
+    .sim-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .badge-rapid     { color: var(--red-bright);   background: rgba(239,68,68,0.08);   border: 1px solid rgba(239,68,68,0.18); }
+    .badge-timed     { color: var(--orange);       background: rgba(249,115,22,0.08);  border: 1px solid rgba(249,115,22,0.18); }
+    .badge-challenge { color: var(--purple);       background: rgba(168,85,247,0.08);  border: 1px solid rgba(168,85,247,0.18); }
+
+    .sim-card h3 {
+      font-family: var(--font-body);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+
+    .sim-description {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      margin-bottom: 18px;
+      flex-grow: 1;
+    }
+
+    .sim-meta {
+      display: flex;
+      gap: 14px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    .sim-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 22px;
+      background: var(--accent-color);
+      color: #fff;
+      text-decoration: none;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 14px;
+      border-radius: 8px;
+      border: none;
+      transition: all var(--transition);
+      cursor: pointer;
+    }
+
+    .sim-btn:hover {
+      filter: brightness(1.1);
+      box-shadow: 0 4px 24px var(--accent-color);
+      transform: translateY(-1px);
+    }
+
+    .sim-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      filter: none;
+    }
+
+    .sim-btn:disabled:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Info box */
+    .info-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-left: 3px solid var(--cyan);
+      border-radius: 12px;
+      padding: 28px;
+      margin-top: 56px;
+    }
+
+    .info-box h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+
+    .info-box p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    @media (max-width: 768px) {
+      .grid-container { padding: 32px 20px 64px; }
+    }
