@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — Page Not Found — Just For Phishing</title>
+  <meta name="description" content="This page doesn't exist. Head back to Just For Phishing to continue your phishing awareness training." />
+  <meta name="robots" content="noindex" />
+  <link rel="canonical" href="https://justforphishing.com/404.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/favicon.svg" />
+  <link rel="stylesheet" href="theme.css">
+  <style>
+    .error-page {
+      min-height: calc(100vh - 64px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 24px 64px;
+      background:
+        radial-gradient(ellipse at 50% 40%, rgba(239, 68, 68, 0.07) 0%, transparent 60%),
+        var(--bg-deep);
+    }
+
+    .error-container {
+      max-width: 680px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .error-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--red);
+      letter-spacing: 0.04em;
+      margin-bottom: 28px;
+    }
+
+    .error-badge::before {
+      content: '';
+      display: block;
+      width: 6px;
+      height: 6px;
+      background: var(--red);
+      border-radius: 50%;
+    }
+
+    .error-code {
+      font-family: var(--font-display);
+      font-size: clamp(96px, 18vw, 160px);
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .error-code span {
+      color: var(--red);
+    }
+
+    .error-headline {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 3.5vw, 32px);
+      font-weight: 400;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    .error-body {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 520px;
+      margin: 0 auto 40px;
+    }
+
+    /* Phishing "red flags" card */
+    .red-flags {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 36px;
+      text-align: left;
+    }
+
+    .red-flags-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--red);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .red-flags-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .red-flags-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .red-flags-list li::before {
+      content: '⚑';
+      color: var(--red);
+      flex-shrink: 0;
+      font-size: 12px;
+      margin-top: 1px;
+    }
+
+    /* CTA buttons */
+    .error-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 28px;
+      background: var(--red);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background var(--transition), box-shadow var(--transition), transform var(--transition);
+    }
+
+    .btn-home:hover {
+      background: #dc2626;
+      box-shadow: 0 4px 24px rgba(239, 68, 68, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .btn-modules {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 28px;
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border-mid);
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color var(--transition), background var(--transition), transform var(--transition);
+    }
+
+    .btn-modules:hover {
+      border-color: var(--cyan);
+      background: rgba(6, 182, 212, 0.06);
+      transform: translateY(-1px);
+    }
+
+    /* Quick links */
+    .quick-links {
+      margin-top: 56px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .quick-links-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 20px;
+    }
+
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+    }
+
+    .module-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 16px 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      text-decoration: none;
+      transition: border-color var(--transition), background var(--transition), transform var(--transition);
+    }
+
+    .module-link:hover {
+      border-color: var(--border-mid);
+      background: var(--bg-card-hover);
+      transform: translateY(-2px);
+    }
+
+    .module-link-icon {
+      font-size: 22px;
+    }
+
+    .module-link-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    @media (max-width: 600px) {
+      .error-page { padding: 72px 20px 48px; }
+      .module-grid { grid-template-columns: repeat(3, 1fr); }
+      .red-flags { padding: 16px 18px; }
+    }
+  </style>
+  <!-- Google Analytics (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y3ZYDHQD6Z"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Y3ZYDHQD6Z');
+  </script>
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/P.png" alt="Just For Phishing logo" />
+        <span class="nav-logo-text">Just For Phishing</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html#modules">Modules</a></li>
+        <li><a href="index.html#how-it-works">How It Works</a></li>
+        <li><a href="index.html#platform">Platform</a></li>
+        <li><a href="resources.html">Resources</a></li>
+        <li><a href="organizations.html">Organizations</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+      <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div class="nav-mobile" id="navMobile">
+      <a href="index.html#modules">Modules</a>
+      <a href="index.html#how-it-works">How It Works</a>
+      <a href="index.html#platform">Platform</a>
+      <a href="resources.html">Resources</a>
+      <a href="organizations.html">Organizations</a>
+      <a href="about.html">About</a>
+    </div>
+  </nav>
+  <div class="nav-spacer"></div>
+
+  <main class="error-page">
+    <div class="error-container">
+
+      <div class="error-badge">SUSPICIOUS LINK DETECTED</div>
+
+      <div class="error-code">4<span>0</span>4</div>
+
+      <h1 class="error-headline">This page doesn't exist.</h1>
+
+      <p class="error-body">
+        The URL you followed led nowhere — a classic red flag. In a real phishing attack, that broken link might be the only sign something's wrong.
+      </p>
+
+      <div class="red-flags" role="note" aria-label="Red flags on this page">
+        <div class="red-flags-label">Red flags on this page</div>
+        <ul class="red-flags-list">
+          <li>URL does not match any known resource on this site</li>
+          <li>No content was returned — the destination may have never existed</li>
+          <li>You may have followed a mistyped or outdated link</li>
+        </ul>
+      </div>
+
+      <div class="error-actions">
+        <a href="index.html" class="btn-home">Return to Safety</a>
+        <a href="index.html#modules" class="btn-modules">Browse Modules</a>
+      </div>
+
+      <div class="quick-links">
+        <div class="quick-links-label">Jump to a module</div>
+        <div class="module-grid">
+          <a href="quiz.html" class="module-link">
+            <span class="module-link-icon">⚡</span>
+            <span class="module-link-label">Quick Check</span>
+          </a>
+          <a href="phish-or-treat.html" class="module-link">
+            <span class="module-link-icon">🎃</span>
+            <span class="module-link-label">Phish or Treat</span>
+          </a>
+          <a href="mfa-fatigue.html" class="module-link">
+            <span class="module-link-icon">🔐</span>
+            <span class="module-link-label">MFA Fatigue</span>
+          </a>
+          <a href="targeted-phishing.html" class="module-link">
+            <span class="module-link-icon">🎯</span>
+            <span class="module-link-label">Targeted Phishing</span>
+          </a>
+          <a href="email-lab.html" class="module-link">
+            <span class="module-link-icon">🔬</span>
+            <span class="module-link-label">Email Lab</span>
+          </a>
+          <a href="sms-smishing.html" class="module-link">
+            <span class="module-link-icon">📱</span>
+            <span class="module-link-label">SMS Smishing</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand">
+            <img src="assets/P.png" alt="Just For Phishing" />
+            <span class="footer-brand-text">Just For Phishing</span>
+          </div>
+          <p class="footer-about-text">Free, open-source phishing awareness training. Built for individuals and organizations who believe security education should be accessible to everyone.</p>
+          <a href="https://github.com/scottymker/just-for-phishing" class="footer-github-link" target="_blank" rel="noopener noreferrer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z"/>
+            </svg>
+            View on GitHub
+          </a>
+        </div>
+        <div class="footer-col">
+          <h4>Training</h4>
+          <ul class="footer-links">
+            <li><a href="quiz.html">Quick Check</a></li>
+            <li><a href="phish-or-treat.html">Phish or Treat</a></li>
+            <li><a href="mfa-fatigue.html">MFA Fatigue Drill</a></li>
+            <li><a href="targeted-phishing.html">Targeted Phishing</a></li>
+            <li><a href="email-lab.html">Email Phishing Lab</a></li>
+            <li><a href="sms-smishing.html">SMS Smishing</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <ul class="footer-links">
+            <li><a href="resources.html">All Resources</a></li>
+            <li><a href="organizations.html">Organizations</a></li>
+            <li><a href="resources.html#reporting">Reporting Guidelines</a></li>
+            <li><a href="resources.html#best-practices">Best Practices</a></li>
+            <li><a href="resources.html#emergency">Emergency Response</a></li>
+            <li><a href="lab.html">Training Lab</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Legal &amp; More</h4>
+          <ul class="footer-links">
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Use</a></li>
+            <li><a href="accessibility.html">Accessibility</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="https://github.com/scottymker/just-for-phishing/issues" target="_blank" rel="noopener noreferrer">Bug Reports</a></li>
+            <li><a href="https://github.com/scottymker/just-for-phishing/issues" target="_blank" rel="noopener noreferrer">Feature Requests</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">
+          &copy; 2025 Just For Phishing. Open source under MIT License. Built with &#x2764;&#xFE0F; for a safer internet.
+        </p>
+        <div class="footer-bottom-links">
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+          <a href="https://github.com/scottymker/just-for-phishing" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="theme.js"></script>
+  <script src="analytics.js"></script>
+</body>
+</html>
