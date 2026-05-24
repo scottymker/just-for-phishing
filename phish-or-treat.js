@@ -301,6 +301,13 @@ function finishQuiz(timedOut) {
     : 0;
   const timeUsed = START_TIME_SECONDS - timeRemaining;
 
+  window.JFPAnalytics?.trackModuleComplete('phish_or_treat', {
+    correct: correctAnswers,
+    total: totalQuestions,
+    percentage: accuracy,
+    timedOut,
+  });
+
   // Set summary content
   if (timedOut) {
     summaryIcon.textContent = '⏱️';
@@ -342,6 +349,8 @@ function finishQuiz(timedOut) {
 
 // Start the quiz
 function startQuiz() {
+  window.JFPAnalytics?.trackModuleStart('phish_or_treat');
+
   // Reset state
   quizActive = true;
   currentQuestionIndex = 0;

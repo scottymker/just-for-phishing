@@ -262,6 +262,7 @@
       currentScreen = 'scenario';
       currentIndex = 0;
       userAnswers = {};
+      window.JFPAnalytics?.trackModuleStart('targeted_phishing_lab');
       startTimer();
       startBtn.style.display = 'none';
       renderScenario();
@@ -425,6 +426,7 @@
 
     const total = SCENARIOS.length;
     const percentage = Math.round((correct / total) * 100);
+    window.JFPAnalytics?.trackModuleComplete('targeted_phishing_lab', { correct, total, percentage });
     let grade, gradeClass, message;
 
     if (percentage === 100) {

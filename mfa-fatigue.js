@@ -89,6 +89,7 @@
 
   function startDrill() {
     if (state.active) return;
+    window.JFPAnalytics?.trackModuleStart('mfa_fatigue_drill');
     setActive(true);
     state.round = 0;
     el.eventLog.innerHTML = '';
@@ -102,6 +103,14 @@
   }
 
   function endDrill(reason) {
+    const correct = Number(el.score?.textContent) || 0;
+    const total = Number(el.total?.textContent) || state.totalRounds;
+    window.JFPAnalytics?.trackModuleComplete('mfa_fatigue_drill', {
+      correct,
+      total,
+      percentage: total > 0 ? Math.round((correct / total) * 100) : 0,
+      timedOut: reason.includes('Time'),
+    });
     stopTimer();
     setActive(false);
     setFeedback(reason);

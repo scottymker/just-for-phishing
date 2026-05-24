@@ -462,6 +462,12 @@
             notificationStack.prepend(nextNotification);
           }, 3000);
         } else {
+          window.JFPAnalytics?.trackModuleComplete('mfa_fatigue_drill', {
+            correct: score,
+            total: MFA_SCENARIOS.length,
+            percentage: Math.round((score / MFA_SCENARIOS.length) * 100),
+          });
+
           // Drill complete
           setTimeout(() => {
             const feedback = document.getElementById('feedback');
@@ -540,5 +546,6 @@
   </footer>
 
   <script src="theme.js"></script>
+  <script src="analytics.js"></script>
 </body>
 </html>

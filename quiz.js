@@ -89,6 +89,7 @@ const categoryScores = {
 
 // Initialize quiz
 function initQuiz() {
+  window.JFPAnalytics?.trackModuleStart('security_awareness_quiz');
   currentQuestionIndex = 0;
   score = 0;
   answers = [];
@@ -298,6 +299,12 @@ function showSummary() {
     summaryIcon.textContent = '⚠️';
     summaryMessage.textContent = "Your security awareness needs improvement. Don't worry - everyone starts somewhere! Review the feedback carefully and consider retaking the quiz.";
   }
+
+  window.JFPAnalytics?.trackModuleComplete('security_awareness_quiz', {
+    correct: score,
+    total: quizQuestions.length,
+    percentage,
+  });
 
   // Show knowledge areas
   displayKnowledgeAreas();

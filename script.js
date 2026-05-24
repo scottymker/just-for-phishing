@@ -22,6 +22,7 @@ const QUESTIONS = [
 function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]} return a; }
 
 function startLevel(){
+  window.JFPAnalytics?.trackModuleStart('home_quick_check');
   quizArea.classList.remove('hidden');
   quizArea.innerHTML = renderQuiz(shuffle([...QUESTIONS]).slice(0,5));
 }
@@ -82,6 +83,7 @@ function grade(e){
       if(v===q.answer) score++;
     }
   }
+  window.JFPAnalytics?.trackModuleComplete('home_quick_check', { correct: score, total });
   const res = document.getElementById('quiz-result');
   res.classList.remove('hidden');
   res.textContent = `Score: ${score}/${total}`;

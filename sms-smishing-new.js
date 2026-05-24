@@ -346,6 +346,7 @@
 
     const total = MESSAGES.length;
     const percentage = Math.round((correct / total) * 100);
+    window.JFPAnalytics?.trackModuleComplete('sms_smishing_simulation', { correct, total, percentage });
     let grade, gradeColor;
 
     if (percentage === 100) {
@@ -413,6 +414,7 @@
 
   function startSimulation() {
     if (started) return;
+    window.JFPAnalytics?.trackModuleStart('sms_smishing_simulation');
     started = true;
     startBtn.disabled = true;
     startBtn.textContent = 'Simulation Running...';
