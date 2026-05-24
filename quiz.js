@@ -313,6 +313,18 @@ function showSummary() {
   if (percentage >= 80) {
     createCelebration();
   }
+
+  try {
+    const progress = JSON.parse(localStorage.getItem('phishing-training-progress') || '{}');
+    progress.securityAwarenessQuiz = {
+      completed: true,
+      score,
+      total: quizQuestions.length,
+      percentage,
+      completedAt: new Date().toISOString(),
+    };
+    localStorage.setItem('phishing-training-progress', JSON.stringify(progress));
+  } catch (_e) {}
 }
 
 // Display knowledge areas breakdown

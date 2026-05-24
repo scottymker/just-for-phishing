@@ -472,3 +472,31 @@ footer {
     padding: 56px 20px 32px;
   }
 }
+
+/* =============================================
+   ACCESSIBILITY
+============================================= */
+
+/* Visible focus for keyboard navigation */
+:focus-visible {
+  outline: 2px solid #06b6d4;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Remove focus ring for mouse users */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Honour reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

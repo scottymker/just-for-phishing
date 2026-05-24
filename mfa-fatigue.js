@@ -8,6 +8,8 @@
     totalRounds: 3,
     remaining: 45,
     timerId: null,
+    correct: 0,
+    answered: 0,
   };
 
   const el = {};
@@ -92,6 +94,8 @@
     window.JFPAnalytics?.trackModuleStart('mfa_fatigue_drill');
     setActive(true);
     state.round = 0;
+    state.correct = 0;
+    state.answered = 0;
     el.eventLog.innerHTML = '';
     el.summary.classList.add('hidden');
     clearNotifications();
@@ -103,8 +107,8 @@
   }
 
   function endDrill(reason) {
-    const correct = Number(el.score?.textContent) || 0;
-    const total = Number(el.total?.textContent) || state.totalRounds;
+    const correct = state.correct;
+    const total = state.answered || state.totalRounds;
     window.JFPAnalytics?.trackModuleComplete('mfa_fatigue_drill', {
       correct,
       total,
@@ -116,6 +120,18 @@
     setFeedback(reason);
     el.summary.textContent = reason;
     el.summary.classList.remove('hidden');
+
+    try {
+      const progress = JSON.parse(localStorage.getItem('phishing-training-progress') || '{}');
+      progress.mfaFatigue = {
+        completed: true,
+        score: correct,
+        total,
+        percentage: total > 0 ? Math.round((correct / total) * 100) : 0,
+        completedAt: new Date().toISOString(),
+      };
+      localStorage.setItem('phishing-training-progress', JSON.stringify(progress));
+    } catch (_e) {}
   }
 
   function handleActionClick(e) {
@@ -129,12 +145,11 @@
     }
 
     const action = btn.dataset.action;
-    // naive scoring: safe choices are any "deny*"
     const safe = action === 'deny' || action === 'deny-reset' || action === 'deny-report';
-    const cur = Number(el.score.textContent);
-    const tot = Number(el.total.textContent);
 
-    setScore(cur + (safe ? 1 : 0), Math.max(tot + 1, state.round)); // keep it simple
+    state.answered += 1;
+    if (safe) state.correct += 1;
+    setScore(state.correct, state.answered);
     logEvent(`You chose: ${btn.textContent.trim()}`);
     if (action === 'approve') {
       pushNotification('⚠️ Account at risk! Approving unexpected prompts is unsafe.');

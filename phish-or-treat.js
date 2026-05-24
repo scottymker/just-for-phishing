@@ -345,6 +345,18 @@ function finishQuiz(timedOut) {
   questionCard.classList.add('hidden');
   feedbackSection.classList.add('hidden');
   summarySection.classList.remove('hidden');
+
+  try {
+    const progress = JSON.parse(localStorage.getItem('phishing-training-progress') || '{}');
+    progress.phishOrTreat = {
+      completed: !timedOut || answeredQuestions === totalQuestions,
+      score: correctAnswers,
+      total: totalQuestions,
+      percentage: accuracy,
+      completedAt: new Date().toISOString(),
+    };
+    localStorage.setItem('phishing-training-progress', JSON.stringify(progress));
+  } catch (_e) {}
 }
 
 // Start the quiz

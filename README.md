@@ -174,7 +174,7 @@ python3 -m http.server 8080
 
 1. **Download** the repository
 2. **Host** on your web server or intranet
-3. **Customize** scenarios in `scenarios.json` (optional)
+3. **Customize** scenarios by editing the `SCENARIOS` array in each module's `.js` file (optional)
 4. **Brand** with your logo in `assets/` (optional)
 5. **Launch** and track completion
 
@@ -188,7 +188,6 @@ python3 -m http.server 8080
 - **CSS3** - Custom properties, Grid, Flexbox
 - **Vanilla JavaScript** - No frontend framework required
 - **Local Storage API** - Progress persistence
-- **sql.js** - Browser-local SQLite support for lab-style training data
 - **Web Accessibility** - WCAG 2.1 AA goals
 
 **Why minimal dependencies?**
@@ -205,8 +204,8 @@ python3 -m http.server 8080
 ### Branding
 
 Replace files in `/assets/` with your organization's branding:
-- `logo.png` - Your logo
-- `favicon.ico` - Your favicon
+- `P.png` / `JustforPhishingLogo.png` - Your logo (update `src` references in HTML)
+- `favicon.svg` - Your favicon
 
 ### Scenarios
 
