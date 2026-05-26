@@ -203,7 +203,7 @@
     appContainer.innerHTML = `
       <div class="instructions-screen">
         <div class="instructions-card">
-          <div class="instructions-icon">🎯</div>
+          <div class="instructions-icon"><i data-lucide="target" class="icon icon--xl"></i></div>
           <h2>Welcome to the Targeted Phishing Lab</h2>
           <p class="instructions-intro">
             You'll analyze 8 scenarios of "spear phishing," where attacks are personalized to trick you.
@@ -211,7 +211,7 @@
           </p>
 
           <div class="instructions-section">
-            <h3>📋 What You'll Do</h3>
+            <h3><i data-lucide="clipboard-list" class="icon"></i> What You'll Do</h3>
             <ul class="instructions-list">
               <li><strong>Examine each scenario</strong> — Attackers will use details about your job, industry, or personal life.</li>
               <li><strong>Identify subtle red flags</strong> — Look for small errors in domains, unusual requests, and emotional pressure.</li>
@@ -221,25 +221,25 @@
           </div>
 
           <div class="instructions-section">
-            <h3>🔍 Key Indicators of Spear Phishing</h3>
+            <h3><i data-lucide="search" class="icon"></i> Key Indicators of Spear Phishing</h3>
             <div class="indicators-grid">
               <div class="indicator-item">
-                <span class="indicator-icon">👤</span>
+                <span class="indicator-icon"><i data-lucide="user" class="icon icon--xl"></i></span>
                 <strong>Personalization</strong>
                 <p>Uses your name, job title, or recent activities</p>
               </div>
               <div class="indicator-item">
-                <span class="indicator-icon">🏢</span>
+                <span class="indicator-icon"><i data-lucide="building-2" class="icon icon--xl"></i></span>
                 <strong>Context-Aware</strong>
                 <p>References real projects, colleagues, or events</p>
               </div>
               <div class="indicator-item">
-                <span class="indicator-icon">🔗</span>
+                <span class="indicator-icon"><i data-lucide="link" class="icon icon--xl"></i></span>
                 <strong>Look-Alike Domains</strong>
                 <p>Uses domains like "yourcompany.com.co" or "login-portal.net"</p>
               </div>
               <div class="indicator-item">
-                <span class="indicator-icon">🤝</span>
+                <span class="indicator-icon"><i data-lucide="handshake" class="icon icon--xl"></i></span>
                 <strong>Exploits Trust</strong>
                 <p>Impersonates a trusted person like a boss or colleague</p>
               </div>
@@ -248,7 +248,7 @@
 
           <div class="instructions-footer">
             <div class="time-note">
-              <strong>⏱️ Recommended Time:</strong> 10 minutes (not enforced)
+              <strong><i data-lucide="timer" class="icon"></i> Recommended Time:</strong> 10 minutes (not enforced)
             </div>
             <button id="begin-lab-btn" class="btn btn-primary btn-large">
               Begin Lab →
@@ -257,6 +257,8 @@
         </div>
       </div>
     `;
+
+    if (typeof lucide !== 'undefined') lucide.createIcons({ els: appContainer.querySelectorAll('[data-lucide]') });
 
     document.getElementById('begin-lab-btn')?.addEventListener('click', () => {
       currentScreen = 'scenario';
@@ -285,7 +287,7 @@
         </div>
 
         <div class="scenario-card">
-          <h2 class="scenario-title">🎯 Analyze This Message</h2>
+          <h2 class="scenario-title"><i data-lucide="target" class="icon"></i> Analyze This Message</h2>
 
           <div class="email-display">
             <div class="email-headers">
@@ -336,10 +338,10 @@
             <p class="question-text">Is this message legitimate or a targeted phishing attack?</p>
             <div class="choice-buttons">
               <button class="choice-btn choice-btn--danger" data-choice="phish">
-                🚨 Phishing
+                <i data-lucide="shield-alert" class="icon"></i> Phishing
               </button>
               <button class="choice-btn choice-btn--safe" data-choice="legit">
-                ✅ Legitimate
+                <i data-lucide="circle-check" class="icon"></i> Legitimate
               </button>
             </div>
           </div>
@@ -351,14 +353,14 @@
       content += `
           <div class="scenario-result ${correct ? 'result-correct' : 'result-incorrect'}">
             <div class="result-header">
-              ${correct ? '✅ Correct!' : '❌ Incorrect'}
+              ${correct ? '<i data-lucide="circle-check" class="icon"></i> Correct!' : '<i data-lucide="circle-x" class="icon"></i> Incorrect'}
             </div>
             <div class="result-verdict">
               This message was <strong>${scenario.isPhish ? 'a targeted phishing attack' : 'legitimate'}</strong>.
             </div>
 
             <div class="result-insights">
-              <strong>${scenario.isPhish ? '🚩 Red Flags:' : '✅ Legitimate Signals:'}</strong>
+              <strong>${scenario.isPhish ? '<i data-lucide="flag" class="icon"></i> Red Flags:' : '<i data-lucide="circle-check" class="icon"></i> Legitimate Signals:'}</strong>
               <ul>
                 ${(scenario.isPhish ? scenario.redFlags : scenario.legitimateSignals).map(insight => `<li>${insight}</li>`).join('')}
               </ul>
@@ -381,6 +383,7 @@
     `;
 
     appContainer.innerHTML = content;
+    if (typeof lucide !== 'undefined') lucide.createIcons({ els: appContainer.querySelectorAll('[data-lucide]') });
 
     // Add event listeners
     if (!hasAnswer) {
@@ -430,19 +433,19 @@
     let grade, gradeClass, message;
 
     if (percentage === 100) {
-      grade = '🏆 Expert Analyst';
+      grade = '<i data-lucide="trophy" class="icon"></i> Expert Analyst';
       gradeClass = 'excellent';
       message = 'Perfect score! You have an exceptional eye for spotting highly convincing targeted attacks. Your skills are top-notch.';
     } else if (percentage >= 75) {
-      grade = '🎯 Advanced';
+      grade = '<i data-lucide="target" class="icon"></i> Advanced';
       gradeClass = 'good';
       message = `Excellent work! You got ${correct} out of ${total} correct. Spear phishing is tough, and you have a strong ability to detect it.`;
     } else if (percentage >= 50) {
-      grade = '✅ Proficient';
+      grade = '<i data-lucide="circle-check" class="icon"></i> Proficient';
       gradeClass = 'fair';
       message = `Good job! You scored ${correct} out of ${total}. These attacks are tricky. Review the red flags to sharpen your skills.`;
     } else {
-      grade = '📚 Developing';
+      grade = '<i data-lucide="book-open" class="icon"></i> Developing';
       gradeClass = 'poor';
       message = `You got ${correct} out of ${total} correct. Targeted attacks are designed to be convincing. Review each scenario to learn the tactics.`;
     }
@@ -450,7 +453,7 @@
     appContainer.innerHTML = `
       <div class="summary-screen">
         <div class="summary-card">
-          <div class="summary-icon">🎓</div>
+          <div class="summary-icon"><i data-lucide="graduation-cap" class="icon icon--xl"></i></div>
           <h2 class="summary-title">Lab Complete!</h2>
 
           <div class="summary-score-display">
@@ -465,17 +468,17 @@
 
           <div class="summary-stats">
             <div class="stat-item">
-              <div class="stat-icon">✅</div>
+              <div class="stat-icon"><i data-lucide="circle-check" class="icon"></i></div>
               <div class="stat-label">Correct</div>
               <div class="stat-value">${correct}</div>
             </div>
             <div class="stat-item">
-              <div class="stat-icon">❌</div>
+              <div class="stat-icon"><i data-lucide="circle-x" class="icon"></i></div>
               <div class="stat-label">Incorrect</div>
               <div class="stat-value">${total - correct}</div>
             </div>
             <div class="stat-item">
-              <div class="stat-icon">📊</div>
+              <div class="stat-icon"><i data-lucide="bar-chart-3" class="icon"></i></div>
               <div class="stat-label">Accuracy</div>
               <div class="stat-value">${percentage}%</div>
             </div>
@@ -489,6 +492,7 @@
         </div>
       </div>
     `;
+    if (typeof lucide !== 'undefined') lucide.createIcons({ els: appContainer.querySelectorAll('[data-lucide]') });
 
     document.getElementById('review-btn')?.addEventListener('click', () => {
       currentIndex = 0;

@@ -46,7 +46,7 @@
       state.remaining -= 1;
       updateTimer();
       if (state.remaining <= 0) {
-        endDrill('⏰ Time is up.');
+        endDrill('Time is up.');
       }
     }, 1000);
   }
@@ -82,7 +82,7 @@
   function nextPrompt() {
     state.round += 1;
     if (state.round > state.totalRounds) {
-      endDrill('✅ Drill complete.');
+      endDrill('Drill complete.');
       return;
     }
     pushNotification(`Login request #${state.round} • Unknown device near Dallas, TX`);
@@ -100,7 +100,7 @@
     el.summary.classList.add('hidden');
     clearNotifications();
     setScore(0, 0);
-    logEvent('▶️ Drill started.');
+    logEvent('Drill started.');
     setFeedback('You have 45 seconds. Make safe choices quickly.');
     startCountdown(45);
     nextPrompt();
@@ -139,7 +139,7 @@
     if (!btn) return;
 
     if (!state.active) {
-      logEvent('ℹ️ Press “Start Drill” first.');
+      logEvent('Press “Start Drill” first.');
       setFeedback('Press “Start Drill” to begin.');
       return;
     }
@@ -152,7 +152,7 @@
     setScore(state.correct, state.answered);
     logEvent(`You chose: ${btn.textContent.trim()}`);
     if (action === 'approve') {
-      pushNotification('⚠️ Account at risk! Approving unexpected prompts is unsafe.');
+      pushNotification('Account at risk! Approving unexpected prompts is unsafe.');
     }
     nextPrompt();
   }

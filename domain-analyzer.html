@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SMS Smishing Simulator — Just For Phishing</title>
-  <meta name="description" content="SMS smishing simulator. Spot fraudulent text messages — package scams, fake alerts, and impersonation attacks." />
-  <link rel="canonical" href="https://justforphishing.com/sms-smishing.html" />
+  <title>Domain Lookalike Analyzer — Just For Phishing</title>
+  <meta name="description" content="See how attackers imitate legitimate domains. Enter any domain to generate common attacker variants — homoglyphs, typos, TLD swaps, and more." />
+  <link rel="canonical" href="https://justforphishing.com/domain-analyzer.html" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Just For Phishing" />
-  <meta property="og:title" content="SMS Smishing Simulator — Just For Phishing" />
-  <meta property="og:description" content="SMS smishing simulator. Spot fraudulent text messages — package scams, fake alerts, and impersonation attacks." />
-  <meta property="og:url" content="https://justforphishing.com/sms-smishing.html" />
+  <meta property="og:title" content="Domain Lookalike Analyzer — Just For Phishing" />
+  <meta property="og:description" content="See how attackers imitate legitimate domains. Enter any domain to generate common attacker variants — homoglyphs, typos, TLD swaps, and more." />
+  <meta property="og:url" content="https://justforphishing.com/domain-analyzer.html" />
   <meta property="og:image" content="https://justforphishing.com/assets/JustforPhishingLogo.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="SMS Smishing Simulator — Just For Phishing" />
-  <meta name="twitter:description" content="SMS smishing simulator. Spot fraudulent text messages — package scams, fake alerts, and impersonation attacks." />
+  <meta name="twitter:title" content="Domain Lookalike Analyzer — Just For Phishing" />
+  <meta name="twitter:description" content="See how attackers imitate legitimate domains. Enter any domain to generate common attacker variants — homoglyphs, typos, TLD swaps, and more." />
   <meta name="twitter:image" content="https://justforphishing.com/assets/JustforPhishingLogo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -32,7 +32,7 @@
     gtag('config', 'G-Y3ZYDHQD6Z');
   </script>
 </head>
-<body class="smishing-body">
+<body>
   <nav class="navbar" id="navbar">
     <div class="nav-inner">
       <a href="index.html" class="nav-logo">
@@ -65,27 +65,27 @@
   <div class="nav-spacer"></div>
 
   <div class="page">
-    <header class="smishing-hero">
-      <div class="smishing-hero__glow"></div>
-      <div class="smishing-hero__inner container">
-        <a href="index.html" class="back-link">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 8H1m0 0l7-7M1 8l7 7"/></svg>
-          Back to Hub
-        </a>
-        <div class="smishing-badge">📱 SMS Security</div>
-        <h1>SMS Smishing Simulator</h1>
-        <p>Practice identifying text message phishing attacks. "Smishing" (SMS + Phishing) uses text messages to trick victims into revealing info or clicking malicious links.</p>
-        <div class="challenge-controls">
-          <div id="sms-countdown" class="countdown countdown--sms">05:00</div>
-          <button id="start-sms" class="btn btn--sms">Start Simulation</button>
-        </div>
+    <header class="drill-header">
+      <div class="container">
+        <a href="resources.html" class="back-link">← Back to Resources</a>
+        <h1><i data-lucide="search" class="icon icon--xl"></i> Domain Lookalike Analyzer</h1>
+        <p>See how attackers imitate legitimate domains. Enter any domain to generate common attacker variants.</p>
       </div>
     </header>
-
     <main class="container">
-      <div id="sms-app-container">
-        <!-- Content will be dynamically rendered here -->
+      <div class="card" style="margin:0 0 32px">
+        <div class="analyzer-input-row">
+          <input type="text" id="domain-input" class="analyzer-input" placeholder="e.g. paypal.com" autocomplete="off" spellcheck="false" />
+          <button id="analyze-btn" class="btn">Analyze →</button>
+        </div>
+        <div class="presets">
+          <button class="preset-btn" data-domain="microsoft.com">microsoft.com</button>
+          <button class="preset-btn" data-domain="paypal.com">paypal.com</button>
+          <button class="preset-btn" data-domain="amazon.com">amazon.com</button>
+          <button class="preset-btn" data-domain="chase.com">chase.com</button>
+        </div>
       </div>
+      <div id="results-area"></div>
     </main>
   </div>
 
@@ -154,7 +154,7 @@
 
   <script src="theme.js"></script>
   <script src="analytics.js"></script>
-  <script src="sms-smishing.js"></script>
+  <script src="domain-analyzer.js"></script>
   <script>document.addEventListener('DOMContentLoaded', function(){ if(typeof lucide !== 'undefined') lucide.createIcons(); });</script>
 </body>
 </html>

@@ -241,13 +241,15 @@ function showFeedback(scenario, isCorrect) {
 
   // Set icon and title
   if (isCorrect) {
-    feedbackIcon.textContent = '✅';
+    feedbackIcon.innerHTML = '<i data-lucide="circle-check" class="icon"></i>';
+    if (typeof lucide !== 'undefined') lucide.createIcons({ els: feedbackIcon.querySelectorAll('[data-lucide]') });
     feedbackTitle.textContent = 'Correct!';
     feedbackExplanation.textContent = scenario.isPhish
       ? 'You correctly identified this as a phishing attempt. Well done!'
       : 'You correctly identified this as a legitimate message. Great work!';
   } else {
-    feedbackIcon.textContent = '❌';
+    feedbackIcon.innerHTML = '<i data-lucide="circle-x" class="icon"></i>';
+    if (typeof lucide !== 'undefined') lucide.createIcons({ els: feedbackIcon.querySelectorAll('[data-lucide]') });
     feedbackTitle.textContent = 'Incorrect';
     feedbackExplanation.textContent = scenario.isPhish
       ? 'This was actually a phishing attempt. Here\'s what you should look for:'
@@ -310,26 +312,27 @@ function finishQuiz(timedOut) {
 
   // Set summary content
   if (timedOut) {
-    summaryIcon.textContent = '⏱️';
+    summaryIcon.innerHTML = '<i data-lucide="timer" class="icon"></i>';
     summaryTitle.textContent = "Time's Up!";
     summaryText.textContent = `You answered ${answeredQuestions} of ${totalQuestions} questions before time ran out. Review your results below.`;
   } else if (correctAnswers === totalQuestions) {
-    summaryIcon.textContent = '🎉';
+    summaryIcon.innerHTML = '<i data-lucide="sparkles" class="icon"></i>';
     summaryTitle.textContent = 'Perfect Score!';
     summaryText.textContent = 'Excellent work! You correctly identified all phishing attempts and legitimate messages.';
   } else if (accuracy >= 75) {
-    summaryIcon.textContent = '👏';
+    summaryIcon.innerHTML = '<i data-lucide="thumbs-up" class="icon"></i>';
     summaryTitle.textContent = 'Great Job!';
     summaryText.textContent = 'You have a strong understanding of phishing detection. Keep up the good work!';
   } else if (accuracy >= 50) {
-    summaryIcon.textContent = '📚';
+    summaryIcon.innerHTML = '<i data-lucide="book-open" class="icon"></i>';
     summaryTitle.textContent = 'Good Effort!';
     summaryText.textContent = 'You\'re on the right track. Review the feedback to improve your phishing detection skills.';
   } else {
-    summaryIcon.textContent = '💪';
+    summaryIcon.innerHTML = '<i data-lucide="dumbbell" class="icon"></i>';
     summaryTitle.textContent = 'Keep Learning!';
     summaryText.textContent = 'Phishing detection takes practice. Review the scenarios and try again to improve your skills.';
   }
+  if (typeof lucide !== 'undefined') lucide.createIcons({ els: summaryIcon.querySelectorAll('[data-lucide]') });
 
   // Set score display
   summaryScore.textContent = `${correctAnswers}/${totalQuestions}`;

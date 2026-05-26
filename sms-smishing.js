@@ -171,9 +171,9 @@
 
             <div class="phone-screen-large">
               <div class="phone-status-bar">
-                <span>📶 Verizon LTE</span>
+                <span><i data-lucide="signal" class="icon"></i> Verizon LTE</span>
                 <span>${message.time}</span>
-                <span>🔋 78%</span>
+                <span><i data-lucide="battery-low" class="icon"></i> 78%</span>
               </div>
 
               <div class="messages-header-bar">
@@ -205,10 +205,10 @@
           <h3>Is this message legitimate or smishing?</h3>
           <div class="answer-buttons">
             <button class="answer-btn answer-btn-danger" id="btn-smishing">
-              🚨 Smishing Attack
+              <i data-lucide="shield-alert" class="icon"></i> Smishing Attack
             </button>
             <button class="answer-btn answer-btn-safe" id="btn-legit">
-              ✅ Legitimate
+              <i data-lucide="circle-check" class="icon"></i> Legitimate
             </button>
           </div>
         </div>
@@ -220,6 +220,7 @@
     `;
 
     appContainer.innerHTML = content;
+    if (typeof lucide !== 'undefined') lucide.createIcons({ els: appContainer.querySelectorAll('[data-lucide]') });
 
     // Start the message flow
     setTimeout(() => {
@@ -282,7 +283,7 @@
     resultBubble.className = 'message-bubble-container';
     resultBubble.innerHTML = `
       <div class="message-bubble sent">
-        ${choice === 'smishing' ? '🚨 Report as Smishing' : '✅ Looks Legitimate'}
+        ${choice === 'smishing' ? '<i data-lucide="shield-alert" class="icon"></i> Report as Smishing' : '<i data-lucide="circle-check" class="icon"></i> Looks Legitimate'}
       </div>
       <div class="message-time">${message.time}</div>
     `;
@@ -293,7 +294,7 @@
     resultSection.innerHTML = `
       <div class="result-card ${correct ? 'result-correct' : 'result-incorrect'}">
         <div class="result-icon">
-          ${correct ? '✅' : '❌'}
+          ${correct ? '<i data-lucide="circle-check" class="icon"></i>' : '<i data-lucide="circle-x" class="icon"></i>'}
         </div>
         <div class="result-title">
           ${correct ? 'Correct!' : 'Incorrect'}
@@ -302,7 +303,7 @@
           ${message.explanation}
         </div>
         <div class="result-details">
-          <strong>${message.isSmishing ? '🚩 Red Flags:' : '✅ Legitimate Signals:'}</strong>
+          <strong>${message.isSmishing ? '<i data-lucide="flag" class="icon"></i> Red Flags:' : '<i data-lucide="circle-check" class="icon"></i> Legitimate Signals:'}</strong>
           <ul>
             ${(message.isSmishing ? message.redFlags : message.legitimateSignals).map(item => `<li>${item}</li>`).join('')}
           </ul>
@@ -313,6 +314,7 @@
       </div>
     `;
     resultSection.classList.remove('hidden');
+    if (typeof lucide !== 'undefined') lucide.createIcons({ els: resultSection.querySelectorAll('[data-lucide]') });
 
     // Scroll result into view
     resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -350,23 +352,23 @@
     let grade, gradeColor;
 
     if (percentage === 100) {
-      grade = '🏆 SMS Security Expert';
+      grade = '<i data-lucide="trophy" class="icon"></i> SMS Security Expert';
       gradeColor = 'excellent';
     } else if (percentage >= 83) {
-      grade = '🛡️ Advanced';
+      grade = '<i data-lucide="shield" class="icon"></i> Advanced';
       gradeColor = 'good';
     } else if (percentage >= 67) {
-      grade = '✅ Proficient';
+      grade = '<i data-lucide="circle-check" class="icon"></i> Proficient';
       gradeColor = 'good';
     } else {
-      grade = '📚 Developing';
+      grade = '<i data-lucide="book-open" class="icon"></i> Developing';
       gradeColor = 'developing';
     }
 
     appContainer.innerHTML = `
       <div class="summary-screen">
         <div class="summary-card">
-          <div class="summary-icon">📱</div>
+          <div class="summary-icon"><i data-lucide="smartphone" class="icon icon--xl"></i></div>
           <h2>Simulation Complete!</h2>
 
           <div class="summary-score ${gradeColor}">${percentage}%</div>
@@ -395,6 +397,7 @@
         </div>
       </div>
     `;
+    if (typeof lucide !== 'undefined') lucide.createIcons({ els: appContainer.querySelectorAll('[data-lucide]') });
 
     // Save progress
     try {

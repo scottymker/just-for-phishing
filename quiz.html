@@ -22,6 +22,7 @@
   <link rel="icon" href="assets/favicon.svg" />
   <link rel="stylesheet" href="theme.css" />
   <link rel="stylesheet" href="quiz.css" />
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
   <!-- Google Analytics (GA4) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y3ZYDHQD6Z"></script>
   <script>
@@ -67,7 +68,7 @@
     <div class="apple-container">
       <div class="apple">🍎</div>
     </div>
-    <h1>🧪 Quick Security Check</h1>
+    <h1><i data-lucide="flask-conical" class="icon icon--lg"></i> Quick Security Check</h1>
     <p>Test your cybersecurity knowledge with 5 beginner-friendly questions covering phishing, MFA, and security best practices.</p>
   </section>
 
@@ -104,7 +105,7 @@
     </div>
 
     <div class="summary-card hidden" id="summary-card">
-      <div class="summary-icon" id="summary-icon">🎯</div>
+      <div class="summary-icon" id="summary-icon"><i data-lucide="target" class="icon"></i></div>
       <h2 class="summary-title">Quiz Complete!</h2>
       <div class="summary-score" id="summary-score">0/5</div>
       <p class="summary-message" id="summary-message"></p>
@@ -116,13 +117,13 @@
 
       <div class="summary-actions">
         <button class="btn btn-quiz-primary" onclick="retakeQuiz()">
-          🔄 Retake Quiz
+          <i data-lucide="rotate-ccw" class="icon"></i> Retake Quiz
         </button>
         <a href="lab.html" class="btn btn-quiz-secondary">
           ← Back to Lab
         </a>
         <a href="resources.html" class="btn btn-quiz-secondary">
-          📚 Learn More
+          <i data-lucide="book-open" class="icon"></i> Learn More
         </a>
       </div>
     </div>
@@ -193,6 +194,8 @@
 
   <script src="theme.js"></script>
   <script src="analytics.js"></script>
+  <script src="data/quiz-questions.js"></script>
   <script src="quiz.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', function(){ if(typeof lucide !== 'undefined') lucide.createIcons(); });</script>
 </body>
 </html>

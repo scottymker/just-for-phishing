@@ -22,6 +22,7 @@
   <link rel="icon" href="assets/favicon.svg" />
   <link rel="stylesheet" href="theme.css" />
   <link rel="stylesheet" href="styles.css" />
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
   <!-- Google Analytics (GA4) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y3ZYDHQD6Z"></script>
   <script>
@@ -70,7 +71,7 @@
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 8H1m0 0l7-7M1 8l7 7"/></svg>
           Back to Hub
         </a>
-        <h1>📧 Email Phishing Lab</h1>
+        <h1><i data-lucide="mail" class="icon icon--lg"></i> Email Phishing Lab</h1>
         <p>Analyze full emails to identify phishing indicators. Examine headers, links, attachments, and content for red flags.</p>
         <div class="drill-controls">
           <div id="lab-countdown" class="countdown">15:00</div>
@@ -151,6 +152,8 @@
 
   <script src="theme.js"></script>
   <script src="analytics.js"></script>
+  <script src="data/email-lab-scenarios.js"></script>
   <script src="email-lab.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', function(){ if(typeof lucide !== 'undefined') lucide.createIcons(); });</script>
 </body>
 </html>

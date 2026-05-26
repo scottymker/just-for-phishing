@@ -22,6 +22,7 @@
   <link rel="icon" href="assets/favicon.svg" />
   <link rel="stylesheet" href="theme.css" />
   <link rel="stylesheet" href="styles.css" />
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
   <!-- Google Analytics (GA4) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y3ZYDHQD6Z"></script>
   <script>
@@ -70,20 +71,31 @@
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 8H1m0 0l7-7M1 8l7 7"/></svg>
           Back to Hub
         </a>
-        <h1>📚 Phishing Resources & Reporting</h1>
+        <h1><i data-lucide="book-open" class="icon icon--lg"></i> Phishing Resources & Reporting</h1>
         <p>Learn how to report phishing, access security tools, and protect yourself online.</p>
       </div>
     </header>
 
     <main class="container">
+      <!-- Tools -->
+      <div class="card">
+        <h2><i data-lucide="search" class="icon"></i> Tools</h2>
+        <p>Interactive tools to sharpen your threat-detection skills.</p>
+        <div style="margin-top:16px;">
+          <h3>Domain Lookalike Analyzer</h3>
+          <p>See how attackers imitate legitimate domains. Enter any domain to generate common attacker variants — homoglyphs, typos, TLD swaps, and more.</p>
+          <a href="domain-analyzer.html" class="btn" style="margin-top:12px;display:inline-flex;">Launch Tool →</a>
+        </div>
+      </div>
+
       <!-- Reporting Guide -->
       <div class="card" id="reporting">
-        <h2>🚨 Report Phishing</h2>
+        <h2><i data-lucide="shield-alert" class="icon"></i> Report Phishing</h2>
         <p>If you've encountered phishing, report it to the appropriate authorities. Reporting helps protect others and shut down malicious operations.</p>
 
         <div class="resources-grid">
           <div class="resource-item">
-            <div class="resource-icon">📧</div>
+            <div class="resource-icon"><i data-lucide="mail" class="icon icon--xl"></i></div>
             <h3>Email Phishing</h3>
             <p><strong>Forward to:</strong><br>
             • <a href="mailto:spam@uce.gov">spam@uce.gov</a> (FTC)<br>
@@ -92,7 +104,7 @@
           </div>
 
           <div class="resource-item">
-            <div class="resource-icon">🎖️</div>
+            <div class="resource-icon"><i data-lucide="medal" class="icon icon--xl"></i></div>
             <h3>VA-Related Scams</h3>
             <p><strong>Report to:</strong><br>
             • <a href="https://www.va.gov/oig/hotline/" target="_blank" rel="noopener">VA OIG Hotline</a><br>
@@ -101,7 +113,7 @@
           </div>
 
           <div class="resource-item">
-            <div class="resource-icon">🏛️</div>
+            <div class="resource-icon"><i data-lucide="landmark" class="icon icon--xl"></i></div>
             <h3>Military Impersonation</h3>
             <p><strong>Report to:</strong><br>
             • <a href="https://www.ic3.gov/" target="_blank" rel="noopener">FBI Internet Crime Complaint Center (IC3)</a><br>
@@ -109,7 +121,7 @@
           </div>
 
           <div class="resource-item">
-            <div class="resource-icon">💳</div>
+            <div class="resource-icon"><i data-lucide="credit-card" class="icon icon--xl"></i></div>
             <h3>Financial Fraud</h3>
             <p><strong>Report to:</strong><br>
             • <a href="https://reportfraud.ftc.gov/" target="_blank" rel="noopener">FTC Report Fraud</a><br>
@@ -118,7 +130,7 @@
           </div>
 
           <div class="resource-item">
-            <div class="resource-icon">📱</div>
+            <div class="resource-icon"><i data-lucide="smartphone" class="icon icon--xl"></i></div>
             <h3>SMS Smishing</h3>
             <p><strong>Report to:</strong><br>
             • Forward to 7726 (SPAM)<br>
@@ -127,7 +139,7 @@
           </div>
 
           <div class="resource-item">
-            <div class="resource-icon">🌐</div>
+            <div class="resource-icon"><i data-lucide="globe" class="icon icon--xl"></i></div>
             <h3>Malicious Websites</h3>
             <p><strong>Report to:</strong><br>
             • <a href="https://safebrowsing.google.com/safebrowsing/report_phish/" target="_blank" rel="noopener">Google Safe Browsing</a><br>
@@ -139,7 +151,7 @@
 
       <!-- Security Resources -->
       <div class="card">
-        <h2>🛡️ Security Resources</h2>
+        <h2><i data-lucide="shield" class="icon"></i> Security Resources</h2>
         <div class="resource-links">
           <div class="link-section">
             <h3>Government Agencies</h3>
@@ -172,40 +184,40 @@
 
       <!-- Quick Tips -->
       <div class="card" id="best-practices">
-        <h2>💡 Quick Security Tips</h2>
+        <h2><i data-lucide="lightbulb" class="icon"></i> Quick Security Tips</h2>
         <div class="tips-grid">
           <div class="tip-card">
-            <div class="tip-icon">🔍</div>
+            <div class="tip-icon"><i data-lucide="search" class="icon icon--xl"></i></div>
             <h3>Verify Before Clicking</h3>
             <p>Hover over links to see the real destination. If it looks suspicious or doesn't match the supposed sender, don't click.</p>
           </div>
 
           <div class="tip-card">
-            <div class="tip-icon">📞</div>
+            <div class="tip-icon"><i data-lucide="phone" class="icon icon--xl"></i></div>
             <h3>Call Using Known Numbers</h3>
             <p>Never use phone numbers from suspicious emails or texts. Look up the official number independently.</p>
           </div>
 
           <div class="tip-card">
-            <div class="tip-icon">🔐</div>
+            <div class="tip-icon"><i data-lucide="lock-keyhole" class="icon icon--xl"></i></div>
             <h3>Enable MFA Everywhere</h3>
             <p>Use multi-factor authentication on all important accounts. Prefer authenticator apps over SMS when possible.</p>
           </div>
 
           <div class="tip-card">
-            <div class="tip-icon">⚠️</div>
+            <div class="tip-icon"><i data-lucide="triangle-alert" class="icon icon--xl"></i></div>
             <h3>Question Urgency</h3>
             <p>Scammers create artificial urgency. Legitimate organizations give you time to verify and respond.</p>
           </div>
 
           <div class="tip-card">
-            <div class="tip-icon">💾</div>
+            <div class="tip-icon"><i data-lucide="save" class="icon icon--xl"></i></div>
             <h3>Check File Extensions</h3>
             <p>Be suspicious of .exe, .zip, .js, .vbs files. Enable "show file extensions" in your OS settings.</p>
           </div>
 
           <div class="tip-card">
-            <div class="tip-icon">🌐</div>
+            <div class="tip-icon"><i data-lucide="globe" class="icon icon--xl"></i></div>
             <h3>Look for HTTPS</h3>
             <p>Legitimate websites use HTTPS (padlock icon). However, phishing sites can too, so this alone isn't enough.</p>
           </div>
@@ -214,7 +226,7 @@
 
       <!-- Additional Help -->
       <div class="card" id="emergency">
-        <h2>🤝 Need Additional Help?</h2>
+        <h2><i data-lucide="handshake" class="icon"></i> Need Additional Help?</h2>
         <div class="help-section">
           <p><strong>If you believe you've been compromised:</strong></p>
           <ol class="training-list">
@@ -299,5 +311,6 @@
 
   <script src="theme.js"></script>
   <script src="analytics.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', function(){ if(typeof lucide !== 'undefined') lucide.createIcons(); });</script>
 </body>
 </html>
