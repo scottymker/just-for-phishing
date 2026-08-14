@@ -1,0 +1,9 @@
+# Wrangler's local dev cache and miniflare state
+worker/.wrangler/
+.wrangler/
+
+# Dependencies
+node_modules/
+
+# macOS
+.DS_Store
