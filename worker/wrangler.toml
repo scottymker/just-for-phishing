@@ -9,3 +9,25 @@ compatibility_date = "2025-01-01"
 # [[routes]]
 # pattern = "justforphishing.com/api/subscribe"
 # zone_name = "justforphishing.com"
+
+# Rate limiting. The worker applies this per source IP and per submitted
+# address, and fails open if the binding is missing, so an older deployment
+# keeps working — but without it the endpoint has no abuse control beyond the
+# size and format checks.
+#
+# namespace_id is a number you choose; it just has to stay stable across
+# deploys. 10 requests per 60s is far above any human signup rate and far below
+# what makes list-poisoning worthwhile.
+[[unsafe.bindings]]
+name          = "RATE_LIMITER"
+type          = "ratelimit"
+namespace_id  = "1001"
+simple        = { limit = 10, period = 60 }
+
+# Local development only. Set with:
+#   wrangler dev --var ALLOW_DEV_ORIGINS:true
+# Never set this on the deployed worker — it would allow http://localhost
+# origins in production, which is the same as allowing any scripted client to
+# pick an origin that passes.
+# [vars]
+# ALLOW_DEV_ORIGINS = "true"

@@ -787,9 +787,18 @@
           btn.textContent      = "You're in!";
           btn.style.background = 'var(--green)';
           input.value          = '';
+          input.disabled       = false;
           status.textContent   = "Thanks for subscribing — we'll let you know when new modules drop.";
           status.style.color   = 'var(--green)';
           window.JFPAnalytics?.sendEvent('newsletter_signup');
+
+          // Return the button to its resting state so a second address can be
+          // added without reloading the page.
+          setTimeout(() => {
+            btn.textContent      = 'Subscribe';
+            btn.style.background = '';
+            btn.disabled         = false;
+          }, 4000);
         } else {
           throw new Error(data.error || `HTTP ${res.status}`);
         }
@@ -797,7 +806,12 @@
         btn.textContent    = 'Subscribe';
         btn.disabled       = false;
         input.disabled     = false;
-        status.textContent = 'Something went wrong — please try again.';
+        // The endpoint returns a usable message for the cases a visitor can
+        // act on — a malformed address, or too many attempts. Show it rather
+        // than burying it in the console.
+        status.textContent = /^(Invalid email|Too many)/.test(err.message)
+          ? err.message
+          : 'Something went wrong — please try again.';
         status.style.color = 'var(--red)';
         console.error('[signup]', err.message);
       }
