@@ -37,9 +37,13 @@
   --blue-glow:     rgba(59, 130, 246, 0.25);
 
   /* Text */
-  --text-primary:   #f0f0f8;
-  --text-secondary: #8888aa;
-  --text-muted:     #4a4a6a;
+  /* Contrast against --bg-void (#0a0a0f). --text-muted was #4a4a6a, which is
+     2.33:1 — it failed WCAG AA everywhere it was used, and it was used for the
+     9-11px labels where it hurt most. Keep the three-step hierarchy, but start
+     it above the 4.5:1 floor. */
+  --text-primary:   #f0f0f8;  /* 17.4:1 */
+  --text-secondary: #9c9cc0;  /*  7.5:1 */
+  --text-muted:     #7a7a9c;  /*  4.8:1 */
   --text-code:      #22d3ee;
 
   /* Borders */
@@ -516,4 +520,35 @@ footer {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ─── Skip link ───────────────────────────────────────────────────────────
+   The first thing in the tab order, so a keyboard user is not forced through
+   the whole nav on every page load. */
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -64px;
+  z-index: 2000;
+  padding: 10px 18px;
+  background: var(--red);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 0 0 8px 8px;
+  transition: top var(--transition);
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* ─── Target size ─────────────────────────────────────────────────────────
+   Footer links rendered 18px tall, under the 24px minimum. */
+.footer-links a,
+.footer-bottom-links a,
+.footer-github-link {
+  display: inline-block;
+  padding: 4px 0;
 }

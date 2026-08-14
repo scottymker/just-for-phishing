@@ -134,6 +134,8 @@
     }
 
     .info-item a {
+      display: inline-block;
+      padding: 4px 8px;
       color: var(--cyan-bright);
       font-size: 14px;
       font-weight: 500;

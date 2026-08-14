@@ -352,9 +352,17 @@ function retakeQuiz() {
   initQuiz();
 }
 
+// Motion here is decorative — an emoji per question and a burst on a good
+// score. Neither is reachable by the CSS reduced-motion block, so check
+// directly.
+function prefersReducedMotion() {
+  return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
 // Create falling apple animation (subtle)
 function createFallingApple() {
-  const container = document.querySelector('.quiz-container');
+  if (prefersReducedMotion()) return;
+
   const apple = document.createElement('div');
   apple.textContent = '🍎';
   apple.style.position = 'fixed';
@@ -380,6 +388,8 @@ function createFallingApple() {
 
 // Create celebration animation
 function createCelebration() {
+  if (prefersReducedMotion()) return;
+
   const emojis = ['🍎', '🎉', '⭐', '✨', '🌟'];
 
   for (let i = 0; i < 20; i++) {

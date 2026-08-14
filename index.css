@@ -32,9 +32,13 @@
       --blue-glow:     rgba(59, 130, 246, 0.25);
 
       /* Text */
-      --text-primary:   #f0f0f8;
-      --text-secondary: #8888aa;
-      --text-muted:     #4a4a6a;
+      /* Contrast against --bg-void (#0a0a0f). --text-muted was #4a4a6a, which
+         is 2.33:1 — it failed WCAG AA everywhere it was used, and it was used
+         for the 9-11px labels where it hurt most. Keep the three-step
+         hierarchy, but start it above the 4.5:1 floor. */
+      --text-primary:   #f0f0f8;  /* 17.4:1 */
+      --text-secondary: #9c9cc0;  /*  7.5:1 */
+      --text-muted:     #7a7a9c;  /*  4.8:1 */
       --text-code:      #22d3ee;
 
       /* Borders */
@@ -711,7 +715,7 @@
 
     .badge {
       font-family: var(--font-mono);
-      font-size: 9px;
+      font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
@@ -969,7 +973,7 @@
 
     .mockup-flag {
       font-family: var(--font-mono);
-      font-size: 8px;
+      font-size: 10px;
       padding: 2px 6px;
       border-radius: 3px;
       flex-shrink: 0;
@@ -1493,4 +1497,73 @@
       .modules-grid {
         grid-template-columns: repeat(2, 1fr);
       }
+    }
+
+    /* =============================================
+       ACCESSIBILITY
+       This page does not load theme.css, so the shared rules that live there
+       are repeated here. See CONTRIBUTING.md — the long-term fix is to fold
+       this file onto theme.css rather than keep two copies in step.
+    ============================================= */
+
+    /* Skip link: the first thing in the tab order, so a keyboard user is not
+       forced through the whole nav on every page load. */
+    .skip-link {
+      position: absolute;
+      left: 12px;
+      top: -64px;
+      z-index: 2000;
+      padding: 10px 18px;
+      background: var(--red);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 0 0 8px 8px;
+      transition: top var(--transition);
+    }
+
+    .skip-link:focus {
+      top: 0;
+    }
+
+    /* Visible focus for keyboard navigation */
+    :focus-visible {
+      outline: 2px solid #06b6d4;
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    /* Remove focus ring for mouse users */
+    :focus:not(:focus-visible) {
+      outline: none;
+    }
+
+    /* Honour reduced-motion preference. The reveal system is opacity-based, so
+       it needs its resting state restored explicitly — collapsing the
+       transition alone would leave the content at opacity 0. */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      .reveal,
+      .annotation,
+      .email-dissect-card {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+
+    /* Footer links were 18px tall — under the 24px minimum target size. */
+    .footer-links a,
+    .footer-bottom-links a,
+    .footer-github-link {
+      display: inline-block;
+      padding: 4px 0;
     }

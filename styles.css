@@ -26,10 +26,14 @@ img { max-width: 100%; }
     var(--bg-deep);
   border-bottom: 1px solid var(--border-subtle);
 }
-.drill-header .back-link {
+.drill-header .back-link,
+.page-header .back-link,
+.back-link {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  padding: 4px 0;
+  min-height: 24px;
   color: var(--text-secondary);
   font-family: var(--font-mono);
   font-size: 12px;
