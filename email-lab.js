@@ -344,6 +344,18 @@
   function handleChoice(emailId, choice) {
     userAnswers[emailId] = { answer: choice };
     renderScenario();
+
+    // renderScenario() replaces the container wholesale, which destroys focus
+    // and leaves a screen reader with nothing to announce.
+    const email = EMAILS.find(e => e.id === emailId);
+    const correct = (choice === 'phish' && email.isPhish) || (choice === 'legit' && !email.isPhish);
+    const signals = (email.isPhish ? email.redFlags : email.legitimateSignals) || [];
+    window.JFPA11y?.announce(
+      (correct ? 'Correct. ' : 'Incorrect. ')
+      + 'This email was ' + (email.isPhish ? 'phishing' : 'legitimate') + '. '
+      + (signals[0] || '')
+    );
+    window.JFPA11y?.focus(appContainer.querySelector('.result-header'));
   }
 
   function renderSummary() {

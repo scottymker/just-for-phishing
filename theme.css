@@ -644,3 +644,24 @@ footer {
   color: var(--text-primary);
   background: rgba(255, 255, 255, 0.06);
 }
+
+/* Visible to assistive technology only. Used by the shared live region in
+   a11y.js, which must be in the accessibility tree but not on screen. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Panels we move focus to programmatically should not show a focus ring —
+   the user did not tab there, and the ring reads as an error. */
+[tabindex="-1"]:focus {
+  outline: none;
+}

@@ -490,3 +490,55 @@
       .answer-btn { padding: 18px 14px; font-size: 14px; }
       .summary-section { padding: 32px 22px; }
     }
+
+/* ─── Timer options (WCAG 2.2 SC 2.2.1) ─────────────────────────────────── */
+.timer-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 14px 0 4px;
+}
+
+.timer-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 24px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.timer-option input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--orange);
+  cursor: pointer;
+}
+
+.extend-btn {
+  padding: 6px 14px;
+  min-height: 24px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--border-mid);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.extend-btn:hover {
+  color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+.timer.untimed {
+  color: var(--text-secondary);
+  font-size: 0.8em;
+  letter-spacing: 0.06em;
+}

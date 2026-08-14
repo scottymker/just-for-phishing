@@ -151,6 +151,12 @@
     if (safe) state.correct += 1;
     setScore(state.correct, state.answered);
     logEvent(`You chose: ${btn.textContent.trim()}`);
+
+    const verdict = safe
+      ? `Safe choice: ${btn.textContent.trim()}.`
+      : `Unsafe choice: ${btn.textContent.trim()}. Approving a prompt you did not trigger hands the attacker your account.`;
+    window.JFPA11y?.announce(`${verdict} Score ${state.correct} of ${state.answered}.`);
+
     if (action === 'approve') {
       pushNotification('Account at risk! Approving unexpected prompts is unsafe.');
     }
@@ -158,6 +164,13 @@
   }
 
   function renderActions() {
+    // The action buttons persist across rounds today, so this only matters if
+    // renderActions() is ever called again mid-drill — but rebuilding the list
+    // under a focused button would drop focus to <body>, so carry it over.
+    const focusedAction = document.activeElement && document.activeElement.dataset
+      ? document.activeElement.dataset.action
+      : null;
+
     el.actions.innerHTML = '';
     ACTIONS.forEach(a => {
       const b = document.createElement('button');
@@ -167,6 +180,11 @@
       b.textContent = a.label;
       el.actions.appendChild(b);
     });
+
+    if (focusedAction) {
+      const replacement = el.actions.querySelector(`[data-action="${focusedAction}"]`);
+      if (replacement) replacement.focus();
+    }
   }
 
   document.addEventListener('DOMContentLoaded', () => {

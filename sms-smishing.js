@@ -255,8 +255,11 @@
     const message = MESSAGES[currentIndex];
     userAnswers[message.id] = { answer: choice, reviewed: true };
 
-    // Hide answer buttons
+    // Hide answer buttons. This removes the control the user is standing on,
+    // and the verdict is two seconds away, so say something now rather than
+    // leaving a keyboard or screen-reader user in silence with no focus.
     document.getElementById('answer-section').classList.add('hidden');
+    window.JFPA11y?.announce('Answer submitted. Checking…');
 
     // Show typing animation
     const typingIndicator = document.getElementById('typing-indicator');
@@ -318,6 +321,12 @@
 
     // Scroll result into view
     resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    // Scrolling moves the result into a sighted user's view; these do the
+    // equivalent for everyone else — say the verdict, then put focus on the
+    // panel so the next Tab lands on Continue rather than back at the top.
+    window.JFPA11y?.announce((correct ? 'Correct. ' : 'Incorrect. ') + message.explanation);
+    window.JFPA11y?.focus(resultSection.querySelector('.result-title'));
 
     // Add continue button listener
     document.getElementById('continue-btn').addEventListener('click', () => {

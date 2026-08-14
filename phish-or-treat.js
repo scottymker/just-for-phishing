@@ -140,6 +140,10 @@ let quizActive = false;
 let currentQuestionIndex = 0;
 let userAnswers = [];
 let quizStartTime = 0;
+let untimed = false;
+
+const untimedToggle = document.getElementById('untimed-toggle');
+const extendBtn = document.getElementById('extend-btn');
 
 // Format time as MM:SS
 function formatTime(totalSeconds) {
@@ -150,6 +154,14 @@ function formatTime(totalSeconds) {
 
 // Update timer display and styling
 function updateTimer() {
+  if (untimed) {
+    timerEl.textContent = 'No limit';
+    timerEl.classList.remove('warning', 'danger');
+    timerEl.classList.add('untimed');
+    return;
+  }
+
+  timerEl.classList.remove('untimed');
   timerEl.textContent = formatTime(timeRemaining);
 
   // Update timer color based on time remaining
@@ -163,7 +175,7 @@ function updateTimer() {
 
 // Timer countdown
 function tickCountdown() {
-  if (!quizActive) return;
+  if (!quizActive || untimed) return;
 
   if (timeRemaining <= 0) {
     finishQuiz(true); // Auto-finish on timeout
@@ -222,15 +234,18 @@ function handleAnswer(userAnswer) {
     isCorrect
   });
 
-  // Disable answer buttons
+  // Disable answer buttons. Doing this while one of them has focus drops
+  // focus to <body> and throws a keyboard user back to the top of the page,
+  // so show the feedback first and then hand focus to it deliberately.
+  showFeedback(scenario, isCorrect);
+
   phishBtn.disabled = true;
   treatBtn.disabled = true;
 
-  // Show feedback
-  showFeedback(scenario, isCorrect);
-
   // Hide question card
   questionCard.classList.add('hidden');
+
+  window.JFPA11y?.focus(feedbackTitle);
 }
 
 // Show feedback for current question
@@ -273,6 +288,12 @@ function showFeedback(scenario, isCorrect) {
 
   // Show feedback section
   feedbackSection.classList.remove('hidden');
+
+  // Say the verdict out loud. The panel below carries the detail; this is the
+  // one line that has to land immediately.
+  window.JFPA11y?.announce(
+    (isCorrect ? 'Correct. ' : 'Incorrect. ') + feedbackExplanation.textContent
+  );
 }
 
 // Handle next button click
@@ -282,6 +303,11 @@ function handleNext() {
   if (currentQuestionIndex < SCENARIOS.length) {
     // Show next question
     displayQuestion();
+    // The Next button we were standing on is now hidden with the feedback
+    // panel, so put focus on the new scenario rather than letting it fall to
+    // <body> and restart the tab order at the top of the page.
+    window.JFPA11y?.focus(questionNumber);
+    window.JFPA11y?.announce('Scenario ' + (currentQuestionIndex + 1) + ' of ' + SCENARIOS.length + '. ' + SCENARIOS[currentQuestionIndex].subject);
   } else {
     // Quiz complete
     finishQuiz(false);
@@ -349,6 +375,14 @@ function finishQuiz(timedOut) {
   feedbackSection.classList.add('hidden');
   summarySection.classList.remove('hidden');
 
+  // Finishing hides whatever had focus. Land on the result and read it out —
+  // for a timed drill the learner needs to know it ended and why.
+  window.JFPA11y?.focus(summaryTitle);
+  window.JFPA11y?.announce(
+    (timedOut ? 'Time is up. ' : 'Drill complete. ')
+    + summaryScore.textContent + '. ' + summaryText.textContent
+  );
+
   try {
     const progress = JSON.parse(localStorage.getItem('phishing-training-progress') || '{}');
     progress.phishOrTreat = {
@@ -385,6 +419,9 @@ function startQuiz() {
 
   // Start timer
   timerId = setInterval(tickCountdown, 1000);
+
+  // Extending only makes sense once the clock is actually running.
+  if (extendBtn) extendBtn.hidden = untimed;
 }
 
 // Restart the quiz
@@ -402,8 +439,27 @@ function restartQuiz() {
 
   // Reset state
   timeRemaining = START_TIME_SECONDS;
+  if (extendBtn) extendBtn.hidden = true;
   updateTimer();
 }
+
+// Timer controls. WCAG 2.2 SC 2.2.1 requires a time limit to be adjustable or
+// removable; the countdown is the point of this drill, so offer both instead
+// of dropping it.
+untimedToggle?.addEventListener('change', () => {
+  untimed = untimedToggle.checked;
+  if (extendBtn) extendBtn.hidden = untimed || !quizActive;
+  updateTimer();
+  window.JFPA11y?.announce(untimed
+    ? 'Timer off. Take as long as you need.'
+    : 'Timer on. ' + formatTime(timeRemaining) + ' remaining.');
+});
+
+extendBtn?.addEventListener('click', () => {
+  timeRemaining += 120;
+  updateTimer();
+  window.JFPA11y?.announce('Two minutes added. ' + formatTime(timeRemaining) + ' remaining.');
+});
 
 // Event Listeners
 startBtn?.addEventListener('click', startQuiz);

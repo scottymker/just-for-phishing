@@ -128,17 +128,24 @@
         <div class="score-pill">
           <span id="score">0</span>/<span id="total">0</span>
         </div>
-        <h2>Tap Deny or Approve on the phone</h2>
+        <h2>Choose your response</h2>
         <p class="helper-text">
           MFA fatigue attacks flood you with notifications hoping you'll accidentally approve. Stay alert and deny unexpected requests!
         </p>
+
+        <!-- mfa-fatigue.js renders the four response options into this
+             container and delegates clicks from it. Without it the drill
+             streamed prompts you had no way to answer. -->
+        <div id="action-buttons" class="action-buttons" role="group" aria-label="Response options"></div>
 
         <!-- Live feedback + summary -->
         <div id="feedback" class="feedback" aria-live="polite">Awaiting your first decision...</div>
         <div id="summary" class="summary-banner hidden" aria-live="polite"></div>
 
         <!-- Event log -->
-        <div id="event-log" class="event-log" aria-live="polite">
+        <!-- A running log, not an announcement. Left readable but silent so it
+             does not talk over the feedback line during a push-bombing burst. -->
+        <div id="event-log" class="event-log" role="log" aria-live="off">
           <div class="event-log-entry">Tap buttons on the phone to respond to each MFA request.</div>
         </div>
       </section>
@@ -374,6 +381,7 @@
   </footer>
 
   <script src="theme.js"></script>
+  <script src="a11y.js"></script>
   <script src="analytics.js"></script>
   <script>document.addEventListener('DOMContentLoaded', function(){ if(typeof lucide !== 'undefined') lucide.createIcons(); });</script>
 </body>

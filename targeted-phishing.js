@@ -412,6 +412,18 @@
   function handleChoice(scenarioId, choice) {
     userAnswers[scenarioId] = { answer: choice };
     renderScenario();
+
+    // renderScenario() replaces the container wholesale, which destroys focus
+    // and leaves a screen reader with nothing to announce.
+    const scenario = SCENARIOS.find(s => s.id === scenarioId);
+    const correct = (choice === 'phish' && scenario.isPhish) || (choice === 'legit' && !scenario.isPhish);
+    const signals = (scenario.isPhish ? scenario.redFlags : scenario.legitimateSignals) || [];
+    window.JFPA11y?.announce(
+      (correct ? 'Correct. ' : 'Incorrect. ')
+      + 'This message was ' + (scenario.isPhish ? 'phishing' : 'legitimate') + '. '
+      + (signals[0] || '')
+    );
+    window.JFPA11y?.focus(appContainer.querySelector('.result-header'));
   }
 
   function renderSummary() {

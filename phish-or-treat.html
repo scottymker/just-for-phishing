@@ -83,6 +83,17 @@
       <div id="timer" class="timer">03:00</div>
     </div>
 
+    <!-- WCAG 2.2 SC 2.2.1: a time limit has to be adjustable or removable.
+         The countdown is part of the challenge, so offer both rather than
+         dropping it. -->
+    <div class="timer-options">
+      <label class="timer-option">
+        <input type="checkbox" id="untimed-toggle" />
+        <span>Practise without the timer</span>
+      </label>
+      <button type="button" id="extend-btn" class="extend-btn" hidden>Add 2 minutes</button>
+    </div>
+
     <button id="start-btn" class="start-btn">Start Quiz</button>
   </header>
 
@@ -244,6 +255,7 @@
   </footer>
 
   <script src="theme.js"></script>
+  <script src="a11y.js"></script>
   <script src="analytics.js"></script>
   <script src="phish-or-treat.js"></script>
   <script>document.addEventListener('DOMContentLoaded', function(){ if(typeof lucide !== 'undefined') lucide.createIcons(); });</script>
