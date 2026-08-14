@@ -46,3 +46,12 @@
     @media (max-width: 768px) {
       .legal-container { padding: 28px 20px; margin: 24px auto 60px; }
     }
+
+/* Analytics consent control, filled in by consent.js. */
+.consent-preference {
+  margin: 20px 0 24px;
+  padding: 20px 22px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+}

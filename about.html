@@ -28,13 +28,20 @@
   <link rel="stylesheet" href="theme.css">
   <link rel="stylesheet" href="about.css" />
   <script src="assets/icons.js" defer></script>
-  <!-- Google Analytics (GA4) -->
+  <!-- Google Analytics (GA4).
+       Denied by default. consent.js issues the config call — the one that
+       starts collection and sets cookies — only after the visitor agrees. -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y3ZYDHQD6Z"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      analytics_storage: 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied'
+    });
     gtag('js', new Date());
-    gtag('config', 'G-Y3ZYDHQD6Z');
   </script>
 </head>
 <body>
@@ -251,6 +258,7 @@
 
   <script src="theme.js"></script>
   <script src="a11y.js"></script>
+  <script src="consent.js"></script>
   <script src="analytics.js"></script>
   <script>
     function handleContactSubmit(event) {

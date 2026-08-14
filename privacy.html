@@ -28,13 +28,20 @@
   <link rel="stylesheet" href="theme.css" />
   <link rel="stylesheet" href="privacy.css" />
   <script src="assets/icons.js" defer></script>
-  <!-- Google Analytics (GA4) -->
+  <!-- Google Analytics (GA4).
+       Denied by default. consent.js issues the config call — the one that
+       starts collection and sets cookies — only after the visitor agrees. -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y3ZYDHQD6Z"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      analytics_storage: 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied'
+    });
     gtag('js', new Date());
-    gtag('config', 'G-Y3ZYDHQD6Z');
   </script>
 </head>
 <body>
@@ -76,7 +83,7 @@
 
   <div class="legal-container">
     <h1>Privacy Policy</h1>
-    <p class="last-updated">Last updated: May 23, 2026</p>
+    <p class="last-updated">Last updated: August 14, 2026</p>
 
     <h2>Overview</h2>
     <p>
@@ -107,11 +114,18 @@
       Aggregate analytics are used to understand which modules are useful, where visitors find the site, which devices/browsers need support, and where content should be improved. We do not sell analytics data and do not use it for advertising or retargeting.
     </p>
 
-    <h2>Cookies & Local Storage</h2>
+    <h2>Cookies &amp; Local Storage</h2>
     <p>
-      The training platform uses localStorage to keep progress on your device. Google Analytics may use cookies or similar technologies depending on browser settings and consent controls. You can clear local training data by:
+      The training platform uses localStorage to keep your progress on your device. Google Analytics is <strong>off until you turn it on</strong> &mdash; the page loads with analytics consent denied, and no analytics cookies are set unless you agree. You are asked once, and you can change your mind here at any time:
+    </p>
+
+    <div class="consent-preference" data-consent-preference></div>
+
+    <p>
+      Turning analytics off also expires the analytics cookies this site set. You can clear your local training data by:
     </p>
     <ul>
+      <li>Using the "Reset my progress" button on the home page or the Lab</li>
       <li>Clearing your browser's localStorage for this site</li>
       <li>Using your browser's "Clear browsing data" feature</li>
       <li>Using privacy tools or browser settings to block analytics scripts</li>
@@ -210,6 +224,7 @@
 
   <script src="theme.js"></script>
   <script src="a11y.js"></script>
+  <script src="consent.js"></script>
   <script src="analytics.js"></script>
   <script>document.addEventListener('DOMContentLoaded', function(){ if(typeof lucide !== 'undefined') lucide.createIcons(); });</script>
 </body>

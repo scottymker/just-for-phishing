@@ -32,8 +32,13 @@
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      analytics_storage: 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied'
+    });
     gtag('js', new Date());
-    gtag('config', 'G-Y3ZYDHQD6Z');
   </script>
 </head>
 <body>
@@ -276,6 +281,7 @@
 
   <script src="theme.js"></script>
   <script src="a11y.js"></script>
+  <script src="consent.js"></script>
   <script src="analytics.js"></script>
   <script>document.addEventListener('DOMContentLoaded', function(){ if(typeof lucide !== 'undefined') lucide.createIcons(); });</script>
 </body>

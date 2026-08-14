@@ -665,3 +665,91 @@ footer {
 [tabindex="-1"]:focus {
   outline: none;
 }
+
+/* =============================================
+   ANALYTICS CONSENT
+   Rendered by consent.js. Sits above page content but must never trap the
+   viewport, so it is anchored to the bottom and scrolls with its own content
+   if the text wraps on a small screen.
+============================================= */
+.consent-banner {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1500;
+  max-width: 680px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 22px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-mid);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+}
+
+.consent-text {
+  flex: 1 1 280px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.consent-text a {
+  color: var(--cyan-bright);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.consent-actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.consent-btn {
+  padding: 9px 16px;
+  min-height: 24px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--transition), border-color var(--transition), color var(--transition);
+}
+
+.consent-btn--primary {
+  color: #fff;
+  background: var(--red);
+  border: 1px solid var(--red);
+}
+
+.consent-btn--primary:hover {
+  background: #dc2626;
+}
+
+.consent-btn--ghost {
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--border-mid);
+}
+
+.consent-btn--ghost:hover {
+  color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+.consent-status {
+  font-size: 15px;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+@media (max-width: 560px) {
+  .consent-actions { width: 100%; }
+  .consent-btn { flex: 1; }
+}
