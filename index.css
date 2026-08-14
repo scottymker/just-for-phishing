@@ -509,10 +509,14 @@
       position: relative;
     }
 
-    .email-field-value .suspicious-link {
+    /* Scoped to the card, not to .email-field-value — the bait link lives in
+       .email-message-text, so the old selector never matched it and the most
+       suspicious element on the card rendered as plain body copy. */
+    .email-dissect-card .suspicious-link {
       color: var(--amber-bright);
       text-decoration: underline;
       text-underline-offset: 3px;
+      word-break: break-all;
     }
 
     .email-message-text {
@@ -523,19 +527,27 @@
       margin-top: 8px;
     }
 
-    /* Annotation pills */
+    /* Annotation pills
+       These used to be absolutely positioned at right:-180px, outside the card.
+       On a 1200px container that put them past the viewport edge on anything
+       narrower than ~1700px, where body{overflow-x:hidden} clipped them away,
+       and below 1025px they were hidden outright — so the callouts that carry
+       the entire lesson were invisible to almost everyone. They now sit in
+       normal flow underneath the field they annotate, which works at every
+       width, mobile included. */
     .annotation {
-      position: absolute;
-      right: -180px;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 8px;
+      margin-top: 8px;
       opacity: 0;
+      animation: slide-in-annotation 0.5s ease forwards;
     }
 
     .annotation-line {
-      width: 40px;
+      width: 16px;
       height: 1px;
+      margin-top: 9px;
       background: var(--red);
       flex-shrink: 0;
     }
@@ -548,36 +560,19 @@
       font-family: var(--font-mono);
       font-size: 10px;
       color: var(--red-bright);
-      white-space: nowrap;
-      line-height: 1.4;
-      max-width: 150px;
+      line-height: 1.5;
     }
 
-    /* Staggered annotation animations */
-    .annotation-1 {
-      top: 50%;
-      transform: translateY(-50%);
-      animation: slide-in-annotation 0.5s ease 1.0s forwards;
-    }
-    .annotation-2 {
-      top: 50%;
-      transform: translateY(-50%);
-      animation: slide-in-annotation 0.5s ease 1.5s forwards;
-    }
-    .annotation-3 {
-      top: 50%;
-      transform: translateY(-50%);
-      animation: slide-in-annotation 0.5s ease 2.0s forwards;
-    }
-    .annotation-4 {
-      top: 50%;
-      transform: translateY(-50%);
-      animation: slide-in-annotation 0.5s ease 2.5s forwards;
-    }
+    /* Staggered so the four callouts land in reading order after the card
+       itself has faded in. */
+    .annotation-1 { animation-delay: 1.0s; }
+    .annotation-2 { animation-delay: 1.4s; }
+    .annotation-3 { animation-delay: 1.8s; }
+    .annotation-4 { animation-delay: 2.2s; }
 
     @keyframes slide-in-annotation {
-      from { opacity: 0; transform: translateY(-50%) translateX(-12px); }
-      to   { opacity: 1; transform: translateY(-50%) translateX(0); }
+      from { opacity: 0; transform: translateX(-10px); }
+      to   { opacity: 1; transform: translateX(0); }
     }
 
     /* =============================================
@@ -1423,9 +1418,8 @@
         margin-right: auto;
       }
 
-      .annotation {
-        display: none;
-      }
+      /* The annotations sit in flow inside the card now, so they no longer
+         need hiding at narrow widths — this is where the lesson matters most. */
 
       .steps-grid {
         grid-template-columns: 1fr;

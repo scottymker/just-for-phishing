@@ -123,25 +123,27 @@
 
           <div class="email-body-wrap">
             <!-- FROM field -->
-            <div class="email-field" style="position:relative;">
+            <div class="email-field">
               <div class="email-field-label">From</div>
               <div class="email-field-value">
-                PayPaI Security &lt;<span class="flagged">alerts@paypa1-secure.net</span>&gt;
+                PayPa<span class="flagged">I</span> Security &lt;<span class="flagged">alerts@paypa1-secure.net</span>&gt;
               </div>
-              <!-- Annotation 1: homoglyph -->
+              <!-- Annotation 1: homoglyphs. Two different tricks in one line —
+                   a capital I standing in for a lowercase L in the display
+                   name, and the digit 1 in the domain. -->
               <div class="annotation annotation-1">
                 <div class="annotation-line"></div>
-                <div class="annotation-pill">Homoglyph: "paypa<strong>1</strong>" uses '1' not 'l'</div>
+                <div class="annotation-pill">Homoglyphs: capital <strong>I</strong> in "PayPaI", digit <strong>1</strong> in "paypa1"</div>
               </div>
               <!-- Annotation 2: non-official domain -->
-              <div class="annotation annotation-2" style="top: 70%;">
+              <div class="annotation annotation-2">
                 <div class="annotation-line"></div>
-                <div class="annotation-pill">Non-official domain</div>
+                <div class="annotation-pill">Not a PayPal domain — real mail comes from paypal.com</div>
               </div>
             </div>
 
             <!-- SUBJECT field -->
-            <div class="email-field" style="position:relative;">
+            <div class="email-field">
               <div class="email-field-label">Subject</div>
               <div class="email-field-value">
                 <span class="flagged">Urgent:</span> Your account has been compromised
@@ -154,17 +156,17 @@
             </div>
 
             <!-- BODY -->
-            <div class="email-field" style="position:relative; border-bottom:none;">
+            <div class="email-field" style="border-bottom:none;">
               <div class="email-field-label">Message</div>
               <div class="email-message-text">
                 Dear Valued Customer,<br/><br/>
                 We have detected unusual activity on your account. You must verify your identity immediately to avoid permanent suspension.<br/><br/>
-                <a class="suspicious-link" href="javascript:void(0)">Click here to secure your account &rarr; http://paypa1-secure.net/verify/confirm?token=8f3k2</a>
+                <span class="suspicious-link">Click here to secure your account &rarr; http://paypa1-secure.net/verify/confirm?token=8f3k2</span>
               </div>
               <!-- Annotation 4: suspicious link -->
-              <div class="annotation annotation-4" style="top:auto; bottom:8px; transform:none;">
+              <div class="annotation annotation-4">
                 <div class="annotation-line"></div>
-                <div class="annotation-pill">Suspicious link — mismatched domain</div>
+                <div class="annotation-pill">Link text and destination don't match</div>
               </div>
             </div>
           </div>
