@@ -69,63 +69,61 @@
 
   <div class="legal-container">
     <h1>Accessibility Statement</h1>
-    <p class="last-updated">Last updated: November 15, 2025</p>
+    <p class="last-updated">Last updated: August 14, 2026</p>
 
     <h2>Our Commitment</h2>
     <p>
-      Just For Phishing is committed to ensuring digital accessibility for people of all abilities. We are continually improving the user experience for everyone and applying the relevant accessibility standards.
+      Just For Phishing should be usable by everyone who needs the training, including people who navigate by keyboard, use a screen reader, or need reduced motion. This page describes what the site does today and what it does not yet do — it is a status report, not a marketing claim.
     </p>
 
-    <h2>Accessibility Features</h2>
-    <p>
-      Our platform includes the following accessibility features:
-    </p>
+    <h2>What works today</h2>
 
     <div class="feature-grid">
       <div class="feature-card">
         <h3>⌨️ Keyboard Navigation</h3>
-        <p>All interactive elements can be accessed via keyboard</p>
+        <p>Every page starts with a skip link. Quiz answers are real buttons you can reach with Tab and choose with Enter or Space.</p>
       </div>
 
       <div class="feature-card">
         <h3>🎨 Color Contrast</h3>
-        <p>Sufficient color contrast ratios for readability</p>
+        <p>Body and label text meets WCAG AA (4.5:1) against the page background. Verified by measurement, not by eye.</p>
+      </div>
+
+      <div class="feature-card">
+        <h3>🎬 Reduced Motion</h3>
+        <p>With <code>prefers-reduced-motion</code> set, scroll animations and the quiz's decorative emoji are switched off and all content is shown immediately.</p>
       </div>
 
       <div class="feature-card">
         <h3>📱 Responsive Design</h3>
-        <p>Works on all device sizes and orientations</p>
-      </div>
-
-      <div class="feature-card">
-        <h3>🔤 Readable Fonts</h3>
-        <p>Clear, legible typography throughout</p>
+        <p>Every module works at phone width. No page scrolls sideways.</p>
       </div>
     </div>
 
-    <h2>Current Features</h2>
+    <h2>Details</h2>
     <ul>
-      <li><strong>Semantic HTML:</strong> Proper heading structure and ARIA labels where appropriate</li>
-      <li><strong>Keyboard Support:</strong> Tab navigation and keyboard shortcuts</li>
-      <li><strong>Focus Indicators:</strong> Clear visual focus states for interactive elements</li>
-      <li><strong>Responsive Text:</strong> Text scales appropriately on different screen sizes</li>
-      <li><strong>Alt Text:</strong> Descriptive alternative text for images and icons</li>
-      <li><strong>Color Independence:</strong> Information not conveyed by color alone</li>
+      <li><strong>Landmarks:</strong> every page has a <code>&lt;main&gt;</code> region and a skip link as its first tabbable element.</li>
+      <li><strong>Focus indicators:</strong> a visible focus ring on every focusable element, shown for keyboard users and suppressed for mouse users via <code>:focus-visible</code>.</li>
+      <li><strong>Menu state:</strong> the mobile menu reports <code>aria-expanded</code>, closes on Escape, and returns focus to the button that opened it.</li>
+      <li><strong>Target size:</strong> standalone links and buttons are at least 24&times;24 CSS pixels.</li>
+      <li><strong>Alt text:</strong> images carry descriptive alternatives; decorative icons are hidden from assistive technology.</li>
+      <li><strong>Color independence:</strong> correct and incorrect answers are labelled in text, not signalled by color alone.</li>
     </ul>
 
     <h2>Known Limitations</h2>
     <p>
-      We are aware of the following accessibility limitations and are working to address them:
+      These are real gaps we have not closed yet. If one of them blocks you, please tell us — it moves up the list.
     </p>
     <ul>
-      <li>Some interactive simulations may not be fully screen reader compatible</li>
-      <li>Animated elements may affect users with motion sensitivity</li>
-      <li>Some quiz interactions require precise mouse/touch control</li>
+      <li>Only the Quick Check quiz has been fully converted to keyboard-operable controls. The MFA, smishing, email lab, targeted phishing and Phish or Treat modules still use click-driven elements and are not yet keyboard or screen-reader complete.</li>
+      <li>Result and feedback panels appear without announcing themselves, so a screen reader user may not know a new panel has opened.</li>
+      <li>Phish or Treat is timed, which is a barrier for anyone who needs longer to read. There is no way to extend or disable the timer.</li>
+      <li>The site has not been tested end to end with NVDA, JAWS or VoiceOver.</li>
     </ul>
 
     <h2>Conformance Status</h2>
     <p>
-      We aim to conform to <strong>WCAG 2.1 Level AA</strong> standards. As an open-source project under active development, we continuously work to improve accessibility compliance.
+      <strong>Partially conformant with WCAG 2.1 Level AA.</strong> "Partially conformant" means some parts of the site do not fully meet the standard — specifically the training modules listed under Known Limitations above. The site chrome, the homepage, the reference pages and the Quick Check quiz are believed to meet AA.
     </p>
 
     <h2>Feedback &amp; Assistance</h2>
@@ -141,15 +139,8 @@
 
     <h2>Compatibility</h2>
     <p>
-      Just For Phishing is designed to be compatible with:
+      Built and tested against current versions of Chrome, Firefox, Safari and Edge, with keyboard-only navigation and browser zoom to 200%. Screen reader support is a goal rather than a tested claim — see Known Limitations.
     </p>
-    <ul>
-      <li>Modern web browsers (Chrome, Firefox, Safari, Edge)</li>
-      <li>Screen readers (NVDA, JAWS, VoiceOver)</li>
-      <li>Keyboard-only navigation</li>
-      <li>Browser zoom up to 200%</li>
-      <li>Mobile devices with touch interfaces</li>
-    </ul>
 
     <h2>Third-Party Content</h2>
     <p>
@@ -221,7 +212,7 @@
       </div>
       <div class="footer-bottom">
         <p class="footer-copy">
-          &copy; 2025 Just For Phishing. Open source under MIT License. Built with &#x2764;&#xFE0F; for a safer internet.
+          &copy; <span data-current-year>2026</span> Just For Phishing. Open source under MIT License. Built with &#x2764;&#xFE0F; for a safer internet.
         </p>
         <div class="footer-bottom-links">
           <a href="privacy.html">Privacy</a>

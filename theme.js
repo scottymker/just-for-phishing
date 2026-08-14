@@ -61,3 +61,11 @@
     });
   }
 })();
+
+// Keep the footer year current without a build step.
+(function () {
+  var year = String(new Date().getFullYear());
+  document.querySelectorAll('[data-current-year]').forEach(function (el) {
+    el.textContent = year;
+  });
+})();

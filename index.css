@@ -723,11 +723,8 @@
       border-radius: 4px;
     }
 
-    .badge-platform {
-      color: var(--text-muted);
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.06);
-    }
+    /* .badge-platform is gone with the "Desktop" badges — every module works on
+       a phone, and the badge contradicted the Platform section two blocks down. */
 
     .badge-difficulty {
       color: var(--amber-bright);
