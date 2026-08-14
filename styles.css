@@ -1489,11 +1489,8 @@ img { max-width: 100%; }
   .indicators-grid { grid-template-columns: 1fr; }
 }
 
-/* ─── Icon sizing ────────────────────────────────────────────────────────── */
-.icon{display:inline-block;vertical-align:-.125em;width:1em;height:1em;flex-shrink:0}
-.icon--sm{width:.875em;height:.875em}
-.icon--lg{width:1.25em;height:1.25em}
-.icon--xl{width:1.5em;height:1.5em}
+/* Icon sizing lives in theme.css — every page that renders icons loads it,
+   including lab.html and quiz.html, which do not load this file. */
 
 /* ─── Email Client Chrome ─────────────────────────────────────────────────── */
 .email-client-chrome{border:1px solid var(--border-subtle);border-radius:12px;overflow:hidden;margin:16px 0;background:var(--bg-card)}

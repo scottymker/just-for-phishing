@@ -489,6 +489,20 @@ footer {
   outline: none;
 }
 
+/* ─── Icon sizing ─────────────────────────────────────────────────────────
+   Applies to the SVGs assets/icons.js swaps in for [data-lucide] placeholders.
+   Sized in em so icons track the type they sit beside. */
+.icon {
+  display: inline-block;
+  vertical-align: -0.125em;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+}
+.icon--sm { width: 0.875em; height: 0.875em; }
+.icon--lg { width: 1.25em;  height: 1.25em; }
+.icon--xl { width: 1.5em;   height: 1.5em; }
+
 /* Honour reduced-motion preference */
 @media (prefers-reduced-motion: reduce) {
   *,
