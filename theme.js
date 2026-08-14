@@ -69,3 +69,16 @@
     el.textContent = year;
   });
 })();
+
+// Mark the nav item for the page you are on, so its position is announced and
+// visible rather than left to guesswork.
+(function () {
+  var here = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav-links a, .nav-mobile a').forEach(function (link) {
+    var target = (link.getAttribute('href') || '').split('#')[0];
+    if (!target) return;
+    if (target === here) {
+      link.setAttribute('aria-current', 'page');
+    }
+  });
+})();

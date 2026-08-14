@@ -637,3 +637,10 @@ footer {
   background: rgba(239, 68, 68, 0.1);
   border: 1px solid rgba(239, 68, 68, 0.25);
 }
+
+/* Current page in the nav — stated for assistive tech and shown visually. */
+.nav-links a[aria-current="page"],
+.nav-mobile a[aria-current="page"] {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.06);
+}

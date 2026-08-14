@@ -204,7 +204,9 @@ python3 -m http.server 8080
 ### Branding
 
 Replace files in `/assets/` with your organization's branding:
-- `P.png` / `JustforPhishingLogo.png` - Your logo (update `src` references in HTML)
+- `P.png` - 64px nav/footer mark
+- `favicon.svg` / `apple-touch-icon.png` - browser and home-screen icons
+- `og-card.png` - 1200x630 social share card
 - `favicon.svg` - Your favicon
 
 ### Scenarios
