@@ -552,3 +552,88 @@ footer {
   display: inline-block;
   padding: 4px 0;
 }
+
+/* =============================================
+   TRAINING PROGRESS
+   Rendered by progress.js from the localStorage the modules already write.
+============================================= */
+.progress-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 18px 22px;
+  margin-bottom: 32px;
+  background: rgba(34, 197, 94, 0.05);
+  border: 1px solid rgba(34, 197, 94, 0.18);
+  border-radius: 12px;
+}
+
+.progress-summary[hidden] { display: none; }
+
+.progress-summary-count {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.progress-summary-detail {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 62ch;
+}
+
+.progress-reset {
+  margin-top: 6px;
+  padding: 7px 14px;
+  min-height: 24px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--border-mid);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.progress-reset:hover {
+  color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+/* Per-card completion badge. The state is in the text as well as the colour. */
+.progress-badge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 14px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.progress-badge-mark { font-size: 12px; }
+
+.progress-badge.is-strong {
+  color: var(--green-bright);
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+.progress-badge.is-partial {
+  color: var(--amber-bright);
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.progress-badge.is-weak {
+  color: var(--red-bright);
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}

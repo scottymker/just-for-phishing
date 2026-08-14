@@ -75,8 +75,10 @@
   <section class="grid-container">
     <h2 class="section-title">Training Modules</h2>
 
+    <div class="progress-summary" data-progress-summary hidden></div>
+
     <div class="lab-grid">
-      <div class="lab-card blue">
+      <div data-progress-module="emailLab" class="lab-card blue">
         <div class="lab-header">
           <div class="lab-icon"><i data-lucide="mail" class="icon icon--xl"></i></div>
           <div class="lab-info">
@@ -92,9 +94,10 @@
           <div><i data-lucide="bar-chart-3" class="icon"></i> 6 scenarios</div>
         </div>
         <a href="email-lab.html" class="lab-btn">Start Lab</a>
+        <div data-progress-slot></div>
       </div>
 
-      <div class="lab-card purple">
+      <div data-progress-module="smsSmishing" class="lab-card purple">
         <div class="lab-header">
           <div class="lab-icon"><i data-lucide="smartphone" class="icon icon--xl"></i></div>
           <div class="lab-info">
@@ -110,9 +113,10 @@
           <div><i data-lucide="bar-chart-3" class="icon"></i> 6 messages</div>
         </div>
         <a href="sms-smishing.html" class="lab-btn">Start Lab</a>
+        <div data-progress-slot></div>
       </div>
 
-      <div class="lab-card green">
+      <div data-progress-module="targetedPhishing" class="lab-card green">
         <div class="lab-header">
           <div class="lab-icon"><i data-lucide="target" class="icon icon--xl"></i></div>
           <div class="lab-info">
@@ -128,9 +132,10 @@
           <div><i data-lucide="bar-chart-3" class="icon"></i> 8 scenarios</div>
         </div>
         <a href="targeted-phishing.html" class="lab-btn">Start Lab</a>
+        <div data-progress-slot></div>
       </div>
 
-      <div class="lab-card blue">
+      <div data-progress-module="securityAwarenessQuiz" class="lab-card blue">
         <div class="lab-header">
           <div class="lab-icon"><i data-lucide="flask-conical" class="icon icon--xl"></i></div>
           <div class="lab-info">
@@ -146,6 +151,7 @@
           <div><i data-lucide="bar-chart-3" class="icon"></i> 5 questions</div>
         </div>
         <a href="quiz.html" class="lab-btn">Start Quiz</a>
+        <div data-progress-slot></div>
       </div>
     </div>
   </section>
@@ -216,6 +222,7 @@
   </footer>
 
   <script src="theme.js"></script>
+  <script src="progress.js"></script>
   <script src="analytics.js"></script>
   <script>document.addEventListener('DOMContentLoaded', function(){ if(typeof lucide !== 'undefined') lucide.createIcons(); });</script>
 </body>

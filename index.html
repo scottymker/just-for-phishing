@@ -191,10 +191,12 @@
         </div>
       </div>
 
+      <div class="progress-summary" data-progress-summary hidden></div>
+
       <div class="modules-grid">
 
         <!-- Quick Check -->
-        <a href="quiz.html" class="module-card reveal reveal-delay-1" style="--card-accent: #22c55e;">
+        <a href="quiz.html" data-progress-module="securityAwarenessQuiz" class="module-card reveal reveal-delay-1" style="--card-accent: #22c55e;">
           <div class="module-card-top">
             <div class="module-icon-wrap">
               <svg viewBox="0 0 22 22" fill="none" aria-hidden="true">
@@ -215,10 +217,11 @@
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </span>
           </div>
+          <div data-progress-slot></div>
         </a>
 
         <!-- Phish or Treat -->
-        <a href="phish-or-treat.html" class="module-card reveal reveal-delay-2" style="--card-accent: #f97316;">
+        <a href="phish-or-treat.html" data-progress-module="phishOrTreat" class="module-card reveal reveal-delay-2" style="--card-accent: #f97316;">
           <div class="module-card-top">
             <div class="module-icon-wrap">
               <svg viewBox="0 0 22 22" fill="none" aria-hidden="true">
@@ -238,10 +241,11 @@
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </span>
           </div>
+          <div data-progress-slot></div>
         </a>
 
         <!-- MFA Fatigue -->
-        <a href="mfa-fatigue.html" class="module-card reveal reveal-delay-3" style="--card-accent: #a855f7;">
+        <a href="mfa-fatigue.html" data-progress-module="mfaFatigue" class="module-card reveal reveal-delay-3" style="--card-accent: #a855f7;">
           <div class="module-card-top">
             <div class="module-icon-wrap">
               <svg viewBox="0 0 22 22" fill="none" aria-hidden="true">
@@ -262,10 +266,11 @@
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </span>
           </div>
+          <div data-progress-slot></div>
         </a>
 
         <!-- Targeted Phishing -->
-        <a href="targeted-phishing.html" class="module-card reveal reveal-delay-4" style="--card-accent: #ef4444;">
+        <a href="targeted-phishing.html" data-progress-module="targetedPhishing" class="module-card reveal reveal-delay-4" style="--card-accent: #ef4444;">
           <div class="module-card-top">
             <div class="module-icon-wrap">
               <svg viewBox="0 0 22 22" fill="none" aria-hidden="true">
@@ -287,10 +292,11 @@
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </span>
           </div>
+          <div data-progress-slot></div>
         </a>
 
         <!-- Email Lab -->
-        <a href="email-lab.html" class="module-card reveal reveal-delay-5" style="--card-accent: #06b6d4;">
+        <a href="email-lab.html" data-progress-module="emailLab" class="module-card reveal reveal-delay-5" style="--card-accent: #06b6d4;">
           <div class="module-card-top">
             <div class="module-icon-wrap">
               <svg viewBox="0 0 22 22" fill="none" aria-hidden="true">
@@ -310,10 +316,11 @@
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </span>
           </div>
+          <div data-progress-slot></div>
         </a>
 
         <!-- SMS Smishing -->
-        <a href="sms-smishing.html" class="module-card reveal reveal-delay-6" style="--card-accent: #3b82f6;">
+        <a href="sms-smishing.html" data-progress-module="smsSmishing" class="module-card reveal reveal-delay-6" style="--card-accent: #3b82f6;">
           <div class="module-card-top">
             <div class="module-icon-wrap">
               <svg viewBox="0 0 22 22" fill="none" aria-hidden="true">
@@ -334,6 +341,7 @@
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </span>
           </div>
+          <div data-progress-slot></div>
         </a>
 
       </div>
@@ -818,6 +826,7 @@
 
   </script>
 
+  <script src="progress.js"></script>
   <script src="analytics.js"></script>
   <script>document.addEventListener('DOMContentLoaded', function(){ if(typeof lucide !== 'undefined') lucide.createIcons(); });</script>
 </body>
