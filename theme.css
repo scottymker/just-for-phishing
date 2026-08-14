@@ -180,10 +180,13 @@ img {
   transition: all var(--transition);
 }
 
+/* Opaque on purpose: the navbar itself is translucent, and without a ground of
+   its own the open menu lets page content read straight through the links. */
 .nav-mobile {
   display: none;
   flex-direction: column;
   padding: 12px 24px 20px;
+  background: var(--bg-void);
   border-top: 1px solid var(--border-subtle);
   gap: 4px;
 }

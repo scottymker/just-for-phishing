@@ -557,10 +557,13 @@
             <div style="margin-bottom:20px;">
               <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);margin-bottom:14px;text-transform:uppercase;letter-spacing:.08em;">Suggested rollout path</div>
 
+              <!-- Bar widths are each stage's duration as a share of the
+                   longest stage (27 min), so the chart reads the same way as
+                   its own labels. -->
               <div class="ent-chart-row">
                 <div class="ent-chart-label">Quick Check</div>
                 <div class="ent-chart-track">
-                  <div class="ent-chart-fill" style="width:68%;background:var(--red);"></div>
+                  <div class="ent-chart-fill" style="width:19%;background:var(--green);"></div>
                 </div>
                 <div class="ent-chart-pct">5 min</div>
               </div>
@@ -568,7 +571,7 @@
               <div class="ent-chart-row">
                 <div class="ent-chart-label">MFA + SMS Drills</div>
                 <div class="ent-chart-track">
-                  <div class="ent-chart-fill" style="width:31%;background:var(--amber);"></div>
+                  <div class="ent-chart-fill" style="width:59%;background:var(--amber);"></div>
                 </div>
                 <div class="ent-chart-pct">16 min</div>
               </div>
@@ -576,7 +579,7 @@
               <div class="ent-chart-row">
                 <div class="ent-chart-label">Email + Targeted Labs</div>
                 <div class="ent-chart-track">
-                  <div class="ent-chart-fill" style="width:7%;background:var(--green);"></div>
+                  <div class="ent-chart-fill" style="width:100%;background:var(--red);"></div>
                 </div>
                 <div class="ent-chart-pct">27 min</div>
               </div>
@@ -688,31 +691,11 @@
     </div>
   </footer>
 
+  <!-- Navbar scroll behaviour and the mobile menu come from theme.js, the same
+       script the other 15 pages use. This page used to carry its own copy. -->
+  <script src="theme.js"></script>
+
   <script>
-    // ================================================
-    // NAVBAR — SCROLL BEHAVIOR + HAMBURGER
-    // ================================================
-    const navbar = document.getElementById('navbar');
-    const hamburger = document.getElementById('hamburger');
-    const navMobile = document.getElementById('navMobile');
-
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 48) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
-    });
-
-    hamburger.addEventListener('click', () => {
-      navMobile.classList.toggle('open');
-    });
-
-    // Close mobile nav when a link is clicked
-    navMobile.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => navMobile.classList.remove('open'));
-    });
-
     // ================================================
     // SCROLL-REVEAL — INTERSECTION OBSERVER
     // ================================================

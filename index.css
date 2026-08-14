@@ -225,10 +225,14 @@
       transition: all var(--transition);
     }
 
+    /* Opaque on purpose: the navbar itself is 60% translucent, and without a
+       ground of its own the open menu let the hero headline read straight
+       through the links. */
     .nav-mobile {
       display: none;
       flex-direction: column;
       padding: 12px 24px 20px;
+      background: var(--bg-void);
       border-top: 1px solid var(--border-subtle);
       gap: 4px;
     }
@@ -1155,8 +1159,8 @@
     .ent-chart-label {
       font-family: var(--font-mono);
       font-size: 11px;
-      color: var(--text-muted);
-      width: 120px;
+      color: var(--text-secondary);
+      width: 148px;
       flex-shrink: 0;
     }
 
@@ -1177,9 +1181,12 @@
     .ent-chart-pct {
       font-family: var(--font-mono);
       font-size: 10px;
-      color: var(--text-muted);
-      width: 30px;
+      color: var(--text-secondary);
+      width: 46px;
+      flex-shrink: 0;
       text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
     }
 
     /* =============================================
