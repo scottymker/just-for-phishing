@@ -119,6 +119,10 @@
       margin-bottom: 32px;
     }
     .options { display: grid; gap: 12px; }
+    /* Options are <button> elements so they are focusable and answerable with
+       Enter/Space, and announce correctly to screen readers. The declarations
+       below undo the UA button defaults that would otherwise centre the label
+       and shrink the box. */
     .option {
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
@@ -133,6 +137,10 @@
       display: flex;
       align-items: center;
       gap: 14px;
+      width: 100%;
+      text-align: left;
+      appearance: none;
+      -webkit-appearance: none;
     }
     .option::before {
       content: '';
@@ -143,7 +151,7 @@
       flex-shrink: 0;
       transition: all var(--transition);
     }
-    .option:hover {
+    .option:hover:not(:disabled) {
       border-color: var(--cyan);
       background: var(--bg-card-hover);
       transform: translateX(4px);

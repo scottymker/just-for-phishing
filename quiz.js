@@ -2,32 +2,50 @@
 const quizQuestions = window.QUIZ_QUESTIONS;
 
 // Quiz State
+// `answers` is the single source of truth, indexed by question. Score and the
+// category breakdown are derived from it, so revisiting a question can never
+// double-count — see answerFor()/getScore()/getCategoryScores() below.
 let currentQuestionIndex = 0;
-let score = 0;
 let answers = [];
-let selectedAnswer = null;
 
-// Category tracking for personalized feedback
-const categoryScores = {
-  "Phishing Detection": { correct: 0, total: 0 },
-  "Multi-Factor Authentication (MFA)": { correct: 0, total: 0 },
-  "Password Security": { correct: 0, total: 0 },
-  "Social Engineering": { correct: 0, total: 0 },
-  "Safe Browsing": { correct: 0, total: 0 }
-};
+const CATEGORIES = [
+  "Phishing Detection",
+  "Multi-Factor Authentication (MFA)",
+  "Password Security",
+  "Social Engineering",
+  "Safe Browsing"
+];
+
+function answerFor(index) {
+  return answers[index] || null;
+}
+
+function getScore() {
+  return answers.reduce((total, answer) => total + (answer && answer.correct ? 1 : 0), 0);
+}
+
+function getCategoryScores() {
+  const scores = {};
+  CATEGORIES.forEach(category => {
+    scores[category] = { correct: 0, total: 0 };
+  });
+
+  answers.forEach((answer, index) => {
+    if (!answer) return;
+    const category = quizQuestions[index].category;
+    if (!scores[category]) scores[category] = { correct: 0, total: 0 };
+    scores[category].total++;
+    if (answer.correct) scores[category].correct++;
+  });
+
+  return scores;
+}
 
 // Initialize quiz
 function initQuiz() {
   window.JFPAnalytics?.trackModuleStart('security_awareness_quiz');
   currentQuestionIndex = 0;
-  score = 0;
   answers = [];
-  selectedAnswer = null;
-
-  // Reset category scores
-  Object.keys(categoryScores).forEach(cat => {
-    categoryScores[cat] = { correct: 0, total: 0 };
-  });
 
   displayQuestion();
 }
@@ -62,17 +80,15 @@ function displayQuestion() {
   optionsContainer.innerHTML = '';
 
   question.options.forEach((option, index) => {
-    const optionElement = document.createElement('div');
+    const optionElement = document.createElement('button');
+    optionElement.type = 'button';
     optionElement.className = 'option';
     optionElement.textContent = option;
-    optionElement.onclick = () => selectAnswer(index);
+    optionElement.addEventListener('click', () => selectAnswer(index));
     optionElement.dataset.index = index;
     optionsContainer.appendChild(optionElement);
   });
 
-  // Reset selected answer
-  selectedAnswer = null;
-  nextBtn.disabled = true;
   nextBtn.textContent = currentQuestionIndex === quizQuestions.length - 1 ? 'Finish Quiz →' : 'Next Question →';
 
   // Show/hide previous button
@@ -82,8 +98,38 @@ function displayQuestion() {
     prevBtn.classList.add('hidden');
   }
 
+  // If this question has already been answered, render it locked. This runs on
+  // every navigation, forward and back, so an answered question can never be
+  // presented as answerable a second time.
+  const existing = answerFor(currentQuestionIndex);
+  if (existing) {
+    renderAnsweredState(existing, question);
+    nextBtn.disabled = false;
+  } else {
+    nextBtn.disabled = true;
+  }
+
   // Add apple animation
   createFallingApple();
+}
+
+// Paint an already-answered question: options locked, correct answer marked,
+// feedback card restored.
+function renderAnsweredState(answer, question) {
+  const options = document.querySelectorAll('.option');
+
+  options.forEach(opt => {
+    opt.classList.add('disabled');
+    opt.disabled = true;
+  });
+
+  options[answer.selectedIndex].classList.add('selected');
+  options[answer.selectedIndex].classList.add(answer.correct ? 'correct' : 'incorrect');
+  if (!answer.correct) {
+    options[question.correctIndex].classList.add('correct');
+  }
+
+  showFeedback(answer.correct, question);
 }
 
 // Select answer
@@ -92,36 +138,34 @@ function selectAnswer(index) {
   const options = document.querySelectorAll('.option');
 
   // If already answered, don't allow change
-  if (selectedAnswer !== null) return;
+  if (answerFor(currentQuestionIndex)) return;
 
-  selectedAnswer = index;
   const isCorrect = index === question.correctIndex;
 
-  // Disable all options
-  options.forEach(opt => opt.classList.add('disabled'));
+  // Record the answer at its question's own slot, so re-entering the question
+  // overwrites rather than appends.
+  answers[currentQuestionIndex] = {
+    questionIndex: currentQuestionIndex,
+    selectedIndex: index,
+    correct: isCorrect
+  };
 
-  // Show correct/incorrect styling
+  // Lock the options immediately — the reveal below is animated, but the
+  // question is already closed.
+  options.forEach(opt => {
+    opt.classList.add('disabled');
+    opt.disabled = true;
+  });
   options[index].classList.add('selected');
 
   setTimeout(() => {
     if (isCorrect) {
       options[index].classList.add('correct');
-      score++;
-      categoryScores[question.category].correct++;
     } else {
       options[index].classList.add('incorrect');
       // Also show the correct answer
       options[question.correctIndex].classList.add('correct');
     }
-
-    categoryScores[question.category].total++;
-
-    // Store answer
-    answers.push({
-      questionIndex: currentQuestionIndex,
-      selectedIndex: index,
-      correct: isCorrect
-    });
 
     // Show feedback
     showFeedback(isCorrect, question);
@@ -153,7 +197,7 @@ function showFeedback(isCorrect, question) {
 
 // Next question
 function nextQuestion() {
-  if (selectedAnswer === null) return;
+  if (!answerFor(currentQuestionIndex)) return;
 
   if (currentQuestionIndex < quizQuestions.length - 1) {
     currentQuestionIndex++;
@@ -168,25 +212,6 @@ function previousQuestion() {
   if (currentQuestionIndex > 0) {
     currentQuestionIndex--;
     displayQuestion();
-
-    // If this question was already answered, show the previous answer
-    const previousAnswer = answers.find(a => a.questionIndex === currentQuestionIndex);
-    if (previousAnswer) {
-      const options = document.querySelectorAll('.option');
-      options.forEach(opt => opt.classList.add('disabled'));
-      options[previousAnswer.selectedIndex].classList.add('selected');
-
-      if (previousAnswer.correct) {
-        options[previousAnswer.selectedIndex].classList.add('correct');
-      } else {
-        options[previousAnswer.selectedIndex].classList.add('incorrect');
-        options[quizQuestions[currentQuestionIndex].correctIndex].classList.add('correct');
-      }
-
-      showFeedback(previousAnswer.correct, quizQuestions[currentQuestionIndex]);
-      document.getElementById('next-btn').disabled = false;
-      selectedAnswer = previousAnswer.selectedIndex;
-    }
   }
 }
 
@@ -207,7 +232,9 @@ function showSummary() {
   // Show summary
   summaryCard.classList.remove('hidden');
 
-  // Calculate percentage
+  // Derive the score from the recorded answers, so it can never exceed the
+  // number of questions no matter how the learner navigated to get here.
+  const score = getScore();
   const percentage = Math.round((score / quizQuestions.length) * 100);
 
   // Update score
@@ -272,12 +299,13 @@ function displayKnowledgeAreas() {
     "Safe Browsing": '<i data-lucide="globe" class="icon icon--xl"></i>'
   };
 
+  const categoryScores = getCategoryScores();
+
   Object.keys(categoryScores).forEach(category => {
     const data = categoryScores[category];
     if (data.total === 0) return; // Skip categories not in this quiz
 
     const isStrong = data.correct === data.total;
-    const needsWork = data.correct < data.total;
 
     const areaItem = document.createElement('div');
     areaItem.className = `area-item ${isStrong ? 'strong' : 'needs-work'}`;
