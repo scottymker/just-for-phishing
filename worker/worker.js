@@ -22,9 +22,10 @@ const DEV_ORIGINS = [
 // RFC 5321 caps a local part at 64 octets and a whole path at 256. Anything
 // near that is not a real signup.
 const MAX_EMAIL_LENGTH = 254;
-// A well-formed body is about 40 bytes. 1 KB is generous and still bounds how
-// much we will parse.
-const MAX_BODY_BYTES = 1024;
+// An address-only body is about 40 bytes, but a Turnstile token can be up to
+// 2048 characters on its own, so the cap has to clear address + token + JSON
+// overhead. 4 KB does that and still bounds how much we will parse.
+const MAX_BODY_BYTES = 4096;
 
 // Brevo list the newsletter writes to.
 const LIST_ID = 3;
@@ -50,35 +51,71 @@ function json(data, status, origin) {
 /**
  * Verify a Cloudflare Turnstile token with Cloudflare.
  *
+ * Follows the canonical siteverify contract: a token is only accepted when
+ * Cloudflare reports success AND the action matches the surface that issued it
+ * AND the hostname is one this deployment expects. Checking success alone is
+ * not enough — a token minted by the same sitekey on a different page, or
+ * replayed from an attacker-controlled host, would otherwise pass.
+ *
  * Unlike the rate limiter this fails CLOSED once configured: if TURNSTILE_SECRET
  * is set we require a valid token, because a challenge that can be skipped when
  * the verification endpoint hiccups is not a challenge. When the secret is not
  * set at all the check is skipped entirely, so the endpoint keeps working on a
  * deployment that has not been given keys yet.
  */
+const TURNSTILE_ACTION = 'newsletter-signup';
+const MAX_TOKEN_LENGTH = 2048;
+
 async function turnstileOk(env, token, ip) {
   if (!env.TURNSTILE_SECRET) return true;      // not configured; nothing to check
-  if (!token) return false;
 
-  const form = new FormData();
-  form.append('secret', env.TURNSTILE_SECRET);
-  form.append('response', token);
-  if (ip && ip !== 'unknown') form.append('remoteip', ip);
+  // Deployment-specific frontend hostnames. Must never contain localhost in
+  // production — a widget registered for local development would otherwise let
+  // a locally-served page mint tokens this deployment accepts.
+  const expectedHostnames = new Set(
+    (env.TURNSTILE_HOSTNAMES || '')
+      .split(',')
+      .map((hostname) => hostname.trim())
+      .filter(Boolean)
+  );
 
+  if (typeof token !== 'string' || token.length === 0
+      || token.length > MAX_TOKEN_LENGTH || expectedHostnames.size === 0) {
+    return false;
+  }
+
+  let result;
   try {
     const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
       method: 'POST',
-      body: form,
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      signal: AbortSignal.timeout(10_000),
+      body: new URLSearchParams({
+        secret: env.TURNSTILE_SECRET,
+        response: token,
+        ...(ip && ip !== 'unknown' ? { remoteip: ip } : {}),
+      }),
     });
-    const data = await res.json();
-    if (!data.success) {
-      console.warn('[subscribe] turnstile rejected:', JSON.stringify(data['error-codes'] || []));
-    }
-    return Boolean(data.success);
+    if (!res.ok) throw new Error(`siteverify ${res.status}`);
+    result = await res.json();
   } catch (error) {
     console.error('[subscribe] turnstile verification failed', error);
     return false;
   }
+
+  if (!result.success
+      || result.action !== TURNSTILE_ACTION
+      || !expectedHostnames.has(result.hostname)) {
+    console.warn('[subscribe] turnstile rejected:', JSON.stringify({
+      success: result.success,
+      action: result.action,
+      hostname: result.hostname,
+      codes: result['error-codes'] || [],
+    }));
+    return false;
+  }
+
+  return true;
 }
 
 /**

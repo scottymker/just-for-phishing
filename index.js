@@ -74,7 +74,7 @@ const SUBSCRIBE_URL = 'https://jfp-subscribe.ymkerphotos.workers.dev';
 // its TURNSTILE_SECRET is set, so this key is not a security boundary and is
 // safe in client code. Empty means "not configured", and the form then behaves
 // exactly as it did before.
-const TURNSTILE_SITE_KEY = '';
+const TURNSTILE_SITE_KEY = '0x4AAAAAAEQhhN9V-SXVjSIY';
 
 let turnstileWidgetId = null;
 

@@ -45,3 +45,9 @@ simple        = { limit = 10, period = 60 }
 # [vars]
 # BREVO_DOI_TEMPLATE_ID = "0"
 # BREVO_DOI_REDIRECT    = "https://justforphishing.com/"
+
+# Frontend hostnames this deployment will accept Turnstile tokens from.
+# Required once TURNSTILE_SECRET is set. Must NOT contain localhost or
+# 127.0.0.1 in production, even if the widget itself is registered for them.
+[vars]
+TURNSTILE_HOSTNAMES = "justforphishing.com,www.justforphishing.com"
