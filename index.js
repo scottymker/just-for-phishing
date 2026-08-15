@@ -77,6 +77,7 @@ const SUBSCRIBE_URL = 'https://jfp-subscribe.ymkerphotos.workers.dev';
 const TURNSTILE_SITE_KEY = '0x4AAAAAAEQhhN9V-SXVjSIY';
 
 let turnstileWidgetId = null;
+let challengeFailed = false;
 
 function loadTurnstile() {
   if (!TURNSTILE_SITE_KEY) return;
@@ -94,8 +95,15 @@ function loadTurnstile() {
       theme: 'dark',
       size: 'flexible',
       action: 'newsletter-signup',
+      // The Worker rejects any submission without a valid token, so a widget
+      // that cannot run means the form cannot be used. Say so plainly instead
+      // of letting the visitor hit a generic failure they cannot act on.
+      'error-callback': () => { challengeFailed = true; return true; },
+      'timeout-callback': () => { challengeFailed = true; },
     });
   };
+  // A blocked or unreachable challenge script is the same dead end.
+  script.onerror = () => { challengeFailed = true; };
   document.head.appendChild(script);
 }
 
@@ -104,7 +112,10 @@ loadTurnstile();
 // Tokens are single-use, so a second signup needs a fresh one however the
 // previous attempt ended.
 function resetChallenge() {
-  if (turnstileWidgetId !== null && window.turnstile) window.turnstile.reset(turnstileWidgetId);
+  if (turnstileWidgetId !== null && window.turnstile) {
+    challengeFailed = false;
+    window.turnstile.reset(turnstileWidgetId);
+  }
 }
 
 async function handleEmailSignup(e) {
@@ -114,6 +125,14 @@ async function handleEmailSignup(e) {
   const status = document.getElementById('signup-status');
   const email  = input.value.trim();
   if (!email) return;
+
+  // Fail fast and legibly rather than making a request the Worker will refuse.
+  if (challengeFailed) {
+    status.textContent = 'The human-verification check could not load — an ad blocker or privacy '
+      + 'extension may be blocking challenges.cloudflare.com. Allow it and reload to subscribe.';
+    status.style.color = 'var(--red)';
+    return;
+  }
 
   btn.textContent    = 'Subscribing…';
   btn.disabled       = true;
