@@ -921,9 +921,11 @@
 
     .signup-form {
       display: flex;
-      gap: 10px;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
       max-width: 440px;
-      margin: 0 auto 14px;
+      margin: 0 auto 18px;
     }
 
     .signup-input {
@@ -970,6 +972,7 @@
     .signup-fine {
       font-size: 12px;
       color: var(--text-muted);
+      margin-top: 4px;
     }
 
     .signup-status {
@@ -1056,9 +1059,7 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .signup-form {
-        flex-direction: column;
-      }
+      /* .signup-form stacks at every width now. */
 
       .enterprise-card {
         padding: 32px 24px;
@@ -1103,10 +1104,13 @@
       .consent-btn { flex: 1; }
     }
 
-    /* Turnstile challenge slot. Stays collapsed until a site key is configured
-       in index.js, so an unkeyed deployment shows no empty gap. */
-    .signup-challenge:not(:empty) {
+    /* Turnstile challenge slot. Collapses to nothing while empty, so a
+       deployment without a site key shows no stray gap in the form. */
+    .signup-challenge:empty {
+      display: none;
+    }
+
+    .signup-challenge {
       display: flex;
       justify-content: center;
-      margin-top: 16px;
     }

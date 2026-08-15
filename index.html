@@ -70,8 +70,7 @@
       </a>
 
       <ul class="nav-links">
-        <li><a href="#modules">Modules</a>
-      <a href="lab.html">Lab</a></li>
+        <li><a href="#modules">Modules</a></li>
         <li><a href="lab.html">Lab</a></li>
         <li><a href="#how-it-works">How It Works</a></li>
         <li><a href="#platform">Platform</a></li>
@@ -89,6 +88,7 @@
 
     <div class="nav-mobile" id="navMobile">
       <a href="#modules">Modules</a>
+      <a href="lab.html">Lab</a>
       <a href="#how-it-works">How It Works</a>
       <a href="#platform">Platform</a>
       <a href="resources.html">Resources</a>
@@ -621,12 +621,14 @@
         <p class="section-sub">New phishing tactics appear every week. Get notified when we add new modules and scenarios.</p>
         <form class="signup-form" id="signup-form">
           <input type="email" class="signup-input" id="signup-email" placeholder="you@company.com" required autocomplete="email" />
+          <!-- Between the field and the button on purpose: verification is a
+               step of the form, not an afterthought below it, and this keeps
+               the tab order matching the visual order. Turnstile mounts here
+               once a site key is set in index.js; the container collapses to
+               nothing when it is empty. -->
+          <div class="signup-challenge" id="signup-challenge"></div>
           <button type="submit" class="btn-signup" id="signup-btn">Subscribe</button>
         </form>
-        <!-- Turnstile mounts here once a site key is set in index.js. The
-             container stays empty and invisible until then, so the form works
-             normally on a deployment without keys. -->
-        <div class="signup-challenge" id="signup-challenge"></div>
         <p class="signup-fine">No spam. Unsubscribe anytime. We respect your privacy.</p>
         <p class="signup-status" id="signup-status" aria-live="polite"></p>
       </div>
