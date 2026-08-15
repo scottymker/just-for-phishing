@@ -69,6 +69,44 @@ if (statsSection) statsObserver.observe(statsSection);
 // ================================================
 const SUBSCRIBE_URL = 'https://jfp-subscribe.ymkerphotos.workers.dev';
 
+// Cloudflare Turnstile. Paste the site key from the Turnstile dashboard to
+// switch the challenge on. The Worker independently requires a valid token once
+// its TURNSTILE_SECRET is set, so this key is not a security boundary and is
+// safe in client code. Empty means "not configured", and the form then behaves
+// exactly as it did before.
+const TURNSTILE_SITE_KEY = '';
+
+let turnstileWidgetId = null;
+
+function loadTurnstile() {
+  if (!TURNSTILE_SITE_KEY) return;
+  const host = document.getElementById('signup-challenge');
+  if (!host) return;
+
+  const script = document.createElement('script');
+  script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+  script.async = true;
+  script.defer = true;
+  script.onload = () => {
+    if (!window.turnstile) return;
+    turnstileWidgetId = window.turnstile.render(host, {
+      sitekey: TURNSTILE_SITE_KEY,
+      theme: 'dark',
+      size: 'flexible',
+      action: 'newsletter-signup',
+    });
+  };
+  document.head.appendChild(script);
+}
+
+loadTurnstile();
+
+// Tokens are single-use, so a second signup needs a fresh one however the
+// previous attempt ended.
+function resetChallenge() {
+  if (turnstileWidgetId !== null && window.turnstile) window.turnstile.reset(turnstileWidgetId);
+}
+
 async function handleEmailSignup(e) {
   e.preventDefault();
   const input  = document.getElementById('signup-email');
@@ -84,10 +122,14 @@ async function handleEmailSignup(e) {
   status.style.color = '';
 
   try {
+    const turnstileToken = turnstileWidgetId !== null && window.turnstile
+      ? window.turnstile.getResponse(turnstileWidgetId)
+      : undefined;
+
     const res  = await fetch(SUBSCRIBE_URL, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ email, turnstileToken }),
     });
     const data = await res.json().catch(() => ({}));
 
@@ -96,9 +138,13 @@ async function handleEmailSignup(e) {
       btn.style.background = 'var(--green)';
       input.value          = '';
       input.disabled       = false;
-      status.textContent   = "Thanks for subscribing — we'll let you know when new modules drop.";
+      status.textContent   = data.confirm
+        ? 'Almost there — check your inbox and click the confirmation link to finish subscribing.'
+        : "Thanks for subscribing — we'll let you know when new modules drop.";
       status.style.color   = 'var(--green)';
       window.JFPAnalytics?.sendEvent('newsletter_signup');
+
+      resetChallenge();
 
       // Return the button to its resting state so a second address can be
       // added without reloading the page.
@@ -117,7 +163,8 @@ async function handleEmailSignup(e) {
     // The endpoint returns a usable message for the cases a visitor can
     // act on — a malformed address, or too many attempts. Show it rather
     // than burying it in the console.
-    status.textContent = /^(Invalid email|Too many)/.test(err.message)
+    resetChallenge();
+    status.textContent = /^(Invalid email|Too many|Could not verify)/.test(err.message)
       ? err.message
       : 'Something went wrong — please try again.';
     status.style.color = 'var(--red)';

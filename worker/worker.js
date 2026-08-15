@@ -26,6 +26,9 @@ const MAX_EMAIL_LENGTH = 254;
 // much we will parse.
 const MAX_BODY_BYTES = 1024;
 
+// Brevo list the newsletter writes to.
+const LIST_ID = 3;
+
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function corsHeaders(origin) {
@@ -42,6 +45,40 @@ function json(data, status, origin) {
     status,
     headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) },
   });
+}
+
+/**
+ * Verify a Cloudflare Turnstile token with Cloudflare.
+ *
+ * Unlike the rate limiter this fails CLOSED once configured: if TURNSTILE_SECRET
+ * is set we require a valid token, because a challenge that can be skipped when
+ * the verification endpoint hiccups is not a challenge. When the secret is not
+ * set at all the check is skipped entirely, so the endpoint keeps working on a
+ * deployment that has not been given keys yet.
+ */
+async function turnstileOk(env, token, ip) {
+  if (!env.TURNSTILE_SECRET) return true;      // not configured; nothing to check
+  if (!token) return false;
+
+  const form = new FormData();
+  form.append('secret', env.TURNSTILE_SECRET);
+  form.append('response', token);
+  if (ip && ip !== 'unknown') form.append('remoteip', ip);
+
+  try {
+    const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      body: form,
+    });
+    const data = await res.json();
+    if (!data.success) {
+      console.warn('[subscribe] turnstile rejected:', JSON.stringify(data['error-codes'] || []));
+    }
+    return Boolean(data.success);
+  } catch (error) {
+    console.error('[subscribe] turnstile verification failed', error);
+    return false;
+  }
 }
 
 /**
@@ -109,10 +146,18 @@ export default {
       return json({ error: 'Invalid email address' }, 400, origin);
     }
 
+    const clientIp = request.headers.get('CF-Connecting-IP') || 'unknown';
+
+    // Challenge first: it is the cheapest way to shed automated traffic, and
+    // doing it before the rate-limit accounting keeps bots from consuming a
+    // real visitor's budget.
+    if (!(await turnstileOk(env, body.turnstileToken, clientIp))) {
+      return json({ error: 'Could not verify you are human. Please try again.' }, 403, origin);
+    }
+
     // Two independent budgets: one per source address, so a single client
     // cannot enumerate; one per submitted email, so a distributed client cannot
     // repeatedly re-add the same person.
-    const clientIp = request.headers.get('CF-Connecting-IP') || 'unknown';
     const [ipOk, emailOk] = await Promise.all([
       withinRateLimit(env, `ip:${clientIp}`),
       withinRateLimit(env, `email:${email}`),
@@ -121,16 +166,37 @@ export default {
       return json({ error: 'Too many attempts. Please try again shortly.' }, 429, origin);
     }
 
+    // Double opt-in when a DOI template is configured: Brevo emails the address
+    // a confirmation link and only adds the contact once it is clicked. That
+    // makes enrolling someone else's address harmless, which is the real fix
+    // for an endpoint anyone can reach — the rate limit and the challenge only
+    // make abuse slower.
+    const doiTemplateId = Number(env.BREVO_DOI_TEMPLATE_ID) || 0;
+    const useDoi = doiTemplateId > 0;
+
+    const endpoint = useDoi
+      ? 'https://api.brevo.com/v3/contacts/doubleOptinConfirmation'
+      : 'https://api.brevo.com/v3/contacts';
+
+    const payload = useDoi
+      ? {
+          email,
+          includeListIds: [LIST_ID],
+          templateId: doiTemplateId,
+          redirectionUrl: env.BREVO_DOI_REDIRECT || 'https://justforphishing.com/',
+        }
+      : { email, listIds: [LIST_ID], updateEnabled: true };
+
     let brevoRes;
     try {
-      brevoRes = await fetch('https://api.brevo.com/v3/contacts', {
+      brevoRes = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'accept': 'application/json',
           'content-type': 'application/json',
           'api-key': env.BREVO_API_KEY,
         },
-        body: JSON.stringify({ email, listIds: [3], updateEnabled: true }),
+        body: JSON.stringify(payload),
       });
     } catch (error) {
       console.error('[subscribe] brevo request failed', error);
@@ -138,7 +204,7 @@ export default {
     }
 
     if (brevoRes.status === 201 || brevoRes.status === 204) {
-      return json({ ok: true }, 200, origin);
+      return json({ ok: true, confirm: useDoi }, 200, origin);
     }
 
     // Brevo's own message can carry account and implementation detail. Log it

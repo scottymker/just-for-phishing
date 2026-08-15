@@ -31,3 +31,17 @@ simple        = { limit = 10, period = 60 }
 # pick an origin that passes.
 # [vars]
 # ALLOW_DEV_ORIGINS = "true"
+
+# Secrets to set after deploying (never in this file):
+#   wrangler secret put BREVO_API_KEY
+#   wrangler secret put TURNSTILE_SECRET          # enables the challenge
+#
+# Plain vars, safe to keep here:
+#   BREVO_DOI_TEMPLATE_ID  numeric id of the Brevo double-opt-in template.
+#                          Set it and the Worker switches to confirmed opt-in;
+#                          leave it unset and contacts are added directly.
+#   BREVO_DOI_REDIRECT     where Brevo sends people after they confirm.
+#
+# [vars]
+# BREVO_DOI_TEMPLATE_ID = "0"
+# BREVO_DOI_REDIRECT    = "https://justforphishing.com/"

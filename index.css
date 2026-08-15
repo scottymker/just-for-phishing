@@ -1102,3 +1102,11 @@
       .consent-actions { width: 100%; }
       .consent-btn { flex: 1; }
     }
+
+    /* Turnstile challenge slot. Stays collapsed until a site key is configured
+       in index.js, so an unkeyed deployment shows no empty gap. */
+    .signup-challenge:not(:empty) {
+      display: flex;
+      justify-content: center;
+      margin-top: 16px;
+    }

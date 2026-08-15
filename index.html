@@ -623,6 +623,10 @@
           <input type="email" class="signup-input" id="signup-email" placeholder="you@company.com" required autocomplete="email" />
           <button type="submit" class="btn-signup" id="signup-btn">Subscribe</button>
         </form>
+        <!-- Turnstile mounts here once a site key is set in index.js. The
+             container stays empty and invisible until then, so the form works
+             normally on a deployment without keys. -->
+        <div class="signup-challenge" id="signup-challenge"></div>
         <p class="signup-fine">No spam. Unsubscribe anytime. We respect your privacy.</p>
         <p class="signup-status" id="signup-status" aria-live="polite"></p>
       </div>

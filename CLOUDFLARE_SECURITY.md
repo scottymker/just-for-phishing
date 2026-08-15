@@ -22,31 +22,40 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 Referrer-Policy: strict-origin-when-cross-origin
 Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()
-Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; connect-src 'self' https://*.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://jfp-subscribe.ymkerphotos.workers.dev; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self'; form-action 'self'; upgrade-insecure-requests
+Content-Security-Policy: default-src 'self'; script-src 'self' https://www.googletagmanager.com https://challenges.cloudflare.com; script-src-attr 'none'; connect-src 'self' https://*.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://jfp-subscribe.ymkerphotos.workers.dev; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; font-src 'self'; frame-src https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self'; form-action 'self'; upgrade-insecure-requests
 ```
 
-### Notes on the policy
+### What changed and why
 
-**No CDN entry is needed for icons.** They used to come from `unpkg.com`, which
-this policy blocked on every page load — the icons silently never rendered.
-They are now self-hosted at `assets/icons.js` and covered by `'self'`. Do not
-add a CDN back; regenerate the subset with `node tools/generate-icons.mjs`
-instead.
+**`'unsafe-inline'` is gone from `script-src`.** Every inline `<script>` and
+every `onclick`/`onsubmit` attribute was moved into a file, so the policy is now
+load-bearing: an HTML-injection bug could no longer execute. `script-src-attr
+'none'` blocks handler attributes outright, so a reintroduced `onclick=` fails
+loudly instead of quietly weakening the policy. Verified by serving the whole
+site under this exact policy before deploying it.
 
-**`connect-src` uses `https://*.google-analytics.com`,** not the bare
-`www.` host. GA4 routes European traffic through `region1.google-analytics.com`,
-so the narrower form silently dropped EU analytics at the CSP layer.
+**No CDN entry for icons or fonts.** Icons are self-hosted at
+`assets/icons.js` (regenerate with `node tools/generate-icons.mjs`) and the
+webfonts at `assets/fonts/` (`node tools/fetch-fonts.mjs`). That is why
+`font-src` is `'self'` and `fonts.googleapis.com` is no longer in `style-src`.
+Do not add these back — self-hosting also keeps visitors' IP addresses away from
+Google, which matters on a site that promises training answers stay local.
 
-**Cloudflare Web Analytics is still blocked.** The `static.cloudflareinsights.com`
-beacon Cloudflare injects is not in `script-src`, so it errors on every page and
-has never recorded a hit. Either add that host, or turn Web Analytics off under
-**Analytics → Web Analytics** so it stops injecting.
+**`connect-src` uses `https://*.google-analytics.com`,** not the bare `www.`
+host. GA4 routes European traffic through `region1.google-analytics.com`, so the
+narrower form silently dropped EU analytics.
 
-**`'unsafe-inline'` in `script-src` is a known weakness.** The homepage still
-uses inline scripts and an inline `onsubmit` handler. Moving those into a file
-and dropping `'unsafe-inline'` (plus adding `script-src-attr 'none'`) is the
-remaining hardening step. Nothing currently routes attacker-controlled input
-into an HTML sink, but the policy would stop being load-bearing if that changed.
+**`challenges.cloudflare.com` appears in `script-src` and `frame-src`** for
+Turnstile on the newsletter form. Both entries are harmless before Turnstile is
+switched on, so this policy can be applied now.
+
+**`style-src` still allows `'unsafe-inline'`,** because 136 elements carry
+`style` attributes — per-card accent colours and similar. Inline style is a far
+smaller risk than inline script; removing it would mean a data-attribute
+rewrite, and is not currently worth the churn.
+
+**Cloudflare Web Analytics should stay off.** Its beacon is not in `script-src`,
+so if it is re-enabled it will error on every page and record nothing.
 
 ## Scrape Shield → Email Address Obfuscation: **Off**
 
@@ -101,13 +110,49 @@ the 254-character address cap, the format check, and the rate limiter.
 work, run `wrangler dev --var ALLOW_DEV_ORIGINS:true`. Never set that variable
 on the deployed worker.
 
+## Turning on Turnstile
+
+The code is in place and inert. To activate:
+
+1. **Cloudflare dashboard → Turnstile → Add widget.** Domain
+   `justforphishing.com`, widget mode **Managed**. You get a site key and a
+   secret key.
+2. Paste the **site key** into `TURNSTILE_SITE_KEY` at the top of `index.js`.
+   It is public by design — the Worker verifies the token server-side, so the
+   key alone grants nothing.
+3. Give the Worker the **secret key**:
+   ```bash
+   cd worker && wrangler secret put TURNSTILE_SECRET
+   ```
+
+Once `TURNSTILE_SECRET` exists the Worker **requires** a valid token and fails
+closed — a challenge that can be skipped when verification hiccups is not a
+challenge. So set the site key in `index.js` before or at the same time as the
+secret, or the form will start rejecting real people.
+
+The CSP above already allows `challenges.cloudflare.com`.
+
+## Turning on double opt-in
+
+This is the change that actually makes an open endpoint harmless: Brevo emails
+the address a confirmation link and adds the contact only when it is clicked, so
+enrolling somebody else achieves nothing.
+
+1. **Brevo → Campaigns → Templates → New template**, type **Double opt-in
+   confirmation**. Include the `{{ doubleoptin }}` confirmation link.
+2. Note the numeric template id from the template list.
+3. Set it on the Worker:
+   ```bash
+   cd worker
+   wrangler deploy --var BREVO_DOI_TEMPLATE_ID:12345
+   ```
+   or add it under `[vars]` in `wrangler.toml`.
+
+With the id set, the Worker posts to `/v3/contacts/doubleOptinConfirmation`
+instead of `/v3/contacts`, and the site's success message changes to "check your
+inbox". Unset it and the previous direct-add behaviour returns.
+
 ## Still open
 
-- **Turnstile.** A server-validated challenge would be the real fix for
-  automated enrolment. It needs a site key in the signup form, the secret in the
-  worker, and `https://challenges.cloudflare.com` added to `script-src` and
-  `frame-src`.
-- **Double opt-in.** Brevo can send a confirmation before adding a contact,
-  which makes enrolling someone else's address harmless. It needs a DOI template
-  configured in Brevo and a switch to the `POST /v3/contacts/doubleOptinConfirmation`
-  endpoint.
+- **Nothing blocking.** Turnstile and double opt-in are coded and waiting on the
+  credentials above. Everything else in this file is applied.
