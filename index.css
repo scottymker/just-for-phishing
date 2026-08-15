@@ -962,6 +962,10 @@
       cursor: pointer;
       white-space: nowrap;
       transition: all var(--transition);
+      /* Stacked form: a full-bleed red bar reads as a slab. Size it to its
+         content and centre it under the field and challenge. */
+      align-self: center;
+      min-width: 220px;
     }
 
     .btn-signup:hover {
@@ -1105,12 +1109,16 @@
     }
 
     /* Turnstile challenge slot. Collapses to nothing while empty, so a
-       deployment without a site key shows no stray gap in the form. */
+       deployment without a site key shows no stray gap in the form.
+
+       Deliberately a block, not a centred flex container: the widget is
+       rendered with size:'flexible' so it fills its parent, and making it a
+       flex item instead let it fall back to its 300px intrinsic width — which
+       left it floating narrow between the 440px field and button. */
     .signup-challenge:empty {
       display: none;
     }
 
-    .signup-challenge {
-      display: flex;
-      justify-content: center;
+    .signup-challenge > * {
+      width: 100%;
     }
