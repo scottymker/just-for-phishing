@@ -83,7 +83,7 @@
 
   <div class="legal-container">
     <h1>Accessibility Statement</h1>
-    <p class="last-updated">Last updated: August 14, 2026</p>
+    <p class="last-updated">Last updated: August 15, 2026</p>
 
     <h2>Our Commitment</h2>
     <p>
@@ -129,15 +129,25 @@
       These are real gaps we have not closed yet. If one of them blocks you, please tell us — it moves up the list.
     </p>
     <ul>
-      <li>Only the Quick Check quiz has been fully converted to keyboard-operable controls. The MFA, smishing, email lab, targeted phishing and Phish or Treat modules still use click-driven elements and are not yet keyboard or screen-reader complete.</li>
-      <li>Result and feedback panels appear without announcing themselves, so a screen reader user may not know a new panel has opened.</li>
-      <li>Phish or Treat is timed, which is a barrier for anyone who needs longer to read. There is no way to extend or disable the timer.</li>
-      <li>The site has not been tested end to end with NVDA, JAWS or VoiceOver.</li>
+      <li>The site has not been tested end to end with NVDA, JAWS or VoiceOver. Announcements are verified programmatically, which is not the same as hearing them.</li>
+      <li>Some training content — email headers, raw sender addresses — is dense by design, and we have not yet checked how it reads aloud line by line.</li>
+      <li>The site has not been audited by an independent accessibility specialist.</li>
+    </ul>
+
+    <h2>Recently fixed</h2>
+    <p>
+      Listed here because this page previously described these as limitations:
+    </p>
+    <ul>
+      <li><strong>Every module is now keyboard-operable.</strong> Answers are real buttons, reachable with Tab and activated with Enter or Space.</li>
+      <li><strong>Results announce themselves.</strong> Each module speaks its verdict through a live region, and focus moves to the result rather than being dropped back to the top of the page.</li>
+      <li><strong>Phish or Treat's timer can be extended or switched off.</strong> There is a "Practise without the timer" option and an "Add 2 minutes" button.</li>
+      <li><strong>Text contrast meets AA.</strong> The muted text colour used for labels and captions was previously well below the threshold.</li>
     </ul>
 
     <h2>Conformance Status</h2>
     <p>
-      <strong>Partially conformant with WCAG 2.1 Level AA.</strong> "Partially conformant" means some parts of the site do not fully meet the standard — specifically the training modules listed under Known Limitations above. The site chrome, the homepage, the reference pages and the Quick Check quiz are believed to meet AA.
+      <strong>Partially conformant with WCAG 2.1 Level AA.</strong> "Partially conformant" means we believe the site meets the standard but have not had that confirmed by testing with real assistive technology or by an independent audit — see Known Limitations. Every page and every training module has been checked for keyboard operation, focus handling, contrast and motion preferences.
     </p>
 
     <h2>Feedback &amp; Assistance</h2>
