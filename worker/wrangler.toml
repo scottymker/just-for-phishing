@@ -1,6 +1,22 @@
 name            = "jfp-subscribe"
 main            = "worker.js"
-compatibility_date = "2025-01-01"
+# Was 2025-01-01 locally while the deployed Worker was on 2026-05-24, so every
+# deploy from this file silently rolled the runtime back a year. Kept in step
+# with the deployed value.
+compatibility_date = "2026-05-24"
+
+# Both of these were enabled on the deployed Worker but absent here, so a
+# deploy turned them off. Observability is how the console.error/warn calls in
+# worker.js — rejected Turnstile tokens, Brevo failures — are actually visible.
+[observability]
+enabled = true
+
+[observability.logs]
+enabled = true
+
+# This is an API endpoint, not a site. Preview URLs would publish it on extra
+# hostnames for no benefit.
+preview_urls = false
 
 # After deploying, add your Brevo key as a secret (never stored here):
 #   wrangler secret put BREVO_API_KEY
@@ -47,7 +63,11 @@ simple        = { limit = 10, period = 60 }
 # BREVO_DOI_REDIRECT    = "https://justforphishing.com/"
 
 # Frontend hostnames this deployment will accept Turnstile tokens from.
-# Required once TURNSTILE_SECRET is set. Must NOT contain localhost or
-# 127.0.0.1 in production, even if the widget itself is registered for them.
+# Required once TURNSTILE_SECRET is set.
+#
+# The widget is registered for justforphishing.com, localhost and 127.0.0.1.
+# Only the production hostname belongs here: a locally served page must not be
+# able to mint tokens this deployment accepts. www is deliberately absent too —
+# it 301s to the apex, so no token is ever minted on it.
 [vars]
-TURNSTILE_HOSTNAMES = "justforphishing.com,www.justforphishing.com"
+TURNSTILE_HOSTNAMES = "justforphishing.com"
