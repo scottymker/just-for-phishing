@@ -110,27 +110,55 @@ the 254-character address cap, the format check, and the rate limiter.
 work, run `wrangler dev --var ALLOW_DEV_ORIGINS:true`. Never set that variable
 on the deployed worker.
 
-## Turning on Turnstile
+## Turnstile — active
 
-The code is in place and inert. To activate:
+Live on the newsletter signup and validated end to end on 08-15-2026.
 
-1. **Cloudflare dashboard → Turnstile → Add widget.** Domain
-   `justforphishing.com`, widget mode **Managed**. You get a site key and a
-   secret key.
-2. Paste the **site key** into `TURNSTILE_SITE_KEY` at the top of `index.js`.
-   It is public by design — the Worker verifies the token server-side, so the
-   key alone grants nothing.
-3. Give the Worker the **secret key**:
-   ```bash
-   cd worker && wrangler secret put TURNSTILE_SECRET
-   ```
+| | |
+|---|---|
+| Sitekey | `0x4AAAAAAEQhhN9V-SXVjSIY` (public; set in `index.js`) |
+| Widget | `justforphishing.com (Spin)`, mode `managed` |
+| Widget domains | `justforphishing.com`, `localhost`, `127.0.0.1` |
+| Action | `newsletter-signup` |
+| Secret | `TURNSTILE_SECRET`, bound on Worker `jfp-subscribe` |
+| Accepted hostnames | `TURNSTILE_HOSTNAMES = "justforphishing.com"` |
 
-Once `TURNSTILE_SECRET` exists the Worker **requires** a valid token and fails
-closed — a challenge that can be skipped when verification hiccups is not a
-challenge. So set the site key in `index.js` before or at the same time as the
-secret, or the form will start rejecting real people.
+The Worker accepts a token only when siteverify reports `success` **and** the
+action matches **and** the hostname is in `TURNSTILE_HOSTNAMES`. Checking
+`success` alone would accept a token minted by this sitekey on any other page,
+including a locally served one — which is why `localhost` is registered on the
+widget for development but deliberately absent from the accepted hostnames.
 
-The CSP above already allows `challenges.cloudflare.com`.
+Once `TURNSTILE_SECRET` exists the Worker fails **closed**: no token, a
+malformed token, or a siteverify error all return 403. If you ever rotate the
+sitekey, update `index.js` and the secret together — a secret without a
+matching sitekey rejects every real visitor.
+
+### Diagnosing a rejection
+
+Observability is enabled on the Worker, so rejections are queryable:
+
+```bash
+wrangler tail jfp-subscribe --format json
+```
+
+A rejected attempt logs the siteverify verdict. The `error-codes` distinguish
+the two failure modes that look identical from the browser:
+
+- `invalid-input-response` — the **token** was bad. Normal for a stale, replayed
+  or forged token. The secret is fine.
+- `invalid-input-secret` — the **secret** is wrong or missing on the Worker.
+  Re-run the retrieval flow.
+
+A mismatch on `action` or `hostname` logs those fields with `success: true`,
+which points at the frontend rather than the secret.
+
+### If a visitor cannot subscribe
+
+`index.js` detects a challenge that fails to render, times out, or whose script
+is blocked, and tells the visitor to allow `challenges.cloudflare.com` rather
+than showing a generic error. That covers the most likely support report — an
+ad blocker or privacy extension blocking the challenge host.
 
 ## Turning on double opt-in
 
@@ -154,5 +182,8 @@ inbox". Unset it and the previous direct-add behaviour returns.
 
 ## Still open
 
-- **Nothing blocking.** Turnstile and double opt-in are coded and waiting on the
-  credentials above. Everything else in this file is applied.
+- **Double opt-in.** `BREVO_DOI_TEMPLATE_ID` is unset, so contacts are still
+  added directly. This is the one remaining control that would make an endpoint
+  anyone can reach genuinely harmless — Turnstile and the rate limiter only make
+  abuse slower, whereas a confirmation email makes enrolling someone else's
+  address pointless. Steps above.
