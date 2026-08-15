@@ -419,5 +419,12 @@ function createCelebration() {
   }
 }
 
-// Initialize quiz on page load
-document.addEventListener('DOMContentLoaded', initQuiz);
+// Initialize quiz on page load. The nav buttons used to carry onclick
+// attributes in the markup; wiring them here is what lets the
+// Content-Security-Policy drop 'unsafe-inline'.
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('prev-btn')?.addEventListener('click', previousQuestion);
+  document.getElementById('next-btn')?.addEventListener('click', nextQuestion);
+  document.getElementById('retake-btn')?.addEventListener('click', retakeQuiz);
+  initQuiz();
+});

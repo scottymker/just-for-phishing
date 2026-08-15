@@ -208,3 +208,170 @@
     el.start.addEventListener('click', startDrill);
   });
 })();
+
+
+/* Phone status-bar clock. Was an inline <script> in mfa-fatigue.html; moved
+   here so the Content-Security-Policy does not need 'unsafe-inline'. */
+// Update status bar time to current time
+function updateStatusTime() {
+  const now = new Date();
+  const hours = now.getHours();
+  const minutes = now.getMinutes();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const displayHours = hours % 12 || 12;
+  const displayMinutes = String(minutes).padStart(2, '0');
+  document.getElementById('status-time').textContent = `${displayHours}:${displayMinutes} ${ampm}`;
+}
+updateStatusTime();
+setInterval(updateStatusTime, 60000); // Update every minute
+
+// Interactive MFA phone notification system
+document.addEventListener('DOMContentLoaded', () => {
+  const notificationStack = document.getElementById('notification-stack');
+  let interactiveMode = false;
+  let currentNotificationElement = null;
+
+  // MFA scenarios with educational content
+  const MFA_SCENARIOS = [
+    {
+      location: 'Moscow, Russia',
+      device: 'Unknown Windows PC',
+      isLegit: false,
+      explanation: '✅ Correct! This sign-in attempt from Moscow is highly suspicious. Always DENY unexpected MFA requests from unfamiliar locations.',
+      incorrectMsg: '❌ Incorrect. Approving this request from an unfamiliar location (Moscow) could give an attacker access to your account.'
+    },
+    {
+      location: 'San Francisco, CA',
+      device: 'iPhone 14',
+      isLegit: false,
+      explanation: '✅ Correct! Even though the location might seem familiar, if YOU didn\'t initiate this login, always DENY and report it.',
+      incorrectMsg: '❌ Incorrect. Never approve an MFA request you didn\'t trigger yourself, even if the location seems reasonable.'
+    },
+    {
+      location: 'Lagos, Nigeria',
+      device: 'Unknown Android',
+      isLegit: false,
+      explanation: '✅ Correct! This is a classic MFA fatigue attack from an unexpected location. Always deny and report suspicious activity.',
+      incorrectMsg: '❌ Incorrect. International login attempts you didn\'t initiate are major red flags. Always deny and change your password.'
+    }
+  ];
+
+  let currentScenarioIndex = 0;
+  let score = 0;
+
+  // Intercept pushNotification calls and make them interactive
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        if (node.className === 'notification' && node.textContent && !node.querySelector('.notification-header')) {
+          makeNotificationInteractive(node);
+        }
+      });
+    });
+  });
+
+  function makeNotificationInteractive(node) {
+    if (currentScenarioIndex >= MFA_SCENARIOS.length) return;
+
+    const scenario = MFA_SCENARIOS[currentScenarioIndex];
+    const time = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+    // Create structured interactive notification
+    node.innerHTML = `
+      <div class="notification-header">
+        <div class="notification-icon">🔐</div>
+        <div class="notification-app">
+          <div class="notification-app-name">Microsoft Authenticator</div>
+          <div class="notification-time">now</div>
+        </div>
+      </div>
+      <div class="notification-content">
+        <div class="notification-title">Sign-in Attempt</div>
+        <div class="notification-meta">
+          <div><strong>Location:</strong> ${scenario.location}</div>
+          <div><strong>Device:</strong> ${scenario.device}</div>
+          <div><strong>Time:</strong> ${time}</div>
+        </div>
+      </div>
+      <div class="notification-actions">
+        <button class="notification-btn notification-btn-deny" data-answer="deny">Deny</button>
+        <button class="notification-btn notification-btn-approve" data-answer="approve">Approve</button>
+      </div>
+      <div class="notification-feedback hidden"></div>
+    `;
+
+    currentNotificationElement = node;
+
+    // Add click handlers to buttons
+    const denyBtn = node.querySelector('[data-answer="deny"]');
+    const approveBtn = node.querySelector('[data-answer="approve"]');
+
+    denyBtn.addEventListener('click', () => handleAnswer('deny', node, scenario));
+    approveBtn.addEventListener('click', () => handleAnswer('approve', node, scenario));
+
+    // Add active class briefly
+    node.classList.add('active');
+    setTimeout(() => node.classList.remove('active'), 500);
+  }
+
+  function handleAnswer(answer, notificationElement, scenario) {
+    const correct = answer === 'deny'; // Deny is always the safe choice
+    if (correct) score++;
+
+    // Disable buttons
+    const buttons = notificationElement.querySelectorAll('.notification-btn');
+    buttons.forEach(btn => btn.disabled = true);
+
+    // Show feedback in notification
+    const feedbackEl = notificationElement.querySelector('.notification-feedback');
+    feedbackEl.textContent = correct ? scenario.explanation : scenario.incorrectMsg;
+    feedbackEl.className = `notification-feedback ${correct ? 'correct' : 'incorrect'}`;
+    feedbackEl.classList.remove('hidden');
+
+    // Update external score display
+    document.getElementById('score').textContent = score;
+    document.getElementById('total').textContent = currentScenarioIndex + 1;
+
+    // Log event
+    const eventLog = document.getElementById('event-log');
+    const logEntry = document.createElement('div');
+    logEntry.className = 'event-log-entry';
+    logEntry.textContent = `${correct ? '✅' : '❌'} ${answer === 'deny' ? 'Denied' : 'Approved'} request from ${scenario.location}`;
+    eventLog.appendChild(logEntry);
+    eventLog.scrollTop = eventLog.scrollHeight;
+
+    // Move to next scenario after delay
+    currentScenarioIndex++;
+
+    if (currentScenarioIndex < MFA_SCENARIOS.length) {
+      setTimeout(() => {
+        // Clear old notifications to prevent stacking
+        notificationStack.innerHTML = '';
+
+        // Create next notification directly
+        const nextNotification = document.createElement('div');
+        nextNotification.className = 'notification';
+        nextNotification.textContent = `Login request #${currentScenarioIndex + 1} • ${MFA_SCENARIOS[currentScenarioIndex].location}`;
+        notificationStack.prepend(nextNotification);
+      }, 3000);
+    } else {
+      window.JFPAnalytics?.trackModuleComplete('mfa_fatigue_drill', {
+        correct: score,
+        total: MFA_SCENARIOS.length,
+        percentage: Math.round((score / MFA_SCENARIOS.length) * 100),
+      });
+
+      // Drill complete
+      setTimeout(() => {
+        const feedback = document.getElementById('feedback');
+        feedback.textContent = `🎉 Drill Complete! Score: ${score}/${MFA_SCENARIOS.length}`;
+        const summary = document.getElementById('summary');
+        summary.textContent = `You correctly identified ${score} out of ${MFA_SCENARIOS.length} suspicious MFA requests.`;
+        summary.classList.remove('hidden');
+      }, 3000);
+    }
+  }
+
+  observer.observe(notificationStack, { childList: true, subtree: true });
+});
+  

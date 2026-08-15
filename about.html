@@ -33,17 +33,7 @@
        Denied by default. consent.js issues the config call — the one that
        starts collection and sets cookies — only after the visitor agrees. -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y3ZYDHQD6Z"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('consent', 'default', {
-      analytics_storage: 'denied',
-      ad_storage: 'denied',
-      ad_user_data: 'denied',
-      ad_personalization: 'denied'
-    });
-    gtag('js', new Date());
-  </script>
+  <script src="analytics-init.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -165,7 +155,7 @@
 
       <div class="contact-form">
         <h3>Send Us a Message</h3>
-        <form id="contactForm" onsubmit="handleContactSubmit(event)">
+        <form id="contactForm">
           <div class="form-group">
             <label for="name">Name</label>
             <input type="text" id="name" name="name" required placeholder="Your name">
@@ -258,19 +248,9 @@
   </footer>
 
   <script src="theme.js"></script>
+  <script src="about.js"></script>
   <script src="a11y.js"></script>
   <script src="consent.js"></script>
   <script src="analytics.js"></script>
-  <script>
-    function handleContactSubmit(event) {
-      event.preventDefault();
-      const formData = new FormData(event.target);
-      const name = formData.get('name');
-      const email = formData.get('email');
-      alert(`Thank you for your message, ${name}!\n\nWe'll get back to you at ${email} as soon as possible.\n\nFor immediate assistance, please visit our GitHub repository to submit an issue or discussion.`);
-      event.target.reset();
-    }
-  </script>
-  <script>document.addEventListener('DOMContentLoaded', function(){ if(typeof lucide !== 'undefined') lucide.createIcons(); });</script>
 </body>
 </html>

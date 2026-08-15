@@ -33,17 +33,7 @@
        Denied by default. consent.js issues the config call — the one that
        starts collection and sets cookies — only after the visitor agrees. -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y3ZYDHQD6Z"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('consent', 'default', {
-      analytics_storage: 'denied',
-      ad_storage: 'denied',
-      ad_user_data: 'denied',
-      ad_personalization: 'denied'
-    });
-    gtag('js', new Date());
-  </script>
+  <script src="analytics-init.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -114,10 +104,10 @@
     </div>
 
     <div class="nav-buttons">
-      <button class="btn btn-quiz-secondary hidden" id="prev-btn" onclick="previousQuestion()">
+      <button class="btn btn-quiz-secondary hidden" id="prev-btn">
         ← Previous
       </button>
-      <button class="btn btn-quiz-primary" id="next-btn" onclick="nextQuestion()" disabled>
+      <button class="btn btn-quiz-primary" id="next-btn" disabled>
         Next Question →
       </button>
     </div>
@@ -134,7 +124,7 @@
       </div>
 
       <div class="summary-actions">
-        <button class="btn btn-quiz-primary" onclick="retakeQuiz()">
+        <button class="btn btn-quiz-primary" id="retake-btn">
           <i data-lucide="rotate-ccw" class="icon"></i> Retake Quiz
         </button>
         <a href="lab.html" class="btn btn-quiz-secondary">
@@ -218,6 +208,5 @@
   <script src="analytics.js"></script>
   <script src="data/quiz-questions.js"></script>
   <script src="quiz.js"></script>
-  <script>document.addEventListener('DOMContentLoaded', function(){ if(typeof lucide !== 'undefined') lucide.createIcons(); });</script>
 </body>
 </html>

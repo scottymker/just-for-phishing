@@ -140,6 +140,16 @@ ${body}
   }
 
   global.lucide = { createIcons: createIcons, icons: ICONS };
+
+  // Self-initialising. Every page used to carry an inline DOMContentLoaded
+  // bootstrap for this, which was one of the things keeping 'unsafe-inline' in
+  // the Content-Security-Policy. Runtime-injected icons still call
+  // lucide.createIcons({ els }) themselves.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { createIcons(); });
+  } else {
+    createIcons();
+  }
 })(typeof window !== 'undefined' ? window : this);
 `;
 
